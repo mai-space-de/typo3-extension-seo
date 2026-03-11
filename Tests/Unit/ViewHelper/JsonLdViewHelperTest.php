@@ -8,9 +8,9 @@ use Maispace\MaispacesSeo\Service\JsonLdService;
 use Maispace\MaispacesSeo\ViewHelpers\Seo\JsonLdViewHelper;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class JsonLdViewHelperTest extends TestCase
 {
@@ -59,7 +59,9 @@ class JsonLdViewHelperTest extends TestCase
         $request->method('getAttribute')->willReturn(null);
 
         $renderingContext = $this->createMock(RenderingContextInterface::class);
-        $renderingContext->method('getRequest')->willReturn($request);
+        $renderingContext->method('getAttribute')
+            ->with(ServerRequestInterface::class)
+            ->willReturn($request);
 
         $viewHelper = new JsonLdViewHelper();
         $viewHelper->injectJsonLdService($jsonLdService);

@@ -22,9 +22,10 @@ class JsonLdService
      */
     public function buildSchema(array $pageRecord, array $settings): array
     {
-        $type = (string)($pageRecord['tx_maispace_seo_jsonld_type'] ?? '');
+        $type = strval($pageRecord['tx_maispace_seo_jsonld_type'] ?? '');
         if ($type === '') {
-            $type = (string)($settings['jsonLd.']['defaultType'] ?? 'WebPage');
+            $jsonLdSettings = is_array($settings['jsonLd.'] ?? null) ? $settings['jsonLd.'] : [];
+            $type = strval($jsonLdSettings['defaultType'] ?? 'WebPage');
         }
         if ($type === '') {
             $type = 'WebPage';
@@ -36,58 +37,59 @@ class JsonLdService
         ];
 
         // Name: use override or fall back to page title
-        $name = (string)($pageRecord['tx_maispace_seo_jsonld_name'] ?? '');
+        $name = strval($pageRecord['tx_maispace_seo_jsonld_name'] ?? '');
         if ($name === '') {
-            $name = (string)($pageRecord['title'] ?? '');
+            $name = strval($pageRecord['title'] ?? '');
         }
         if ($name !== '') {
             $schema['name'] = $name;
         }
 
         // Description: use override or fall back to abstract
-        $description = (string)($pageRecord['tx_maispace_seo_jsonld_description'] ?? '');
+        $description = strval($pageRecord['tx_maispace_seo_jsonld_description'] ?? '');
         if ($description === '') {
-            $description = (string)($pageRecord['abstract'] ?? '');
+            $description = strval($pageRecord['abstract'] ?? '');
         }
         if ($description !== '') {
             $schema['description'] = $description;
         }
 
         // URL
-        $url = (string)($pageRecord['canonical_link'] ?? '');
+        $url = strval($pageRecord['canonical_link'] ?? '');
         if ($url !== '') {
             $schema['url'] = $url;
         }
 
         // Date published
-        $datePublished = (int)($pageRecord['tx_maispace_seo_jsonld_date_published'] ?? 0);
+        $datePublished = intval($pageRecord['tx_maispace_seo_jsonld_date_published'] ?? 0);
         if ($datePublished > 0) {
             $schema['datePublished'] = date('c', $datePublished);
         }
 
         // Date modified
-        $dateModified = (int)($pageRecord['tx_maispace_seo_jsonld_date_modified'] ?? 0);
+        $dateModified = intval($pageRecord['tx_maispace_seo_jsonld_date_modified'] ?? 0);
         if ($dateModified > 0) {
             $schema['dateModified'] = date('c', $dateModified);
         }
 
         // Author
-        $author = (string)($pageRecord['tx_maispace_seo_jsonld_author'] ?? '');
+        $author = strval($pageRecord['tx_maispace_seo_jsonld_author'] ?? '');
         if ($author !== '') {
             $schema['author'] = ['@type' => 'Person', 'name' => $author];
         }
 
         // Publisher from TypoScript settings
-        $organizationName = (string)($settings['jsonLd.']['organizationName'] ?? '');
+        $jsonLdSettings = is_array($settings['jsonLd.'] ?? null) ? $settings['jsonLd.'] : [];
+        $organizationName = strval($jsonLdSettings['organizationName'] ?? '');
         if ($organizationName !== '') {
             $publisher = ['@type' => 'Organization', 'name' => $organizationName];
 
-            $organizationUrl = (string)($settings['jsonLd.']['organizationUrl'] ?? '');
+            $organizationUrl = strval($jsonLdSettings['organizationUrl'] ?? '');
             if ($organizationUrl !== '') {
                 $publisher['url'] = $organizationUrl;
             }
 
-            $organizationLogo = (string)($settings['jsonLd.']['organizationLogo'] ?? '');
+            $organizationLogo = strval($jsonLdSettings['organizationLogo'] ?? '');
             if ($organizationLogo !== '') {
                 $publisher['logo'] = $organizationLogo;
             }
@@ -96,7 +98,7 @@ class JsonLdService
         }
 
         // Merge custom JSON-LD if set and valid
-        $customJson = (string)($pageRecord['tx_maispace_seo_jsonld_custom'] ?? '');
+        $customJson = strval($pageRecord['tx_maispace_seo_jsonld_custom'] ?? '');
         if ($customJson !== '') {
             $decoded = json_decode($customJson, true);
             if (is_array($decoded)) {

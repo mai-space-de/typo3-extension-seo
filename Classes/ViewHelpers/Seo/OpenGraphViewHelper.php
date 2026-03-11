@@ -7,7 +7,10 @@ namespace Maispace\MaispacesSeo\ViewHelpers\Seo;
 use Maispace\MaispacesSeo\Event\AfterOpenGraphRenderedEvent;
 use Maispace\MaispacesSeo\Service\OpenGraphService;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 class OpenGraphViewHelper extends AbstractViewHelper
@@ -44,7 +47,7 @@ class OpenGraphViewHelper extends AbstractViewHelper
             return '';
         }
 
-        $pageRecord = $this->resolvePageRecord((int)$this->arguments['pageUid']);
+        $pageRecord = $this->resolvePageRecord(intval($this->arguments['pageUid']));
         if ($pageRecord === []) {
             return '';
         }
@@ -69,11 +72,11 @@ class OpenGraphViewHelper extends AbstractViewHelper
         $properties = $event->getProperties();
 
         foreach ($properties as $meta) {
-            $content = (string)($meta['content'] ?? '');
+            $content = $meta['content'];
             if ($content === '') {
                 continue;
             }
-            $this->pageRenderer->setMetaTag('property', (string)$meta['property'], $content);
+            $this->pageRenderer->setMetaTag('property', $meta['property'], $content);
         }
 
         return '';
@@ -85,16 +88,25 @@ class OpenGraphViewHelper extends AbstractViewHelper
     private function resolvePageRecord(int $pageUid): array
     {
         if ($pageUid > 0) {
-            return $GLOBALS['TSFE']->sys_page->getPage($pageUid) ?: [];
+            $tsfe = $GLOBALS['TSFE'] ?? null;
+            if ($tsfe instanceof TypoScriptFrontendController) {
+                return $tsfe->sys_page->getPage($pageUid) ?: [];
+            }
+            return [];
         }
 
-        $request = $this->renderingContext->getRequest();
+        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         $frontendController = $request->getAttribute('frontend.controller');
-        if ($frontendController !== null && isset($frontendController->page)) {
-            return (array)$frontendController->page;
+        if ($frontendController instanceof TypoScriptFrontendController) {
+            return $frontendController->page ?? [];
         }
 
-        return isset($GLOBALS['TSFE']) ? (array)$GLOBALS['TSFE']->page : [];
+        $tsfe = $GLOBALS['TSFE'] ?? null;
+        if ($tsfe instanceof TypoScriptFrontendController) {
+            return $tsfe->page ?? [];
+        }
+
+        return [];
     }
 
     /**
@@ -102,14 +114,14 @@ class OpenGraphViewHelper extends AbstractViewHelper
      */
     private function resolveTypoScriptSettings(): array
     {
-        $request = $this->renderingContext->getRequest();
+        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         $typoscript = $request->getAttribute('frontend.typoscript');
-        if ($typoscript !== null) {
+        if ($typoscript instanceof FrontendTypoScript) {
             $setup = $typoscript->getSetupArray();
-
-            return $setup['plugin.']['tx_maispace_seo.'] ?? [];
+            $pluginSetup = is_array($setup['plugin.'] ?? null) ? $setup['plugin.'] : [];
+            return is_array($pluginSetup['tx_maispace_seo.'] ?? null) ? $pluginSetup['tx_maispace_seo.'] : [];
         }
 
-        return $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_maispace_seo.'] ?? [];
+        return [];
     }
 }

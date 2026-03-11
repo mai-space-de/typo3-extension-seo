@@ -11,6 +11,7 @@ return [
         'iconIdentifier' => 'maispace-seo',
         'path'           => '/module/maispace/seo',
         'labels'         => 'LLL:EXT:maispace_seo/Resources/Private/Language/locallang_mod.xlf',
+        'packageName'    => 'maispace/seo',
         'routes'         => [
             '_default' => [
                 'target' => \Maispace\MaispacesSeo\Controller\Backend\SeoController::class . '::indexAction',

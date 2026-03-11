@@ -28,33 +28,35 @@ class OpenGraphService
     ): array {
         $properties = [];
 
+        $ogSettings = is_array($settings['openGraph.'] ?? null) ? $settings['openGraph.'] : [];
+
         // og:type
-        $ogType = (string)($pageRecord['tx_maispace_seo_og_type'] ?? '');
+        $ogType = strval($pageRecord['tx_maispace_seo_og_type'] ?? '');
         if ($ogType === '') {
             $ogType = 'website';
         }
         $properties[] = ['property' => 'og:type', 'content' => $ogType];
 
         // og:title — override or fall back to page title
-        $ogTitle = (string)($pageRecord['tx_maispace_seo_og_title'] ?? '');
+        $ogTitle = strval($pageRecord['tx_maispace_seo_og_title'] ?? '');
         if ($ogTitle === '') {
-            $ogTitle = (string)($pageRecord['title'] ?? '');
+            $ogTitle = strval($pageRecord['title'] ?? '');
         }
         if ($ogTitle !== '') {
             $properties[] = ['property' => 'og:title', 'content' => $ogTitle];
         }
 
         // og:description — override or fall back to abstract
-        $ogDescription = (string)($pageRecord['tx_maispace_seo_og_description'] ?? '');
+        $ogDescription = strval($pageRecord['tx_maispace_seo_og_description'] ?? '');
         if ($ogDescription === '') {
-            $ogDescription = (string)($pageRecord['abstract'] ?? '');
+            $ogDescription = strval($pageRecord['abstract'] ?? '');
         }
         if ($ogDescription !== '') {
             $properties[] = ['property' => 'og:description', 'content' => $ogDescription];
         }
 
         // og:site_name
-        $siteName = (string)($settings['openGraph.']['siteName'] ?? '');
+        $siteName = strval($ogSettings['siteName'] ?? '');
         if ($siteName !== '') {
             $properties[] = ['property' => 'og:site_name', 'content' => $siteName];
         }
@@ -64,22 +66,22 @@ class OpenGraphService
 
         // og:image
         if ($ogImageUrl === '') {
-            $ogImageUrl = (string)($settings['openGraph.']['defaultImage'] ?? '');
+            $ogImageUrl = strval($ogSettings['defaultImage'] ?? '');
         }
         if ($ogImageUrl !== '') {
             $properties[] = ['property' => 'og:image', 'content' => $ogImageUrl];
         }
 
         // Twitter properties
-        $twitterEnabled = (string)($settings['openGraph.']['twitter'] ?? '1');
+        $twitterEnabled = strval($ogSettings['twitter'] ?? '1');
         if ($twitterEnabled === '1') {
-            $twitterCard = (string)($pageRecord['tx_maispace_seo_twitter_card'] ?? '');
+            $twitterCard = strval($pageRecord['tx_maispace_seo_twitter_card'] ?? '');
             if ($twitterCard === '') {
                 $twitterCard = 'summary';
             }
             $properties[] = ['property' => 'twitter:card', 'content' => $twitterCard];
 
-            $twitterSite = (string)($settings['openGraph.']['twitterSite'] ?? '');
+            $twitterSite = strval($ogSettings['twitterSite'] ?? '');
             if ($twitterSite !== '') {
                 $properties[] = ['property' => 'twitter:site', 'content' => $twitterSite];
             }
