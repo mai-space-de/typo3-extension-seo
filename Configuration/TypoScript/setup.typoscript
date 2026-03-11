@@ -13,4 +13,10 @@ plugin.tx_maispace_seo {
         twitter = 1
         twitterSite =
     }
+    canonical {
+        enable = 1
+    }
+    robots {
+        enable = 1
+    }
 }

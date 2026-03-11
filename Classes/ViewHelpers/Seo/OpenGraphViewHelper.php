@@ -7,13 +7,9 @@ namespace Maispace\MaispacesSeo\ViewHelpers\Seo;
 use Maispace\MaispacesSeo\Event\AfterOpenGraphRenderedEvent;
 use Maispace\MaispacesSeo\Service\OpenGraphService;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-class OpenGraphViewHelper extends AbstractViewHelper
+class OpenGraphViewHelper extends AbstractSeoViewHelper
 {
     private OpenGraphService $openGraphService;
     private PageRenderer $pageRenderer;
@@ -55,7 +51,18 @@ class OpenGraphViewHelper extends AbstractViewHelper
 
         $settings = $this->resolveTypoScriptSettings();
 
-        $properties = $this->openGraphService->buildProperties($pageRecord, $settings);
+        // Resolve og:url from canonical fields
+        $ogUrl = '';
+        $customCanonical = is_scalar($pageRecord['tx_maispace_seo_canonical_url'] ?? null)
+            ? (string)$pageRecord['tx_maispace_seo_canonical_url']
+            : '';
+        if ($customCanonical !== '') {
+            $ogUrl = $customCanonical;
+        } elseif (is_scalar($pageRecord['canonical_link'] ?? null) && (string)$pageRecord['canonical_link'] !== '') {
+            $ogUrl = (string)$pageRecord['canonical_link'];
+        }
+
+        $properties = $this->openGraphService->buildProperties($pageRecord, $settings, '', '', $ogUrl);
         if ($properties === []) {
             return '';
         }
@@ -81,61 +88,5 @@ class OpenGraphViewHelper extends AbstractViewHelper
         }
 
         return '';
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function resolvePageRecord(int $pageUid): array
-    {
-        if ($pageUid > 0) {
-            $tsfe = $GLOBALS['TSFE'] ?? null;
-            if ($tsfe instanceof TypoScriptFrontendController) {
-                /** @var array<string, mixed> $page */
-                $page = $tsfe->sys_page->getPage($pageUid) ?: [];
-
-                return $page;
-            }
-
-            return [];
-        }
-
-        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
-        $frontendController = $request->getAttribute('frontend.controller');
-        if ($frontendController instanceof TypoScriptFrontendController) {
-            /** @var array<string, mixed> $page */
-            $page = $frontendController->page ?? [];
-
-            return $page;
-        }
-
-        $tsfe = $GLOBALS['TSFE'] ?? null;
-        if ($tsfe instanceof TypoScriptFrontendController) {
-            /** @var array<string, mixed> $page */
-            $page = $tsfe->page ?? [];
-
-            return $page;
-        }
-
-        return [];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function resolveTypoScriptSettings(): array
-    {
-        $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
-        $typoscript = $request->getAttribute('frontend.typoscript');
-        if ($typoscript instanceof FrontendTypoScript) {
-            $setup = $typoscript->getSetupArray();
-            $pluginSetup = is_array($setup['plugin.'] ?? null) ? $setup['plugin.'] : [];
-            /** @var array<string, mixed> $seoSettings */
-            $seoSettings = is_array($pluginSetup['tx_maispace_seo.'] ?? null) ? $pluginSetup['tx_maispace_seo.'] : [];
-
-            return $seoSettings;
-        }
-
-        return [];
     }
 }

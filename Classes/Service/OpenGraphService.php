@@ -26,7 +26,8 @@ class OpenGraphService
         array $pageRecord,
         array $settings,
         string $ogImageUrl = '',
-        string $twitterImageUrl = ''
+        string $twitterImageUrl = '',
+        string $ogUrl = ''
     ): array {
         $properties = [];
 
@@ -63,8 +64,10 @@ class OpenGraphService
             $properties[] = ['property' => 'og:site_name', 'content' => $siteName];
         }
 
-        // og:url — empty by default; ViewHelper provides from context
-        $properties[] = ['property' => 'og:url', 'content' => ''];
+        // og:url — use canonical URL when provided
+        if ($ogUrl !== '') {
+            $properties[] = ['property' => 'og:url', 'content' => $ogUrl];
+        }
 
         // og:image
         if ($ogImageUrl === '') {

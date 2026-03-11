@@ -4,20 +4,20 @@ declare(strict_types = 1);
 
 namespace Maispace\MaispacesSeo\ViewHelpers\Seo;
 
-use Maispace\MaispacesSeo\Event\AfterJsonLdRenderedEvent;
-use Maispace\MaispacesSeo\Service\JsonLdService;
+use Maispace\MaispacesSeo\Event\AfterCanonicalRenderedEvent;
+use Maispace\MaispacesSeo\Service\CanonicalService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
-class JsonLdViewHelper extends AbstractSeoViewHelper
+class CanonicalViewHelper extends AbstractSeoViewHelper
 {
-    private JsonLdService $jsonLdService;
+    private CanonicalService $canonicalService;
     private PageRenderer $pageRenderer;
     private EventDispatcherInterface $eventDispatcher;
 
-    public function injectJsonLdService(JsonLdService $service): void
+    public function injectCanonicalService(CanonicalService $service): void
     {
-        $this->jsonLdService = $service;
+        $this->canonicalService = $service;
     }
 
     public function injectPageRenderer(PageRenderer $pageRenderer): void
@@ -32,8 +32,8 @@ class JsonLdViewHelper extends AbstractSeoViewHelper
 
     public function initializeArguments(): void
     {
-        $this->registerArgument('pageUid', 'int', 'Explicit page UID to render JSON-LD for. 0 = current page.', false, 0);
-        $this->registerArgument('enabled', 'bool', 'Set to false to suppress JSON-LD output on this page.', false, true);
+        $this->registerArgument('pageUid', 'int', 'Explicit page UID to render the canonical tag for. 0 = current page.', false, 0);
+        $this->registerArgument('enabled', 'bool', 'Set to false to suppress canonical output on this page.', false, true);
     }
 
     public function render(): string
@@ -50,19 +50,19 @@ class JsonLdViewHelper extends AbstractSeoViewHelper
 
         $settings = $this->resolveTypoScriptSettings();
 
-        $schema = $this->jsonLdService->buildSchema($pageRecord, $settings);
-        if ($schema === []) {
+        $url = $this->canonicalService->buildCanonicalUrl($pageRecord, $settings);
+        if ($url === '') {
             return '';
         }
 
-        $script = $this->jsonLdService->renderScript($schema);
+        $tag = $this->canonicalService->renderTag($url);
 
-        /** @var AfterJsonLdRenderedEvent $event */
-        $event = $this->eventDispatcher->dispatch(new AfterJsonLdRenderedEvent($script));
-        $script = $event->getScript();
+        /** @var AfterCanonicalRenderedEvent $event */
+        $event = $this->eventDispatcher->dispatch(new AfterCanonicalRenderedEvent($tag));
+        $tag = $event->getTag();
 
-        if ($script !== '') {
-            $this->pageRenderer->addHeaderData($script);
+        if ($tag !== '') {
+            $this->pageRenderer->addHeaderData($tag);
         }
 
         return '';

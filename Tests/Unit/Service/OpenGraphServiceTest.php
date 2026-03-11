@@ -161,4 +161,27 @@ class OpenGraphServiceTest extends TestCase
 
         self::assertSame([], $properties);
     }
+
+    public function testBuildPropertiesOmitsOgUrlWhenNotPassed(): void
+    {
+        $properties = $this->subject->buildProperties(
+            ['title' => 'My Page'],
+            []
+        );
+
+        self::assertNull($this->findProperty($properties, 'og:url'));
+    }
+
+    public function testBuildPropertiesIncludesOgUrlWhenPassed(): void
+    {
+        $properties = $this->subject->buildProperties(
+            ['title' => 'My Page'],
+            [],
+            '',
+            '',
+            'https://example.com/my-page'
+        );
+
+        self::assertSame('https://example.com/my-page', $this->findProperty($properties, 'og:url'));
+    }
 }
