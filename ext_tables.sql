@@ -1,0 +1,16 @@
+CREATE TABLE pages (
+    tx_maispace_seo_jsonld_type varchar(100) DEFAULT '' NOT NULL,
+    tx_maispace_seo_jsonld_name varchar(255) DEFAULT '' NOT NULL,
+    tx_maispace_seo_jsonld_description text,
+    tx_maispace_seo_jsonld_image int(11) DEFAULT '0' NOT NULL,
+    tx_maispace_seo_jsonld_author varchar(255) DEFAULT '' NOT NULL,
+    tx_maispace_seo_jsonld_date_published int(11) DEFAULT '0' NOT NULL,
+    tx_maispace_seo_jsonld_date_modified int(11) DEFAULT '0' NOT NULL,
+    tx_maispace_seo_jsonld_custom text,
+    tx_maispace_seo_og_title varchar(255) DEFAULT '' NOT NULL,
+    tx_maispace_seo_og_description text,
+    tx_maispace_seo_og_image int(11) DEFAULT '0' NOT NULL,
+    tx_maispace_seo_og_type varchar(50) DEFAULT '' NOT NULL,
+    tx_maispace_seo_twitter_card varchar(50) DEFAULT '' NOT NULL,
+    tx_maispace_seo_twitter_image int(11) DEFAULT '0' NOT NULL
+);

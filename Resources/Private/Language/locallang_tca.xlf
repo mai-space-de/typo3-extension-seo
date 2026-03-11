@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="EXT:maispace_seo/Resources/Private/Language/locallang_tca.xlf">
+        <body>
+            <trans-unit id="tab.seo">
+                <source>SEO</source>
+            </trans-unit>
+            <trans-unit id="tab.seo.jsonld">
+                <source>JSON-LD / Structured Data</source>
+            </trans-unit>
+            <trans-unit id="tab.seo.opengraph">
+                <source>Open Graph</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_jsonld_type">
+                <source>Schema type</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_jsonld_name">
+                <source>Name override</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_jsonld_description">
+                <source>Description override</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_jsonld_image">
+                <source>Schema image</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_jsonld_author">
+                <source>Author</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_jsonld_date_published">
+                <source>Date published</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_jsonld_date_modified">
+                <source>Date modified</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_jsonld_custom">
+                <source>Custom JSON-LD</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_og_title">
+                <source>OG title</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_og_description">
+                <source>OG description</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_og_image">
+                <source>OG image</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_og_type">
+                <source>OG type</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_twitter_card">
+                <source>Twitter card type</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_twitter_image">
+                <source>Twitter image</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

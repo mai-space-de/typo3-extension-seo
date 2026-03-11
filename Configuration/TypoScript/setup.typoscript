@@ -1,0 +1,16 @@
+plugin.tx_maispace_seo {
+    jsonLd {
+        enable = 1
+        defaultType = WebPage
+        organizationName =
+        organizationUrl =
+        organizationLogo =
+    }
+    openGraph {
+        enable = 1
+        siteName =
+        defaultImage =
+        twitter = 1
+        twitterSite =
+    }
+}

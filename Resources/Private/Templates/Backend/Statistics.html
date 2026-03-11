@@ -1,0 +1,105 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:flashMessages />
+
+<div class="module-body">
+
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <h1>SEO Statistics</h1>
+            <a href="{indexUri}" class="btn btn-default">
+                &larr; Back to Overview
+            </a>
+        </div>
+    </div>
+
+    <!-- Schema type distribution -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Schema Type Distribution</h2>
+                </div>
+                <div class="card-body p-0">
+                    <f:if condition="{typeStats}">
+                        <f:then>
+                            <table class="table table-striped table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Schema Type</th>
+                                        <th class="text-end">Pages</th>
+                                        <th class="text-end">Percentage</th>
+                                        <th>Distribution</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <f:for each="{typeStats}" as="row">
+                                        <tr>
+                                            <td><strong>{row.type}</strong></td>
+                                            <td class="text-end">{row.count}</td>
+                                            <td class="text-end">{row.percentage}%</td>
+                                            <td style="min-width: 120px;">
+                                                <div class="progress" style="height: 16px;" title="{row.percentage}%">
+                                                    <div
+                                                        class="progress-bar bg-info"
+                                                        role="progressbar"
+                                                        style="width: {row.percentage}%"
+                                                        aria-valuenow="{row.percentage}"
+                                                        aria-valuemin="0"
+                                                        aria-valuemax="100"
+                                                    ></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </f:for>
+                                </tbody>
+                            </table>
+                        </f:then>
+                        <f:else>
+                            <div class="p-3 text-muted">No data available.</div>
+                        </f:else>
+                    </f:if>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OG image coverage -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Open Graph Image Coverage</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center mb-3">
+                        <div class="col-sm-4">
+                            <div class="h3 mb-0 text-success">{withImage}</div>
+                            <div class="text-muted small">Pages with OG image</div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h3 mb-0 text-danger">{withoutImage}</div>
+                            <div class="text-muted small">Pages without OG image</div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h3 mb-0">{imagePercentage}%</div>
+                            <div class="text-muted small">Coverage</div>
+                        </div>
+                    </div>
+                    <div class="progress" style="height: 24px;">
+                        <div
+                            class="progress-bar bg-success"
+                            role="progressbar"
+                            style="width: {imagePercentage}%"
+                            aria-valuenow="{imagePercentage}"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                        >{imagePercentage}%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>

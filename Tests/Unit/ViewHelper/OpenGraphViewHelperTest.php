@@ -1,0 +1,119 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Maispace\MaispacesSeo\Tests\Unit\ViewHelper;
+
+use Maispace\MaispacesSeo\Service\OpenGraphService;
+use Maispace\MaispacesSeo\ViewHelpers\Seo\OpenGraphViewHelper;
+use PHPUnit\Framework\TestCase;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+class OpenGraphViewHelperTest extends TestCase
+{
+    public function testRenderReturnsEmptyStringWhenEnabledIsFalse(): void
+    {
+        $openGraphService = $this->createMock(OpenGraphService::class);
+        $openGraphService->expects(self::never())->method('buildProperties');
+
+        $pageRenderer = $this->createMock(PageRenderer::class);
+        $pageRenderer->expects(self::never())->method('setMetaTag');
+
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+
+        $viewHelper = new OpenGraphViewHelper();
+        $viewHelper->injectOpenGraphService($openGraphService);
+        $viewHelper->injectPageRenderer($pageRenderer);
+        $viewHelper->injectEventDispatcher($eventDispatcher);
+
+        $viewHelper->setArguments(['enabled' => false, 'pageUid' => 0, 'twitter' => true]);
+
+        $result = $viewHelper->render();
+
+        self::assertSame('', $result);
+    }
+
+    public function testRenderCallsServiceAndSetsMetaTags(): void
+    {
+        $properties = [
+            ['property' => 'og:type', 'content' => 'website'],
+            ['property' => 'og:title', 'content' => 'Test Page'],
+        ];
+
+        $openGraphService = $this->createMock(OpenGraphService::class);
+        $openGraphService->method('buildProperties')->willReturn($properties);
+
+        $pageRenderer = $this->createMock(PageRenderer::class);
+        $pageRenderer->expects(self::exactly(2))->method('setMetaTag');
+
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->method('dispatch')->willReturnArgument(0);
+
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturn(null);
+
+        $renderingContext = $this->createMock(RenderingContextInterface::class);
+        $renderingContext->method('getRequest')->willReturn($request);
+
+        $viewHelper = new OpenGraphViewHelper();
+        $viewHelper->injectOpenGraphService($openGraphService);
+        $viewHelper->injectPageRenderer($pageRenderer);
+        $viewHelper->injectEventDispatcher($eventDispatcher);
+        $viewHelper->setRenderingContext($renderingContext);
+
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->page = ['uid' => 1, 'title' => 'Test Page'];
+
+        $viewHelper->setArguments(['enabled' => true, 'pageUid' => 0, 'twitter' => true]);
+
+        $result = $viewHelper->render();
+
+        self::assertSame('', $result);
+
+        unset($GLOBALS['TSFE']);
+    }
+
+    public function testRenderFiltersTwitterPropertiesWhenTwitterIsFalse(): void
+    {
+        $properties = [
+            ['property' => 'og:type', 'content' => 'website'],
+            ['property' => 'og:title', 'content' => 'Test Page'],
+            ['property' => 'twitter:card', 'content' => 'summary'],
+            ['property' => 'twitter:title', 'content' => 'Test Page'],
+        ];
+
+        $openGraphService = $this->createMock(OpenGraphService::class);
+        $openGraphService->method('buildProperties')->willReturn($properties);
+
+        // Only 2 og: properties should be set (twitter: ones are filtered out)
+        $pageRenderer = $this->createMock(PageRenderer::class);
+        $pageRenderer->expects(self::exactly(2))->method('setMetaTag');
+
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->method('dispatch')->willReturnArgument(0);
+
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturn(null);
+
+        $renderingContext = $this->createMock(RenderingContextInterface::class);
+        $renderingContext->method('getRequest')->willReturn($request);
+
+        $viewHelper = new OpenGraphViewHelper();
+        $viewHelper->injectOpenGraphService($openGraphService);
+        $viewHelper->injectPageRenderer($pageRenderer);
+        $viewHelper->injectEventDispatcher($eventDispatcher);
+        $viewHelper->setRenderingContext($renderingContext);
+
+        $GLOBALS['TSFE'] = new \stdClass();
+        $GLOBALS['TSFE']->page = ['uid' => 1, 'title' => 'Test Page'];
+
+        $viewHelper->setArguments(['enabled' => true, 'pageUid' => 0, 'twitter' => false]);
+
+        $viewHelper->render();
+
+        unset($GLOBALS['TSFE']);
+    }
+}
