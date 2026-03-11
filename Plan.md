@@ -1,6 +1,6 @@
 # maispace/seo - SEO Helpers and Tools for TYPO3
 
-Features: 
+Features:
 
 * Adds additional fields needed for Json+LD and Open Graph to the page properties in the TYPO3 backend.
 * Provides a viewHelper and Events to control when to output the Json+LD and Open Graph data in the frontend.

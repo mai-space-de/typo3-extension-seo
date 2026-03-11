@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Maispace\MaispacesSeo\Tests\Unit\ViewHelper;
 
@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 class JsonLdViewHelperTest extends TestCase
@@ -54,9 +55,16 @@ class JsonLdViewHelperTest extends TestCase
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->method('dispatch')->willReturnArgument(0);
 
-        // Mock the request
+        $tsfeMock = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $tsfeMock->page = $pageRecord;
+
         $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')->willReturn(null);
+        $request->method('getAttribute')
+            ->willReturnCallback(
+                static fn (string $attr) => $attr === 'frontend.controller' ? $tsfeMock : null
+            );
 
         $renderingContext = $this->createMock(RenderingContextInterface::class);
         $renderingContext->method('getAttribute')
@@ -69,16 +77,10 @@ class JsonLdViewHelperTest extends TestCase
         $viewHelper->injectEventDispatcher($eventDispatcher);
         $viewHelper->setRenderingContext($renderingContext);
 
-        // Provide a page record via GLOBALS fallback
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->page = $pageRecord;
-
         $viewHelper->setArguments(['enabled' => true, 'pageUid' => 0]);
 
         $result = $viewHelper->render();
 
         self::assertSame('', $result);
-
-        unset($GLOBALS['TSFE']);
     }
 }

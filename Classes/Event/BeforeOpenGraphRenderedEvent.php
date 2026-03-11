@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Maispace\MaispacesSeo\Event;
 
@@ -12,7 +12,8 @@ final class BeforeOpenGraphRenderedEvent
     public function __construct(
         private array $properties,
         private bool $enabled = true
-    ) {}
+    ) {
+    }
 
     /**
      * @return list<array{property: string, content: string}>

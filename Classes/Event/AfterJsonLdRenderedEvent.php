@@ -1,12 +1,14 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Maispace\MaispacesSeo\Event;
 
 final class AfterJsonLdRenderedEvent
 {
-    public function __construct(private string $script) {}
+    public function __construct(private string $script)
+    {
+    }
 
     public function getScript(): string
     {

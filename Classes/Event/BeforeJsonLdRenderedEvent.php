@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Maispace\MaispacesSeo\Event;
 
@@ -12,7 +12,8 @@ final class BeforeJsonLdRenderedEvent
     public function __construct(
         private array $schema,
         private bool $enabled = true
-    ) {}
+    ) {
+    }
 
     /**
      * @return array<string, mixed>

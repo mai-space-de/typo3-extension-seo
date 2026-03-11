@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Maispace\MaispacesSeo\ViewHelpers\Seo;
 
@@ -46,7 +46,8 @@ class JsonLdViewHelper extends AbstractViewHelper
             return '';
         }
 
-        $pageRecord = $this->resolvePageRecord(intval($this->arguments['pageUid']));
+        $rawPageUid = $this->arguments['pageUid'];
+        $pageRecord = $this->resolvePageRecord(is_int($rawPageUid) ? $rawPageUid : 0);
         if ($pageRecord === []) {
             return '';
         }
@@ -79,20 +80,30 @@ class JsonLdViewHelper extends AbstractViewHelper
         if ($pageUid > 0) {
             $tsfe = $GLOBALS['TSFE'] ?? null;
             if ($tsfe instanceof TypoScriptFrontendController) {
-                return $tsfe->sys_page->getPage($pageUid) ?: [];
+                /** @var array<string, mixed> $page */
+                $page = $tsfe->sys_page->getPage($pageUid) ?: [];
+
+                return $page;
             }
+
             return [];
         }
 
         $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         $frontendController = $request->getAttribute('frontend.controller');
         if ($frontendController instanceof TypoScriptFrontendController) {
-            return $frontendController->page ?? [];
+            /** @var array<string, mixed> $page */
+            $page = $frontendController->page ?? [];
+
+            return $page;
         }
 
         $tsfe = $GLOBALS['TSFE'] ?? null;
         if ($tsfe instanceof TypoScriptFrontendController) {
-            return $tsfe->page ?? [];
+            /** @var array<string, mixed> $page */
+            $page = $tsfe->page ?? [];
+
+            return $page;
         }
 
         return [];
@@ -108,7 +119,10 @@ class JsonLdViewHelper extends AbstractViewHelper
         if ($typoscript instanceof FrontendTypoScript) {
             $setup = $typoscript->getSetupArray();
             $pluginSetup = is_array($setup['plugin.'] ?? null) ? $setup['plugin.'] : [];
-            return is_array($pluginSetup['tx_maispace_seo.'] ?? null) ? $pluginSetup['tx_maispace_seo.'] : [];
+            /** @var array<string, mixed> $seoSettings */
+            $seoSettings = is_array($pluginSetup['tx_maispace_seo.'] ?? null) ? $pluginSetup['tx_maispace_seo.'] : [];
+
+            return $seoSettings;
         }
 
         return [];

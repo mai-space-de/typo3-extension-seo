@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Maispace\MaispacesSeo\Tests\Unit\ViewHelper;
 
@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 class OpenGraphViewHelperTest extends TestCase
@@ -38,6 +39,7 @@ class OpenGraphViewHelperTest extends TestCase
 
     public function testRenderCallsServiceAndSetsMetaTags(): void
     {
+        $pageRecord = ['uid' => 1, 'title' => 'Test Page'];
         $properties = [
             ['property' => 'og:type', 'content' => 'website'],
             ['property' => 'og:title', 'content' => 'Test Page'],
@@ -52,8 +54,16 @@ class OpenGraphViewHelperTest extends TestCase
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->method('dispatch')->willReturnArgument(0);
 
+        $tsfeMock = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $tsfeMock->page = $pageRecord;
+
         $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')->willReturn(null);
+        $request->method('getAttribute')
+            ->willReturnCallback(
+                static fn (string $attr) => $attr === 'frontend.controller' ? $tsfeMock : null
+            );
 
         $renderingContext = $this->createMock(RenderingContextInterface::class);
         $renderingContext->method('getAttribute')
@@ -66,20 +76,16 @@ class OpenGraphViewHelperTest extends TestCase
         $viewHelper->injectEventDispatcher($eventDispatcher);
         $viewHelper->setRenderingContext($renderingContext);
 
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->page = ['uid' => 1, 'title' => 'Test Page'];
-
         $viewHelper->setArguments(['enabled' => true, 'pageUid' => 0, 'twitter' => true]);
 
         $result = $viewHelper->render();
 
         self::assertSame('', $result);
-
-        unset($GLOBALS['TSFE']);
     }
 
     public function testRenderFiltersTwitterPropertiesWhenTwitterIsFalse(): void
     {
+        $pageRecord = ['uid' => 1, 'title' => 'Test Page'];
         $properties = [
             ['property' => 'og:type', 'content' => 'website'],
             ['property' => 'og:title', 'content' => 'Test Page'],
@@ -97,8 +103,16 @@ class OpenGraphViewHelperTest extends TestCase
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->method('dispatch')->willReturnArgument(0);
 
+        $tsfeMock = $this->getMockBuilder(TypoScriptFrontendController::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $tsfeMock->page = $pageRecord;
+
         $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')->willReturn(null);
+        $request->method('getAttribute')
+            ->willReturnCallback(
+                static fn (string $attr) => $attr === 'frontend.controller' ? $tsfeMock : null
+            );
 
         $renderingContext = $this->createMock(RenderingContextInterface::class);
         $renderingContext->method('getAttribute')
@@ -111,13 +125,8 @@ class OpenGraphViewHelperTest extends TestCase
         $viewHelper->injectEventDispatcher($eventDispatcher);
         $viewHelper->setRenderingContext($renderingContext);
 
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->page = ['uid' => 1, 'title' => 'Test Page'];
-
         $viewHelper->setArguments(['enabled' => true, 'pageUid' => 0, 'twitter' => false]);
 
         $viewHelper->render();
-
-        unset($GLOBALS['TSFE']);
     }
 }

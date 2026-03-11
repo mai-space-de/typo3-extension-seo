@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Maispace\MaispacesSeo\Controller\Backend;
 
@@ -17,7 +17,8 @@ class SeoController
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly ConnectionPool $connectionPool,
         private readonly UriBuilder $uriBuilder,
-    ) {}
+    ) {
+    }
 
     public function indexAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -49,25 +50,25 @@ class SeoController
         $pagesMissingOgImage = 0;
 
         foreach ($rows as $row) {
-            if (intval($row['tx_maispace_seo_og_image']) > 0) {
+            if (self::int_($row['tx_maispace_seo_og_image']) > 0) {
                 ++$pagesWithOgImage;
             } else {
                 ++$pagesMissingOgImage;
             }
-            $ogTitle = strval($row['tx_maispace_seo_og_title'] ?? '');
-            $pageTitle = strval($row['title'] ?? '');
+            $ogTitle = self::str($row['tx_maispace_seo_og_title'] ?? null);
+            $pageTitle = self::str($row['title'] ?? null);
             if ($ogTitle === '' && $pageTitle === '') {
                 ++$pagesMissingTitle;
             }
         }
 
         $moduleTemplate->assignMultiple([
-            'pages'             => $rows,
-            'totalPages'        => $totalPages,
-            'pagesWithOgImage'  => $pagesWithOgImage,
-            'pagesMissingTitle' => $pagesMissingTitle,
+            'pages'               => $rows,
+            'totalPages'          => $totalPages,
+            'pagesWithOgImage'    => $pagesWithOgImage,
+            'pagesMissingTitle'   => $pagesMissingTitle,
             'pagesMissingOgImage' => $pagesMissingOgImage,
-            'statisticsUri'     => (string)$this->uriBuilder->buildUriFromRoute('maispace_seo.statistics'),
+            'statisticsUri'       => (string)$this->uriBuilder->buildUriFromRoute('maispace_seo.statistics'),
         ]);
 
         return $moduleTemplate->renderResponse('Backend/Index');
@@ -96,9 +97,9 @@ class SeoController
 
         $typeStats = [];
         foreach ($typeRows as $row) {
-            $count = intval($row['page_count']);
+            $count = self::int_($row['page_count']);
             $typeStats[] = [
-                'type'       => strval($row['tx_maispace_seo_jsonld_type'] ?? '') !== '' ? strval($row['tx_maispace_seo_jsonld_type']) : '(none)',
+                'type'       => self::str($row['tx_maispace_seo_jsonld_type'] ?? null) !== '' ? self::str($row['tx_maispace_seo_jsonld_type']) : '(none)',
                 'count'      => $count,
                 'percentage' => $totalPages > 0 ? round(($count / $totalPages) * 100, 1) : 0,
             ];
@@ -106,7 +107,7 @@ class SeoController
 
         // OG image coverage
         $qb2 = $this->connectionPool->getQueryBuilderForTable('pages');
-        $withImage = intval($qb2->count('uid')
+        $withImage = self::int_($qb2->count('uid')
             ->from('pages')
             ->where(
                 $qb2->expr()->eq('deleted', $qb2->createNamedParameter(0, ParameterType::INTEGER)),
@@ -130,5 +131,15 @@ class SeoController
         ]);
 
         return $moduleTemplate->renderResponse('Backend/Statistics');
+    }
+
+    private static function str(mixed $value): string
+    {
+        return is_scalar($value) ? (string)$value : '';
+    }
+
+    private static function int_(mixed $value): int
+    {
+        return is_scalar($value) ? (int)$value : 0;
     }
 }

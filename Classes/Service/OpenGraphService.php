@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Maispace\MaispacesSeo\Service;
 
@@ -11,13 +11,15 @@ class OpenGraphService
 {
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher
-    ) {}
+    ) {
+    }
 
     /**
      * Build an array of Open Graph and Twitter meta properties.
      *
      * @param array<string, mixed> $pageRecord
      * @param array<string, mixed> $settings
+     *
      * @return list<array{property: string, content: string}>
      */
     public function buildProperties(
@@ -31,32 +33,32 @@ class OpenGraphService
         $ogSettings = is_array($settings['openGraph.'] ?? null) ? $settings['openGraph.'] : [];
 
         // og:type
-        $ogType = strval($pageRecord['tx_maispace_seo_og_type'] ?? '');
+        $ogType = self::str($pageRecord['tx_maispace_seo_og_type'] ?? null);
         if ($ogType === '') {
             $ogType = 'website';
         }
         $properties[] = ['property' => 'og:type', 'content' => $ogType];
 
         // og:title — override or fall back to page title
-        $ogTitle = strval($pageRecord['tx_maispace_seo_og_title'] ?? '');
+        $ogTitle = self::str($pageRecord['tx_maispace_seo_og_title'] ?? null);
         if ($ogTitle === '') {
-            $ogTitle = strval($pageRecord['title'] ?? '');
+            $ogTitle = self::str($pageRecord['title'] ?? null);
         }
         if ($ogTitle !== '') {
             $properties[] = ['property' => 'og:title', 'content' => $ogTitle];
         }
 
         // og:description — override or fall back to abstract
-        $ogDescription = strval($pageRecord['tx_maispace_seo_og_description'] ?? '');
+        $ogDescription = self::str($pageRecord['tx_maispace_seo_og_description'] ?? null);
         if ($ogDescription === '') {
-            $ogDescription = strval($pageRecord['abstract'] ?? '');
+            $ogDescription = self::str($pageRecord['abstract'] ?? null);
         }
         if ($ogDescription !== '') {
             $properties[] = ['property' => 'og:description', 'content' => $ogDescription];
         }
 
         // og:site_name
-        $siteName = strval($ogSettings['siteName'] ?? '');
+        $siteName = self::str($ogSettings['siteName'] ?? null);
         if ($siteName !== '') {
             $properties[] = ['property' => 'og:site_name', 'content' => $siteName];
         }
@@ -66,22 +68,23 @@ class OpenGraphService
 
         // og:image
         if ($ogImageUrl === '') {
-            $ogImageUrl = strval($ogSettings['defaultImage'] ?? '');
+            $ogImageUrl = self::str($ogSettings['defaultImage'] ?? null);
         }
         if ($ogImageUrl !== '') {
             $properties[] = ['property' => 'og:image', 'content' => $ogImageUrl];
         }
 
         // Twitter properties
-        $twitterEnabled = strval($ogSettings['twitter'] ?? '1');
+        $rawTwitterEnabled = $ogSettings['twitter'] ?? null;
+        $twitterEnabled = is_scalar($rawTwitterEnabled) ? (string)$rawTwitterEnabled : '1';
         if ($twitterEnabled === '1') {
-            $twitterCard = strval($pageRecord['tx_maispace_seo_twitter_card'] ?? '');
+            $twitterCard = self::str($pageRecord['tx_maispace_seo_twitter_card'] ?? null);
             if ($twitterCard === '') {
                 $twitterCard = 'summary';
             }
             $properties[] = ['property' => 'twitter:card', 'content' => $twitterCard];
 
-            $twitterSite = strval($ogSettings['twitterSite'] ?? '');
+            $twitterSite = self::str($ogSettings['twitterSite'] ?? null);
             if ($twitterSite !== '') {
                 $properties[] = ['property' => 'twitter:site', 'content' => $twitterSite];
             }
@@ -109,5 +112,10 @@ class OpenGraphService
         }
 
         return $event->getProperties();
+    }
+
+    private static function str(mixed $value): string
+    {
+        return is_scalar($value) ? (string)$value : '';
     }
 }
