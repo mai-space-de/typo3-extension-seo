@@ -5,15 +5,22 @@ declare(strict_types = 1);
 namespace Maispace\MaispacesSeo\ViewHelpers\Seo;
 
 use Maispace\MaispacesSeo\Event\AfterOpenGraphRenderedEvent;
+use Maispace\MaispacesSeo\Service\CanonicalService;
 use Maispace\MaispacesSeo\Service\OpenGraphService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
 class OpenGraphViewHelper extends AbstractSeoViewHelper
 {
+    private CanonicalService $canonicalService;
     private OpenGraphService $openGraphService;
     private PageRenderer $pageRenderer;
     private EventDispatcherInterface $eventDispatcher;
+
+    public function injectCanonicalService(CanonicalService $service): void
+    {
+        $this->canonicalService = $service;
+    }
 
     public function injectOpenGraphService(OpenGraphService $service): void
     {
@@ -51,16 +58,8 @@ class OpenGraphViewHelper extends AbstractSeoViewHelper
 
         $settings = $this->resolveTypoScriptSettings();
 
-        // Resolve og:url from canonical fields
-        $ogUrl = '';
-        $customCanonical = is_scalar($pageRecord['tx_maispace_seo_canonical_url'] ?? null)
-            ? (string)$pageRecord['tx_maispace_seo_canonical_url']
-            : '';
-        if ($customCanonical !== '') {
-            $ogUrl = $customCanonical;
-        } elseif (is_scalar($pageRecord['canonical_link'] ?? null) && (string)$pageRecord['canonical_link'] !== '') {
-            $ogUrl = (string)$pageRecord['canonical_link'];
-        }
+        // Reuse CanonicalService for og:url resolution to keep behaviour consistent
+        $ogUrl = $this->canonicalService->buildCanonicalUrl($pageRecord, $settings);
 
         $properties = $this->openGraphService->buildProperties($pageRecord, $settings, '', '', $ogUrl);
         if ($properties === []) {

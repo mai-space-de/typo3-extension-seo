@@ -62,7 +62,12 @@ class RobotsViewHelper extends AbstractSeoViewHelper
         $tag = $event->getTag();
 
         if ($tag !== '') {
-            $this->pageRenderer->addHeaderData($tag);
+            // Extract content from the (possibly listener-modified) tag for PageRenderer deduplication
+            $content = $directives;
+            if (preg_match('/content="([^"]*)"/i', $tag, $matches) === 1) {
+                $content = $matches[1];
+            }
+            $this->pageRenderer->setMetaTag('name', 'robots', $content);
         }
 
         return '';

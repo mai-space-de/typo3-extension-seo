@@ -5,8 +5,7 @@ declare(strict_types = 1);
 namespace Maispace\MaispacesSeo\Tests\Unit\ViewHelper;
 
 use Maispace\MaispacesSeo\Service\CanonicalService;
-use Maispace\MaispacesSeo\Service\OpenGraphService;
-use Maispace\MaispacesSeo\ViewHelpers\Seo\OpenGraphViewHelper;
+use Maispace\MaispacesSeo\ViewHelpers\Seo\CanonicalViewHelper;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -14,50 +13,73 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
-class OpenGraphViewHelperTest extends TestCase
+class CanonicalViewHelperTest extends TestCase
 {
     public function testRenderReturnsEmptyStringWhenEnabledIsFalse(): void
     {
         $canonicalService = $this->createMock(CanonicalService::class);
         $canonicalService->expects(self::never())->method('buildCanonicalUrl');
 
-        $openGraphService = $this->createMock(OpenGraphService::class);
-        $openGraphService->expects(self::never())->method('buildProperties');
-
         $pageRenderer = $this->createMock(PageRenderer::class);
-        $pageRenderer->expects(self::never())->method('setMetaTag');
+        $pageRenderer->expects(self::never())->method('addHeaderData');
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
-        $viewHelper = new OpenGraphViewHelper();
+        $viewHelper = new CanonicalViewHelper();
         $viewHelper->injectCanonicalService($canonicalService);
-        $viewHelper->injectOpenGraphService($openGraphService);
         $viewHelper->injectPageRenderer($pageRenderer);
         $viewHelper->injectEventDispatcher($eventDispatcher);
 
-        $viewHelper->setArguments(['enabled' => false, 'pageUid' => 0, 'twitter' => true]);
+        $viewHelper->setArguments(['enabled' => false, 'pageUid' => 0]);
 
         $result = $viewHelper->render();
 
         self::assertSame('', $result);
     }
 
-    public function testRenderCallsServiceAndSetsMetaTags(): void
+    public function testRenderReturnsEmptyStringWhenPageRecordIsEmpty(): void
     {
-        $pageRecord = ['uid' => 1, 'title' => 'Test Page'];
-        $properties = [
-            ['property' => 'og:type', 'content' => 'website'],
-            ['property' => 'og:title', 'content' => 'Test Page'],
-        ];
-
         $canonicalService = $this->createMock(CanonicalService::class);
-        $canonicalService->method('buildCanonicalUrl')->willReturn('');
-
-        $openGraphService = $this->createMock(OpenGraphService::class);
-        $openGraphService->method('buildProperties')->willReturn($properties);
+        $canonicalService->expects(self::never())->method('buildCanonicalUrl');
 
         $pageRenderer = $this->createMock(PageRenderer::class);
-        $pageRenderer->expects(self::exactly(2))->method('setMetaTag');
+        $pageRenderer->expects(self::never())->method('addHeaderData');
+
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturn(null);
+
+        $renderingContext = $this->createMock(RenderingContextInterface::class);
+        $renderingContext->method('getAttribute')
+            ->with(ServerRequestInterface::class)
+            ->willReturn($request);
+
+        $viewHelper = new CanonicalViewHelper();
+        $viewHelper->injectCanonicalService($canonicalService);
+        $viewHelper->injectPageRenderer($pageRenderer);
+        $viewHelper->injectEventDispatcher($eventDispatcher);
+        $viewHelper->setRenderingContext($renderingContext);
+
+        $viewHelper->setArguments(['enabled' => true, 'pageUid' => 0]);
+
+        $result = $viewHelper->render();
+
+        self::assertSame('', $result);
+    }
+
+    public function testRenderCallsServiceAndAddsCanonicalTagToPageRenderer(): void
+    {
+        $pageRecord = ['uid' => 1, 'title' => 'Test Page'];
+        $canonicalUrl = 'https://example.com/test-page';
+        $tag = '<link rel="canonical" href="https://example.com/test-page">';
+
+        $canonicalService = $this->createMock(CanonicalService::class);
+        $canonicalService->method('buildCanonicalUrl')->willReturn($canonicalUrl);
+        $canonicalService->method('renderTag')->with($canonicalUrl)->willReturn($tag);
+
+        $pageRenderer = $this->createMock(PageRenderer::class);
+        $pageRenderer->expects(self::once())->method('addHeaderData')->with($tag);
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->method('dispatch')->willReturnArgument(0);
@@ -78,91 +100,30 @@ class OpenGraphViewHelperTest extends TestCase
             ->with(ServerRequestInterface::class)
             ->willReturn($request);
 
-        $viewHelper = new OpenGraphViewHelper();
+        $viewHelper = new CanonicalViewHelper();
         $viewHelper->injectCanonicalService($canonicalService);
-        $viewHelper->injectOpenGraphService($openGraphService);
         $viewHelper->injectPageRenderer($pageRenderer);
         $viewHelper->injectEventDispatcher($eventDispatcher);
         $viewHelper->setRenderingContext($renderingContext);
 
-        $viewHelper->setArguments(['enabled' => true, 'pageUid' => 0, 'twitter' => true]);
+        $viewHelper->setArguments(['enabled' => true, 'pageUid' => 0]);
 
         $result = $viewHelper->render();
 
         self::assertSame('', $result);
     }
 
-    public function testRenderPassesCanonicalUrlAsOgUrl(): void
+    public function testRenderReturnsEmptyStringWhenServiceReturnsEmptyUrl(): void
     {
         $pageRecord = ['uid' => 1, 'title' => 'Test Page'];
-
-        $canonicalService = $this->createMock(CanonicalService::class);
-        $canonicalService->method('buildCanonicalUrl')->willReturn('https://example.com/my-page');
-
-        $openGraphService = $this->createMock(OpenGraphService::class);
-        $openGraphService->expects(self::once())
-            ->method('buildProperties')
-            ->with(
-                $pageRecord,
-                self::anything(),
-                '',
-                '',
-                'https://example.com/my-page'
-            )
-            ->willReturn([]);
-
-        $pageRenderer = $this->createMock(PageRenderer::class);
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-
-        $tsfeMock = $this->getMockBuilder(TypoScriptFrontendController::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $tsfeMock->page = $pageRecord;
-
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')
-            ->willReturnCallback(
-                static fn (string $attr) => $attr === 'frontend.controller' ? $tsfeMock : null
-            );
-
-        $renderingContext = $this->createMock(RenderingContextInterface::class);
-        $renderingContext->method('getAttribute')
-            ->with(ServerRequestInterface::class)
-            ->willReturn($request);
-
-        $viewHelper = new OpenGraphViewHelper();
-        $viewHelper->injectCanonicalService($canonicalService);
-        $viewHelper->injectOpenGraphService($openGraphService);
-        $viewHelper->injectPageRenderer($pageRenderer);
-        $viewHelper->injectEventDispatcher($eventDispatcher);
-        $viewHelper->setRenderingContext($renderingContext);
-
-        $viewHelper->setArguments(['enabled' => true, 'pageUid' => 0, 'twitter' => true]);
-        $viewHelper->render();
-    }
-
-    public function testRenderFiltersTwitterPropertiesWhenTwitterIsFalse(): void
-    {
-        $pageRecord = ['uid' => 1, 'title' => 'Test Page'];
-        $properties = [
-            ['property' => 'og:type', 'content' => 'website'],
-            ['property' => 'og:title', 'content' => 'Test Page'],
-            ['property' => 'twitter:card', 'content' => 'summary'],
-            ['property' => 'twitter:title', 'content' => 'Test Page'],
-        ];
 
         $canonicalService = $this->createMock(CanonicalService::class);
         $canonicalService->method('buildCanonicalUrl')->willReturn('');
 
-        $openGraphService = $this->createMock(OpenGraphService::class);
-        $openGraphService->method('buildProperties')->willReturn($properties);
-
-        // Only 2 og: properties should be set (twitter: ones are filtered out)
         $pageRenderer = $this->createMock(PageRenderer::class);
-        $pageRenderer->expects(self::exactly(2))->method('setMetaTag');
+        $pageRenderer->expects(self::never())->method('addHeaderData');
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->method('dispatch')->willReturnArgument(0);
 
         $tsfeMock = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->disableOriginalConstructor()
@@ -180,15 +141,16 @@ class OpenGraphViewHelperTest extends TestCase
             ->with(ServerRequestInterface::class)
             ->willReturn($request);
 
-        $viewHelper = new OpenGraphViewHelper();
+        $viewHelper = new CanonicalViewHelper();
         $viewHelper->injectCanonicalService($canonicalService);
-        $viewHelper->injectOpenGraphService($openGraphService);
         $viewHelper->injectPageRenderer($pageRenderer);
         $viewHelper->injectEventDispatcher($eventDispatcher);
         $viewHelper->setRenderingContext($renderingContext);
 
-        $viewHelper->setArguments(['enabled' => true, 'pageUid' => 0, 'twitter' => false]);
+        $viewHelper->setArguments(['enabled' => true, 'pageUid' => 0]);
 
-        $viewHelper->render();
+        $result = $viewHelper->render();
+
+        self::assertSame('', $result);
     }
 }
