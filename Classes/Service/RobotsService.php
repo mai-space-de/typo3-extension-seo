@@ -31,7 +31,8 @@ class RobotsService
     public function buildDirectives(array $pageRecord, array $settings): string
     {
         $robotsSettings = is_array($settings['robots.'] ?? null) ? $settings['robots.'] : [];
-        $enabled = (string)($robotsSettings['enable'] ?? '1');
+        $rawEnabled = $robotsSettings['enable'] ?? '1';
+        $enabled = is_scalar($rawEnabled) ? (string)$rawEnabled : '1';
         if ($enabled !== '1') {
             return '';
         }
