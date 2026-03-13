@@ -16,5 +16,7 @@ CREATE TABLE pages (
     tx_maispace_seo_canonical_url varchar(2048) DEFAULT '' NOT NULL,
     tx_maispace_seo_robots_noindex smallint(6) DEFAULT '0' NOT NULL,
     tx_maispace_seo_robots_nofollow smallint(6) DEFAULT '0' NOT NULL,
-    tx_maispace_seo_robots_noarchive smallint(6) DEFAULT '0' NOT NULL
+    tx_maispace_seo_robots_noarchive smallint(6) DEFAULT '0' NOT NULL,
+    tx_maispace_seo_meta_description text,
+    tx_maispace_seo_ai_noindex smallint(6) DEFAULT '0' NOT NULL
 );

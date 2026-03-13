@@ -39,6 +39,18 @@ All settings live under ``plugin.tx_maispace_seo``:
         robots {
             enable = 1             # 0 to disable robots meta tag globally
         }
+
+        # Meta description (<meta name="description">)
+        metaDescription {
+            enable = 1             # 0 to disable meta description tag globally
+        }
+
+        # AI crawler robots tags (<meta name="BotName" content="noindex">)
+        aiRobots {
+            enable = 1             # 0 to disable AI robots tags globally
+            bots = GPTBot, OAI-SearchBot, ClaudeBot, Google-Extended, PerplexityBot, CCBot, Bytespider, Amazonbot
+                                   # comma-separated list of AI bot names to target
+        }
     }
 
 Page properties — SEO tab
@@ -92,18 +104,36 @@ Open Graph palette
 Advanced / Crawling palette
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-+-------------------------+-------------------------------------------------------------------+
-| Field                   | Description                                                       |
-+=========================+===================================================================+
-| Canonical URL override  | Overrides ``<link rel="canonical">`` and ``og:url``               |
-|                         | (falls back to TYPO3 core ``canonical_link`` when empty)          |
-+-------------------------+-------------------------------------------------------------------+
-| noindex                 | Adds ``noindex`` to ``<meta name="robots">``                      |
-+-------------------------+-------------------------------------------------------------------+
-| nofollow                | Adds ``nofollow`` to ``<meta name="robots">``                     |
-+-------------------------+-------------------------------------------------------------------+
-| noarchive               | Adds ``noarchive`` to ``<meta name="robots">``                    |
-+-------------------------+-------------------------------------------------------------------+
++-------------------------------+-------------------------------------------------------------------+
+| Field                         | Description                                                       |
++===============================+===================================================================+
+| Meta description override     | Overrides ``<meta name="description">`` (falls back to TYPO3      |
+|                               | core ``description`` field, then ``abstract``)                    |
++-------------------------------+-------------------------------------------------------------------+
+| Canonical URL override        | Overrides ``<link rel="canonical">`` and ``og:url``               |
+|                               | (falls back to TYPO3 core ``canonical_link`` when empty)          |
++-------------------------------+-------------------------------------------------------------------+
+| noindex                       | Adds ``noindex`` to ``<meta name="robots">``                      |
++-------------------------------+-------------------------------------------------------------------+
+| nofollow                      | Adds ``nofollow`` to ``<meta name="robots">``                     |
++-------------------------------+-------------------------------------------------------------------+
+| noarchive                     | Adds ``noarchive`` to ``<meta name="robots">``                    |
++-------------------------------+-------------------------------------------------------------------+
+| Block AI crawlers (noindex)   | Emits ``<meta name="BotName" content="noindex">`` for every       |
+|                               | AI crawler listed in ``aiRobots.bots``                            |
++-------------------------------+-------------------------------------------------------------------+
+
+Meta description resolution
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When the meta description tag is enabled (``metaDescription.enable = 1``), the
+ViewHelper ``<mai:seo.metaDescription>`` resolves the description value in this
+priority order:
+
+1. ``tx_maispace_seo_meta_description`` — custom override field on the page
+2. ``description`` — TYPO3 core meta description field
+3. ``abstract`` — TYPO3 page abstract field
+4. Empty — no ``<meta name="description">`` tag is rendered
 
 Robots logic
 ^^^^^^^^^^^^
@@ -121,6 +151,23 @@ Example output when only *noindex* is checked:
 .. code-block:: html
 
     <meta name="robots" content="noindex, follow">
+
+AI crawler control
+^^^^^^^^^^^^^^^^^^
+
+When ``aiRobots.enable = 1`` and the *Block AI crawlers* checkbox is set on a
+page, ``<mai:seo.aiRobots>`` emits a separate ``<meta name="BotName" content="noindex">``
+tag for every bot in the ``aiRobots.bots`` TypoScript list. These per-bot tags
+do **not** modify the standard ``<meta name="robots">`` tag.
+
+Default bots: ``GPTBot``, ``OAI-SearchBot``, ``ClaudeBot``, ``Google-Extended``,
+``PerplexityBot``, ``CCBot``, ``Bytespider``, ``Amazonbot``.
+
+To customise the list via TypoScript:
+
+.. code-block:: typoscript
+
+    plugin.tx_maispace_seo.aiRobots.bots = GPTBot, ClaudeBot, MyCustomBot
 
 Canonical URL resolution
 ^^^^^^^^^^^^^^^^^^^^^^^^

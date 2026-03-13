@@ -201,6 +201,23 @@ $newColumns = [
             'default' => 0,
         ],
     ],
+    'tx_maispace_seo_meta_description' => [
+        'exclude' => true,
+        'label'   => $llPrefix . 'pages.tx_maispace_seo_meta_description',
+        'config'  => [
+            'type' => 'text',
+            'rows' => 3,
+            'cols' => 50,
+        ],
+    ],
+    'tx_maispace_seo_ai_noindex' => [
+        'exclude' => true,
+        'label'   => $llPrefix . 'pages.tx_maispace_seo_ai_noindex',
+        'config'  => [
+            'type'    => 'check',
+            'default' => 0,
+        ],
+    ],
 ];
 
 ExtensionManagementUtility::addTCAcolumns('pages', $newColumns);
@@ -226,8 +243,10 @@ ExtensionManagementUtility::addFieldsToPalette(
 ExtensionManagementUtility::addFieldsToPalette(
     'pages',
     'tx_maispace_seo_advanced',
-    'tx_maispace_seo_canonical_url, --linebreak--, '
-    . 'tx_maispace_seo_robots_noindex, tx_maispace_seo_robots_nofollow, tx_maispace_seo_robots_noarchive'
+    'tx_maispace_seo_meta_description, --linebreak--, '
+    . 'tx_maispace_seo_canonical_url, --linebreak--, '
+    . 'tx_maispace_seo_robots_noindex, tx_maispace_seo_robots_nofollow, tx_maispace_seo_robots_noarchive, --linebreak--, '
+    . 'tx_maispace_seo_ai_noindex'
 );
 
 ExtensionManagementUtility::addToAllTCAtypes(

@@ -9,17 +9,21 @@ extension registers automatically via ``ext_localconf.php``.
 ViewHelpers overview
 --------------------
 
-+---------------------------+-----------------------------------------------------+
-| ViewHelper                | Purpose                                             |
-+===========================+=====================================================+
-| ``<mai:seo.jsonLd>``      | Render JSON-LD structured data in ``<head>``        |
-+---------------------------+-----------------------------------------------------+
-| ``<mai:seo.openGraph>``   | Render Open Graph (+ Twitter) meta tags             |
-+---------------------------+-----------------------------------------------------+
-| ``<mai:seo.canonical>``   | Render ``<link rel="canonical">``                   |
-+---------------------------+-----------------------------------------------------+
-| ``<mai:seo.robots>``      | Render ``<meta name="robots">``                     |
-+---------------------------+-----------------------------------------------------+
++--------------------------------+-----------------------------------------------------+
+| ViewHelper                     | Purpose                                             |
++================================+=====================================================+
+| ``<mai:seo.jsonLd>``           | Render JSON-LD structured data in ``<head>``        |
++--------------------------------+-----------------------------------------------------+
+| ``<mai:seo.openGraph>``        | Render Open Graph (+ Twitter) meta tags             |
++--------------------------------+-----------------------------------------------------+
+| ``<mai:seo.canonical>``        | Render ``<link rel="canonical">``                   |
++--------------------------------+-----------------------------------------------------+
+| ``<mai:seo.robots>``           | Render ``<meta name="robots">``                     |
++--------------------------------+-----------------------------------------------------+
+| ``<mai:seo.metaDescription>``  | Render ``<meta name="description">``                |
++--------------------------------+-----------------------------------------------------+
+| ``<mai:seo.aiRobots>``         | Render per-bot noindex tags for AI crawlers         |
++--------------------------------+-----------------------------------------------------+
 
 All ViewHelpers inject their output into TYPO3's ``PageRenderer`` and therefore
 always appear in ``<head>`` regardless of where in the template tree they are
@@ -135,10 +139,69 @@ A fully restricted page (noindex + nofollow + noarchive):
 
     <meta name="robots" content="noindex, nofollow, noarchive">
 
+``<mai:seo.metaDescription>`` — meta description tag
+----------------------------------------------------
+
+.. code-block:: html
+
+    <!-- Render <meta name="description"> for the current page -->
+    <mai:seo.metaDescription />
+
+    <!-- Render for an explicit page UID -->
+    <mai:seo.metaDescription pageUid="{pageUid}" />
+
+    <!-- Suppress meta description output on this page -->
+    <mai:seo.metaDescription enabled="false" />
+
+The description is resolved from (in priority order):
+
+1. ``tx_maispace_seo_meta_description`` — the custom override field
+2. ``description`` — the TYPO3 core meta description field
+3. ``abstract`` — the TYPO3 page abstract field
+4. Nothing is rendered when all three are empty
+
+Output example:
+
+.. code-block:: html
+
+    <meta name="description" content="A brief summary of the page content.">
+
+``<mai:seo.aiRobots>`` — AI crawler meta tags
+----------------------------------------------
+
+.. code-block:: html
+
+    <!-- Emit per-bot noindex tags for all configured AI crawlers -->
+    <mai:seo.aiRobots />
+
+    <!-- Render for an explicit page UID -->
+    <mai:seo.aiRobots pageUid="{pageUid}" />
+
+    <!-- Suppress AI robots output on this page -->
+    <mai:seo.aiRobots enabled="false" />
+
+When the *Block AI crawlers* checkbox is set on a page, a dedicated
+``<meta name="BotName" content="noindex">`` tag is emitted for each bot listed
+in ``aiRobots.bots`` (see :ref:`configuration`). These per-bot tags leave the
+standard ``<meta name="robots">`` tag from ``<mai:seo.robots>`` untouched.
+
+Output example (noindex checked, default bot list):
+
+.. code-block:: html
+
+    <meta name="GPTBot" content="noindex">
+    <meta name="OAI-SearchBot" content="noindex">
+    <meta name="ClaudeBot" content="noindex">
+    <meta name="Google-Extended" content="noindex">
+    <meta name="PerplexityBot" content="noindex">
+    <meta name="CCBot" content="noindex">
+    <meta name="Bytespider" content="noindex">
+    <meta name="Amazonbot" content="noindex">
+
 Recommended layout template
 ----------------------------
 
-Add all four ViewHelpers once to your Fluid layout file's ``<head>`` section:
+Add all six ViewHelpers once to your Fluid layout file's ``<head>`` section:
 
 .. code-block:: html
 
@@ -149,8 +212,10 @@ Add all four ViewHelpers once to your Fluid layout file's ``<head>`` section:
     >
     <f:be.pageRenderer />
     <f:section name="HtmlHead">
+        <mai:seo.metaDescription />
         <mai:seo.canonical />
         <mai:seo.robots />
+        <mai:seo.aiRobots />
         <mai:seo.jsonLd />
         <mai:seo.openGraph />
     </f:section>

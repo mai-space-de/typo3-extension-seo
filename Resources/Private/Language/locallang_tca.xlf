@@ -68,6 +68,12 @@
             <trans-unit id="pages.tx_maispace_seo_robots_noarchive">
                 <source>Do not archive this page (noarchive)</source>
             </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_meta_description">
+                <source>Meta description override</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_ai_noindex">
+                <source>Block AI crawlers from indexing / training (noindex for AI bots)</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
