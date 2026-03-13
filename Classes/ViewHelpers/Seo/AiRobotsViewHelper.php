@@ -60,7 +60,7 @@ class AiRobotsViewHelper extends AbstractSeoViewHelper
         $tags = $event->getTags();
 
         foreach ($tags as $tag) {
-            if ($tag['content'] === '') {
+            if (($tag['name'] ?? '') === '' || $tag['content'] === '') {
                 continue;
             }
             $this->pageRenderer->setMetaTag('name', $tag['name'], $tag['content']);

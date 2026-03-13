@@ -36,8 +36,8 @@ Event overview
 | ``BeforeMetaDescriptionRenderedEvent`` | After description is resolved, before  | yes  |
 |                                  | tag is rendered                              |      |
 +----------------------------------+----------------------------------------------+------+
-| ``AfterMetaDescriptionRenderedEvent`` | After ``<meta name="description">`` tag | no   |
-|                                  | is built                                     |      |
+| ``AfterMetaDescriptionRenderedEvent`` | After description is resolved —         | no   |
+|                                  | modify the content string before output      |      |
 +----------------------------------+----------------------------------------------+------+
 | ``BeforeAiRobotsRenderedEvent``  | After AI bot tags are assembled, before      | yes  |
 |                                  | they are added to the page                   |      |

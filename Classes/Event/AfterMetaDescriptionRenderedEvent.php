@@ -6,17 +6,17 @@ namespace Maispace\MaispacesSeo\Event;
 
 final class AfterMetaDescriptionRenderedEvent
 {
-    public function __construct(private string $tag)
+    public function __construct(private string $description)
     {
     }
 
-    public function getTag(): string
+    public function getDescription(): string
     {
-        return $this->tag;
+        return $this->description;
     }
 
-    public function setTag(string $tag): void
+    public function setDescription(string $description): void
     {
-        $this->tag = $tag;
+        $this->description = $description;
     }
 }

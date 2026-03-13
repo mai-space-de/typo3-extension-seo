@@ -55,19 +55,12 @@ class MetaDescriptionViewHelper extends AbstractSeoViewHelper
             return '';
         }
 
-        $tag = $this->metaDescriptionService->renderTag($description);
-
         /** @var AfterMetaDescriptionRenderedEvent $event */
-        $event = $this->eventDispatcher->dispatch(new AfterMetaDescriptionRenderedEvent($tag));
-        $tag = $event->getTag();
+        $event = $this->eventDispatcher->dispatch(new AfterMetaDescriptionRenderedEvent($description));
+        $finalDescription = $event->getDescription();
 
-        if ($tag !== '') {
-            // Extract content from the (possibly listener-modified) tag for PageRenderer deduplication
-            $content = $description;
-            if (preg_match('/content="([^"]*)"/i', $tag, $matches) === 1) {
-                $content = $matches[1];
-            }
-            $this->pageRenderer->setMetaTag('name', 'description', $content);
+        if ($finalDescription !== '') {
+            $this->pageRenderer->setMetaTag('name', 'description', $finalDescription);
         }
 
         return '';
