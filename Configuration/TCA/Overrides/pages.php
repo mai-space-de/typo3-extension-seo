@@ -167,29 +167,75 @@ $newColumns = [
             $allowedImageTypes
         ),
     ],
+    'tx_maispace_seo_canonical_url' => [
+        'exclude' => true,
+        'label'   => $llPrefix . 'pages.tx_maispace_seo_canonical_url',
+        'config'  => [
+            'type' => 'input',
+            'size' => 50,
+            'max'  => 2048,
+            'eval' => 'trim',
+        ],
+    ],
+    'tx_maispace_seo_robots_noindex' => [
+        'exclude' => true,
+        'label'   => $llPrefix . 'pages.tx_maispace_seo_robots_noindex',
+        'config'  => [
+            'type'    => 'check',
+            'default' => 0,
+        ],
+    ],
+    'tx_maispace_seo_robots_nofollow' => [
+        'exclude' => true,
+        'label'   => $llPrefix . 'pages.tx_maispace_seo_robots_nofollow',
+        'config'  => [
+            'type'    => 'check',
+            'default' => 0,
+        ],
+    ],
+    'tx_maispace_seo_robots_noarchive' => [
+        'exclude' => true,
+        'label'   => $llPrefix . 'pages.tx_maispace_seo_robots_noarchive',
+        'config'  => [
+            'type'    => 'check',
+            'default' => 0,
+        ],
+    ],
 ];
 
 ExtensionManagementUtility::addTCAcolumns('pages', $newColumns);
+
+// Define palettes so that the group labels appear in the form engine
+ExtensionManagementUtility::addFieldsToPalette(
+    'pages',
+    'tx_maispace_seo_jsonld',
+    'tx_maispace_seo_jsonld_type, tx_maispace_seo_jsonld_name, tx_maispace_seo_jsonld_description, --linebreak--, '
+    . 'tx_maispace_seo_jsonld_image, tx_maispace_seo_jsonld_author, --linebreak--, '
+    . 'tx_maispace_seo_jsonld_date_published, tx_maispace_seo_jsonld_date_modified, --linebreak--, '
+    . 'tx_maispace_seo_jsonld_custom'
+);
+
+ExtensionManagementUtility::addFieldsToPalette(
+    'pages',
+    'tx_maispace_seo_og',
+    'tx_maispace_seo_og_title, tx_maispace_seo_og_description, --linebreak--, '
+    . 'tx_maispace_seo_og_image, tx_maispace_seo_og_type, --linebreak--, '
+    . 'tx_maispace_seo_twitter_card, tx_maispace_seo_twitter_image'
+);
+
+ExtensionManagementUtility::addFieldsToPalette(
+    'pages',
+    'tx_maispace_seo_advanced',
+    'tx_maispace_seo_canonical_url, --linebreak--, '
+    . 'tx_maispace_seo_robots_noindex, tx_maispace_seo_robots_nofollow, tx_maispace_seo_robots_noarchive'
+);
 
 ExtensionManagementUtility::addToAllTCAtypes(
     'pages',
     '--div--;' . $llPrefix . 'tab.seo,'
     . '--palette--;' . $llPrefix . 'tab.seo.jsonld;tx_maispace_seo_jsonld,'
-    . 'tx_maispace_seo_jsonld_type,'
-    . 'tx_maispace_seo_jsonld_name,'
-    . 'tx_maispace_seo_jsonld_description,'
-    . 'tx_maispace_seo_jsonld_image,'
-    . 'tx_maispace_seo_jsonld_author,'
-    . 'tx_maispace_seo_jsonld_date_published,'
-    . 'tx_maispace_seo_jsonld_date_modified,'
-    . 'tx_maispace_seo_jsonld_custom,'
     . '--palette--;' . $llPrefix . 'tab.seo.opengraph;tx_maispace_seo_og,'
-    . 'tx_maispace_seo_og_title,'
-    . 'tx_maispace_seo_og_description,'
-    . 'tx_maispace_seo_og_image,'
-    . 'tx_maispace_seo_og_type,'
-    . 'tx_maispace_seo_twitter_card,'
-    . 'tx_maispace_seo_twitter_image',
+    . '--palette--;' . $llPrefix . 'tab.seo.advanced;tx_maispace_seo_advanced',
     '',
     'after:title'
 );

@@ -12,5 +12,9 @@ CREATE TABLE pages (
     tx_maispace_seo_og_image int(11) DEFAULT '0' NOT NULL,
     tx_maispace_seo_og_type varchar(50) DEFAULT '' NOT NULL,
     tx_maispace_seo_twitter_card varchar(50) DEFAULT '' NOT NULL,
-    tx_maispace_seo_twitter_image int(11) DEFAULT '0' NOT NULL
+    tx_maispace_seo_twitter_image int(11) DEFAULT '0' NOT NULL,
+    tx_maispace_seo_canonical_url varchar(2048) DEFAULT '' NOT NULL,
+    tx_maispace_seo_robots_noindex smallint(6) DEFAULT '0' NOT NULL,
+    tx_maispace_seo_robots_nofollow smallint(6) DEFAULT '0' NOT NULL,
+    tx_maispace_seo_robots_noarchive smallint(6) DEFAULT '0' NOT NULL
 );

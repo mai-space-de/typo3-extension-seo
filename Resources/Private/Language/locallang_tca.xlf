@@ -53,6 +53,21 @@
             <trans-unit id="pages.tx_maispace_seo_twitter_image">
                 <source>Twitter image</source>
             </trans-unit>
+            <trans-unit id="tab.seo.advanced">
+                <source>Advanced / Crawling</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_canonical_url">
+                <source>Canonical URL override</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_robots_noindex">
+                <source>Do not index this page (noindex)</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_robots_nofollow">
+                <source>Do not follow links on this page (nofollow)</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maispace_seo_robots_noarchive">
+                <source>Do not archive this page (noarchive)</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
