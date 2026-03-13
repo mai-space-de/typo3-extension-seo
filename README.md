@@ -19,10 +19,14 @@ A TYPO3 extension that adds structured data (JSON-LD), Open Graph meta tags, can
 | Open Graph meta fields on pages | Backend page properties tab |
 | Canonical URL override per page | Backend page properties tab |
 | Robots meta tag control per page (noindex / nofollow / noarchive) | Backend page properties tab |
+| Meta description override per page | Backend page properties tab |
+| AI crawler blocking per page | Backend page properties tab |
 | Output structured data in Fluid templates | `<mai:seo.jsonLd>` |
 | Output Open Graph meta tags in Fluid templates | `<mai:seo.openGraph>` |
 | Output canonical link tag | `<mai:seo.canonical>` |
 | Output robots meta tag | `<mai:seo.robots>` |
+| Output meta description tag | `<mai:seo.metaDescription>` |
+| Output per-bot AI crawler noindex tags | `<mai:seo.aiRobots>` |
 | PSR-14 events to control/modify output | `Classes/Event/` |
 | Backend module for SEO settings overview | `Web > SEO` module |
 | SEO statistics per page | Backend module dashboard |
@@ -78,10 +82,12 @@ The extension adds a dedicated **SEO** tab to the page properties form in the TY
 
 | Field | Description |
 |---|---|
+| Meta description override | Overrides `<meta name="description">`; falls back to TYPO3 core `description` field, then `abstract` |
 | Canonical URL override | Overrides `<link rel="canonical">` and `og:url`; falls back to TYPO3 core `canonical_link` |
 | noindex | Adds `noindex` to `<meta name="robots">` |
 | nofollow | Adds `nofollow` to `<meta name="robots">` |
 | noarchive | Adds `noarchive` to `<meta name="robots">` |
+| Block AI crawlers | Emits `<meta name="BotName" content="noindex">` for every configured AI crawler |
 
 ---
 
@@ -147,13 +153,45 @@ URL priority: custom `tx_maispace_seo_canonical_url` field → TYPO3 core `canon
 
 Generates `index`/`noindex`, `follow`/`nofollow`, and optionally `noarchive` from the page checkboxes.
 
+### `<mai:seo.metaDescription>` — render meta description
+
+```html
+<!-- Render <meta name="description"> for the current page -->
+<mai:seo.metaDescription />
+
+<!-- Render for an explicit page UID -->
+<mai:seo.metaDescription pageUid="{pageUid}" />
+
+<!-- Suppress meta description output on this page -->
+<mai:seo.metaDescription enabled="false" />
+```
+
+Description priority: custom `tx_maispace_seo_meta_description` field → TYPO3 core `description` field → `abstract` field → nothing rendered.
+
+### `<mai:seo.aiRobots>` — render AI crawler meta tags
+
+```html
+<!-- Emit per-bot noindex tags when the page checkbox is set -->
+<mai:seo.aiRobots />
+
+<!-- Render for an explicit page UID -->
+<mai:seo.aiRobots pageUid="{pageUid}" />
+
+<!-- Suppress AI robots output on this page -->
+<mai:seo.aiRobots enabled="false" />
+```
+
+When the *Block AI crawlers* checkbox is checked, emits `<meta name="BotName" content="noindex">` for each bot in the `aiRobots.bots` TypoScript list (default: GPTBot, OAI-SearchBot, ClaudeBot, Google-Extended, PerplexityBot, CCBot, Bytespider, Amazonbot). These tags do not modify the standard `<meta name="robots">` tag.
+
 All ViewHelpers inject tags via TYPO3's `PageRenderer` — they always land in `<head>` regardless of where the ViewHelper is called in the template.
 
 ### Recommended layout snippet
 
 ```html
+<mai:seo.metaDescription />
 <mai:seo.canonical />
 <mai:seo.robots />
+<mai:seo.aiRobots />
 <mai:seo.jsonLd />
 <mai:seo.openGraph />
 ```
@@ -169,11 +207,15 @@ Hook into the rendering pipeline by registering listeners in your site package's
 | `BeforeJsonLdRenderedEvent` | Before JSON-LD is assembled — modify schema data or veto output |
 | `AfterJsonLdRenderedEvent` | After JSON-LD script tag is built — inspect or replace the output string |
 | `BeforeOpenGraphRenderedEvent` | Before OG tags are assembled — modify properties or veto output |
-| `AfterOpenGraphRenderedEvent` | After all OG/Twitter meta tags are built |
+| `AfterOpenGraphRenderedEvent` | After all OG/Twitter meta tags are built — modify properties |
 | `BeforeCanonicalRenderedEvent` | After URL resolution — modify canonical URL or veto output |
 | `AfterCanonicalRenderedEvent` | After `<link rel="canonical">` tag is built |
 | `BeforeRobotsRenderedEvent` | After directives string is built — modify directives or veto output |
 | `AfterRobotsRenderedEvent` | After `<meta name="robots">` tag is built |
+| `BeforeMetaDescriptionRenderedEvent` | After description is resolved — modify text or veto output |
+| `AfterMetaDescriptionRenderedEvent` | After `<meta name="description">` tag is built |
+| `BeforeAiRobotsRenderedEvent` | After AI bot tags are assembled — modify tags or veto output |
+| `AfterAiRobotsRenderedEvent` | After AI crawler meta tags are built — modify tags |
 
 Example listener registration:
 
@@ -246,6 +288,14 @@ plugin.tx_maispace_seo {
     robots {
         enable = 1                 # 0 to suppress <meta name="robots"> globally
     }
+    metaDescription {
+        enable = 1                 # 0 to suppress <meta name="description"> globally
+    }
+    aiRobots {
+        enable = 1                 # 0 to suppress AI crawler meta tags globally
+        bots = GPTBot, OAI-SearchBot, ClaudeBot, Google-Extended, PerplexityBot, CCBot, Bytespider, Amazonbot
+                                   # comma-separated list of AI bot names to target
+    }
 }
 ```
 
@@ -274,8 +324,12 @@ vendor/bin/phpunit --configuration phpunit.xml.dist --testdox
 | `Tests/Unit/Service/OpenGraphServiceTest.php` | OG/Twitter tag assembly, image resolution, fallbacks |
 | `Tests/Unit/Service/CanonicalServiceTest.php` | Canonical URL resolution, tag rendering, event dispatching |
 | `Tests/Unit/Service/RobotsServiceTest.php` | Robots directives assembly, tag rendering, event dispatching |
+| `Tests/Unit/Service/MetaDescriptionServiceTest.php` | Description resolution, tag rendering, event dispatching |
+| `Tests/Unit/Service/AiRobotsServiceTest.php` | AI bot tag assembly, configurable bot list, event dispatching |
 | `Tests/Unit/ViewHelper/JsonLdViewHelperTest.php` | ViewHelper argument handling, PageRenderer delegation |
 | `Tests/Unit/ViewHelper/OpenGraphViewHelperTest.php` | ViewHelper argument handling, veto/skip logic |
+| `Tests/Unit/ViewHelper/MetaDescriptionViewHelperTest.php` | ViewHelper argument handling, PageRenderer delegation |
+| `Tests/Unit/ViewHelper/AiRobotsViewHelperTest.php` | ViewHelper argument handling, per-bot tag delegation |
 
 All tests are pure unit tests — no database, no TYPO3 installation required.
 

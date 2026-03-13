@@ -3,6 +3,52 @@
 Changelog
 =========
 
+1.2.0 (unreleased)
+------------------
+
+New features
+~~~~~~~~~~~~
+
+*  **Meta description ViewHelper** — ``<mai:seo.metaDescription>`` renders
+   ``<meta name="description" content="...">`` in the page ``<head>``. The
+   description is resolved from a new ``tx_maispace_seo_meta_description``
+   override field first, falling back to the TYPO3 core ``description`` field
+   and finally the page ``abstract`` field.
+*  **AI agent robots ViewHelper** — ``<mai:seo.aiRobots>`` emits dedicated
+   per-bot ``<meta name="BotName" content="noindex">`` tags for a configurable
+   list of AI crawlers (GPTBot, ClaudeBot, Google-Extended, and more), controlled
+   by a new ``tx_maispace_seo_ai_noindex`` page checkbox. These tags do not
+   interfere with the standard ``<meta name="robots">`` tag.
+*  **PSR-14 events** for both new ViewHelpers:
+   ``BeforeMetaDescriptionRenderedEvent``, ``AfterMetaDescriptionRenderedEvent``,
+   ``BeforeAiRobotsRenderedEvent``, ``AfterAiRobotsRenderedEvent``.
+*  **Fixed** ``AfterOpenGraphRenderedEvent`` — added missing ``setProperties()``
+   method so listeners can modify the final Open Graph property list, consistent
+   with all other ``After*`` events.
+
+Database changes
+~~~~~~~~~~~~~~~~
+
+Two new columns added to ``pages``:
+
+*  ``tx_maispace_seo_meta_description`` (text)
+*  ``tx_maispace_seo_ai_noindex`` (smallint)
+
+TypoScript changes
+~~~~~~~~~~~~~~~~~~
+
+Two new configuration blocks under ``plugin.tx_maispace_seo``:
+
+.. code-block:: typoscript
+
+    metaDescription {
+        enable = 1
+    }
+    aiRobots {
+        enable = 1
+        bots = GPTBot, OAI-SearchBot, ClaudeBot, Google-Extended, PerplexityBot, CCBot, Bytespider, Amazonbot
+    }
+
 1.1.0 (unreleased)
 ------------------
 
