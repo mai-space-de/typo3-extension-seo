@@ -30,7 +30,8 @@ class CanonicalService
     public function buildCanonicalUrl(array $pageRecord, array $settings): string
     {
         $canonicalSettings = is_array($settings['canonical.'] ?? null) ? $settings['canonical.'] : [];
-        $enabled = (string)($canonicalSettings['enable'] ?? '1');
+        $rawEnabled = $canonicalSettings['enable'] ?? '1';
+        $enabled = is_scalar($rawEnabled) ? (string)$rawEnabled : '1';
         if ($enabled !== '1') {
             return '';
         }
