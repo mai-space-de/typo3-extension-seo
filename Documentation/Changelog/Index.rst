@@ -49,7 +49,7 @@ Two new configuration blocks under ``plugin.tx_maispace_seo``:
         bots = GPTBot, OAI-SearchBot, ClaudeBot, Google-Extended, PerplexityBot, CCBot, Bytespider, Amazonbot
     }
 
-
+1.1.0 (unreleased)
 ------------------
 
 New features
