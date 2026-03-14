@@ -29,8 +29,8 @@ class MetaDescriptionServiceTest extends TestCase
         $description = $this->subject->buildDescription(
             [
                 'tx_maispace_seo_meta_description' => 'Custom meta description',
-                'description' => 'Core description',
-                'abstract' => 'Page abstract',
+                'description'                      => 'Core description',
+                'abstract'                         => 'Page abstract',
             ],
             []
         );
@@ -43,8 +43,8 @@ class MetaDescriptionServiceTest extends TestCase
         $description = $this->subject->buildDescription(
             [
                 'tx_maispace_seo_meta_description' => '',
-                'description' => 'Core description',
-                'abstract' => 'Page abstract',
+                'description'                      => 'Core description',
+                'abstract'                         => 'Page abstract',
             ],
             []
         );
@@ -57,8 +57,8 @@ class MetaDescriptionServiceTest extends TestCase
         $description = $this->subject->buildDescription(
             [
                 'tx_maispace_seo_meta_description' => '',
-                'description' => '',
-                'abstract' => 'Page abstract',
+                'description'                      => '',
+                'abstract'                         => 'Page abstract',
             ],
             []
         );
@@ -71,8 +71,8 @@ class MetaDescriptionServiceTest extends TestCase
         $description = $this->subject->buildDescription(
             [
                 'tx_maispace_seo_meta_description' => '',
-                'description' => '',
-                'abstract' => '',
+                'description'                      => '',
+                'abstract'                         => '',
             ],
             []
         );
