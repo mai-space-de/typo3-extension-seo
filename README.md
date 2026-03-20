@@ -136,7 +136,7 @@ The `og:url` is populated automatically from the canonical URL field.
 <mai:seo.canonical enabled="false" />
 ```
 
-URL priority: custom `tx_maispace_seo_canonical_url` field → TYPO3 core `canonical_link` field → nothing rendered.
+URL priority: custom `tx_maiseo_canonical_url` field → TYPO3 core `canonical_link` field → nothing rendered.
 
 ### `<mai:seo.robots>` — render robots meta tag
 
@@ -166,7 +166,7 @@ Generates `index`/`noindex`, `follow`/`nofollow`, and optionally `noarchive` fro
 <mai:seo.metaDescription enabled="false" />
 ```
 
-Description priority: custom `tx_maispace_seo_meta_description` field → TYPO3 core `description` field → `abstract` field → nothing rendered.
+Description priority: custom `tx_maiseo_meta_description` field → TYPO3 core `description` field → `abstract` field → nothing rendered.
 
 ### `<mai:seo.aiRobots>` — render AI crawler meta tags
 
@@ -226,13 +226,13 @@ services:
     tags:
       - name: event.listener
         identifier: 'my-sitepackage/modify-json-ld'
-        event: Maispace\MaispacesSeo\Event\BeforeJsonLdRenderedEvent
+        event: Maispace\MaiSeo\Event\BeforeJsonLdRenderedEvent
 ```
 
 Example listener:
 
 ```php
-use Maispace\MaispacesSeo\Event\BeforeJsonLdRenderedEvent;
+use Maispace\MaiSeo\Event\BeforeJsonLdRenderedEvent;
 
 final class ModifyJsonLd
 {

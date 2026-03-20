@@ -130,7 +130,7 @@ When the meta description tag is enabled (``metaDescription.enable = 1``), the
 ViewHelper ``<mai:seo.metaDescription>`` resolves the description value in this
 priority order:
 
-1. ``tx_maispace_seo_meta_description`` — custom override field on the page
+1. ``tx_maiseo_meta_description`` — custom override field on the page
 2. ``description`` — TYPO3 core meta description field
 3. ``abstract`` — TYPO3 page abstract field
 4. Empty — no ``<meta name="description">`` tag is rendered
@@ -174,7 +174,7 @@ Canonical URL resolution
 
 The canonical URL is resolved in this priority order:
 
-1. ``tx_maispace_seo_canonical_url`` — custom override field on the page
+1. ``tx_maiseo_canonical_url`` — custom override field on the page
 2. ``canonical_link`` — TYPO3 core field (set by EXT:seo or manually)
 3. Empty — no ``<link rel="canonical">`` tag is rendered
 

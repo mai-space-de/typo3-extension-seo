@@ -68,7 +68,7 @@ class SeoController
             'pagesWithOgImage'    => $pagesWithOgImage,
             'pagesMissingTitle'   => $pagesMissingTitle,
             'pagesMissingOgImage' => $pagesMissingOgImage,
-            'statisticsUri'       => (string)$this->uriBuilder->buildUriFromRoute('maispace_seo.statistics'),
+            'statisticsUri'       => (string)$this->uriBuilder->buildUriFromRoute('mai_seo.statistics'),
         ]);
 
         return $moduleTemplate->renderResponse('Backend/Index');

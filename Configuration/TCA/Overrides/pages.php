@@ -6,8 +6,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 defined('TYPO3') or die();
 
-$llPrefix = 'LLL:EXT:maispace_seo/Resources/Private/Language/locallang_tca.xlf:';
-$allowedImageTypes = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? 'gif,jpg,jpeg,png,webp,svg';
+$llPrefix = 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_tca.xlf:';
 
 $newColumns = [
     'tx_maiseo_jsonld_type' => [
@@ -54,11 +53,12 @@ $newColumns = [
     'tx_maiseo_jsonld_image' => [
         'exclude' => true,
         'label'   => $llPrefix . 'pages.tx_maiseo_jsonld_image',
-        'config'  => ExtensionManagementUtility::getFileFieldTCAConfig(
-            'tx_maiseo_jsonld_image',
-            ['maxitems' => 1, 'minitems' => 0],
-            $allowedImageTypes
-        ),
+        'config'  => [
+            'type'     => 'file',
+            'maxitems' => 1,
+            'minitems' => 0,
+            'allowed'  => 'common-image-types',
+        ],
     ],
     'tx_maiseo_jsonld_author' => [
         'exclude' => true,
@@ -119,11 +119,12 @@ $newColumns = [
     'tx_maiseo_og_image' => [
         'exclude' => true,
         'label'   => $llPrefix . 'pages.tx_maiseo_og_image',
-        'config'  => ExtensionManagementUtility::getFileFieldTCAConfig(
-            'tx_maiseo_og_image',
-            ['maxitems' => 1, 'minitems' => 0],
-            $allowedImageTypes
-        ),
+        'config'  => [
+            'type'     => 'file',
+            'maxitems' => 1,
+            'minitems' => 0,
+            'allowed'  => 'common-image-types',
+        ],
     ],
     'tx_maiseo_og_type' => [
         'exclude' => true,
@@ -161,11 +162,12 @@ $newColumns = [
     'tx_maiseo_twitter_image' => [
         'exclude' => true,
         'label'   => $llPrefix . 'pages.tx_maiseo_twitter_image',
-        'config'  => ExtensionManagementUtility::getFileFieldTCAConfig(
-            'tx_maiseo_twitter_image',
-            ['maxitems' => 1, 'minitems' => 0],
-            $allowedImageTypes
-        ),
+        'config'  => [
+            'type'     => 'file',
+            'maxitems' => 1,
+            'minitems' => 0,
+            'allowed'  => 'common-image-types',
+        ],
     ],
     'tx_maiseo_canonical_url' => [
         'exclude' => true,

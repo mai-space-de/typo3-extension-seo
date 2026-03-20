@@ -102,7 +102,7 @@ The ``og:url`` property is populated automatically from the canonical URL field
 
 The canonical URL is resolved from (in priority order):
 
-1. ``tx_maispace_seo_canonical_url`` — the custom override field
+1. ``tx_maiseo_canonical_url`` — the custom override field
 2. ``canonical_link`` — the TYPO3 core field
 3. Nothing is rendered when both are empty
 
@@ -155,7 +155,7 @@ A fully restricted page (noindex + nofollow + noarchive):
 
 The description is resolved from (in priority order):
 
-1. ``tx_maispace_seo_meta_description`` — the custom override field
+1. ``tx_maiseo_meta_description`` — the custom override field
 2. ``description`` — the TYPO3 core meta description field
 3. ``abstract`` — the TYPO3 page abstract field
 4. Nothing is rendered when all three are empty
@@ -207,7 +207,7 @@ Add all six ViewHelpers once to your Fluid layout file's ``<head>`` section:
 
     <html
         xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-        xmlns:mai="http://typo3.org/ns/Maispace/MaispacesSeo/ViewHelpers"
+        xmlns:mai="http://typo3.org/ns/Maispace/MaiSeo/ViewHelpers"
         data-namespace-typo3-fluid="true"
     >
     <f:be.pageRenderer />

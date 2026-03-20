@@ -58,20 +58,20 @@ Register listeners in your site package's ``Configuration/Services.yaml``:
         tags:
           - name: event.listener
             identifier: 'my-sitepackage/modify-json-ld'
-            event: Maispace\MaispacesSeo\Event\BeforeJsonLdRenderedEvent
+            event: Maispace\MaiSeo\Event\BeforeJsonLdRenderedEvent
 
       MyVendor\MySitepackage\EventListener\DisableCanonicalOnSearch:
         tags:
           - name: event.listener
             identifier: 'my-sitepackage/disable-canonical-on-search'
-            event: Maispace\MaispacesSeo\Event\BeforeCanonicalRenderedEvent
+            event: Maispace\MaiSeo\Event\BeforeCanonicalRenderedEvent
 
 Example: modify JSON-LD schema
 -------------------------------
 
 .. code-block:: php
 
-    use Maispace\MaispacesSeo\Event\BeforeJsonLdRenderedEvent;
+    use Maispace\MaiSeo\Event\BeforeJsonLdRenderedEvent;
 
     final class ModifyJsonLd
     {
@@ -92,7 +92,7 @@ Example: suppress canonical on specific pages
 
 .. code-block:: php
 
-    use Maispace\MaispacesSeo\Event\BeforeCanonicalRenderedEvent;
+    use Maispace\MaiSeo\Event\BeforeCanonicalRenderedEvent;
 
     final class DisableCanonicalOnSearch
     {
@@ -111,7 +111,7 @@ Example: override robots directives programmatically
 
 .. code-block:: php
 
-    use Maispace\MaispacesSeo\Event\BeforeRobotsRenderedEvent;
+    use Maispace\MaiSeo\Event\BeforeRobotsRenderedEvent;
 
     final class ForceNocacheRobots
     {
@@ -130,7 +130,7 @@ Example: replace canonical URL
 
 .. code-block:: php
 
-    use Maispace\MaispacesSeo\Event\BeforeCanonicalRenderedEvent;
+    use Maispace\MaiSeo\Event\BeforeCanonicalRenderedEvent;
 
     final class RewriteCanonical
     {
@@ -148,7 +148,7 @@ Example: override meta description
 
 .. code-block:: php
 
-    use Maispace\MaispacesSeo\Event\BeforeMetaDescriptionRenderedEvent;
+    use Maispace\MaiSeo\Event\BeforeMetaDescriptionRenderedEvent;
 
     final class AppendSiteNameToDescription
     {
@@ -166,7 +166,7 @@ Example: add extra AI bots dynamically
 
 .. code-block:: php
 
-    use Maispace\MaispacesSeo\Event\BeforeAiRobotsRenderedEvent;
+    use Maispace\MaiSeo\Event\BeforeAiRobotsRenderedEvent;
 
     final class AddCustomAiBot
     {
@@ -186,7 +186,7 @@ Example: modify Open Graph properties
 
 .. code-block:: php
 
-    use Maispace\MaispacesSeo\Event\AfterOpenGraphRenderedEvent;
+    use Maispace\MaiSeo\Event\AfterOpenGraphRenderedEvent;
 
     final class AppendSiteNameToOgTitle
     {

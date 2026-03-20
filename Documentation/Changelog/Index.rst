@@ -11,13 +11,13 @@ New features
 
 *  **Meta description ViewHelper** — ``<mai:seo.metaDescription>`` renders
    ``<meta name="description" content="...">`` in the page ``<head>``. The
-   description is resolved from a new ``tx_maispace_seo_meta_description``
+   description is resolved from a new ``tx_maiseo_meta_description``
    override field first, falling back to the TYPO3 core ``description`` field
    and finally the page ``abstract`` field.
 *  **AI agent robots ViewHelper** — ``<mai:seo.aiRobots>`` emits dedicated
    per-bot ``<meta name="BotName" content="noindex">`` tags for a configurable
    list of AI crawlers (GPTBot, ClaudeBot, Google-Extended, and more), controlled
-   by a new ``tx_maispace_seo_ai_noindex`` page checkbox. These tags do not
+   by a new ``tx_maiseo_ai_noindex`` page checkbox. These tags do not
    interfere with the standard ``<meta name="robots">`` tag.
 *  **PSR-14 events** for both new ViewHelpers:
    ``BeforeMetaDescriptionRenderedEvent``, ``AfterMetaDescriptionRenderedEvent``,
@@ -31,8 +31,8 @@ Database changes
 
 Two new columns added to ``pages``:
 
-*  ``tx_maispace_seo_meta_description`` (text)
-*  ``tx_maispace_seo_ai_noindex`` (smallint)
+*  ``tx_maiseo_meta_description`` (text)
+*  ``tx_maiseo_ai_noindex`` (smallint)
 
 TypoScript changes
 ~~~~~~~~~~~~~~~~~~
@@ -57,7 +57,7 @@ New features
 
 *  **Canonical URL ViewHelper** — ``<mai:seo.canonical>`` renders
    ``<link rel="canonical" href="...">`` in the page ``<head>``. The URL is
-   resolved from a new ``tx_maispace_seo_canonical_url`` page field first,
+   resolved from a new ``tx_maiseo_canonical_url`` page field first,
    falling back to the TYPO3 core ``canonical_link`` field.
 *  **Robots meta tag ViewHelper** — ``<mai:seo.robots>`` renders
    ``<meta name="robots" content="...">`` with fine-grained per-page control
@@ -76,10 +76,10 @@ Database changes
 
 Four new columns added to ``pages``:
 
-*  ``tx_maispace_seo_canonical_url`` (varchar 2048)
-*  ``tx_maispace_seo_robots_noindex`` (smallint)
-*  ``tx_maispace_seo_robots_nofollow`` (smallint)
-*  ``tx_maispace_seo_robots_noarchive`` (smallint)
+*  ``tx_maiseo_canonical_url`` (varchar 2048)
+*  ``tx_maiseo_robots_noindex`` (smallint)
+*  ``tx_maiseo_robots_nofollow`` (smallint)
+*  ``tx_maiseo_robots_noarchive`` (smallint)
 
 TypoScript changes
 ~~~~~~~~~~~~~~~~~~

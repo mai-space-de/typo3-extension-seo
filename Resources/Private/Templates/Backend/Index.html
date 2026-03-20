@@ -1,6 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" data-namespace-typo3-fluid="true">
 
-<f:flashMessages />
+<f:flashMessages queueIdentifier="mai_seo.flashmessages" />
 
 <div class="module-body">
 
@@ -78,9 +78,9 @@
                                                 <span class="text-muted small ms-1">#{page.uid}</span>
                                             </td>
                                             <td>
-                                                <f:if condition="{page.tx_maispace_seo_jsonld_type}">
+                                                <f:if condition="{page.tx_maiseo_jsonld_type}">
                                                     <f:then>
-                                                        <span class="badge badge-info">{page.tx_maispace_seo_jsonld_type}</span>
+                                                        <span class="badge badge-info">{page.tx_maiseo_jsonld_type}</span>
                                                     </f:then>
                                                     <f:else>
                                                         <span class="text-muted">—</span>
@@ -88,25 +88,25 @@
                                                 </f:if>
                                             </td>
                                             <td class="text-center">
-                                                <f:if condition="{page.tx_maispace_seo_og_title}">
+                                                <f:if condition="{page.tx_maiseo_og_title}">
                                                     <f:then><span class="text-success">&#10003;</span></f:then>
                                                     <f:else><span class="text-muted">—</span></f:else>
                                                 </f:if>
                                             </td>
                                             <td class="text-center">
-                                                <f:if condition="{page.tx_maispace_seo_og_image}">
+                                                <f:if condition="{page.tx_maiseo_og_image}">
                                                     <f:then><span class="text-success">&#10003;</span></f:then>
                                                     <f:else><span class="text-danger">&#10007;</span></f:else>
                                                 </f:if>
                                             </td>
                                             <td class="text-center">
-                                                <f:if condition="{page.tx_maispace_seo_og_description}">
+                                                <f:if condition="{page.tx_maiseo_og_description}">
                                                     <f:then><span class="text-success">&#10003;</span></f:then>
                                                     <f:else><span class="text-muted">—</span></f:else>
                                                 </f:if>
                                             </td>
                                             <td>
-                                                <be:link.editRecord uid="{page.uid}" table="pages" returnUrl="{f:be.uri(route: 'maispace_seo')}" class="btn btn-sm btn-default">
+                                                <be:link.editRecord uid="{page.uid}" table="pages" returnUrl="{f:be.uri(route: 'mai_seo')}" class="btn btn-sm btn-default">
                                                     Edit
                                                 </be:link.editRecord>
                                             </td>

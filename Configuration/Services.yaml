@@ -2,9 +2,9 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
-    public: false
+    public: true
 
-  Maispace\MaispacesSeo\:
+  Maispace\MaiSeo\:
     resource: '../Classes/*'
     exclude:
       - '../Classes/Event/*'
