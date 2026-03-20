@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Tests\Unit\ViewHelper;
+namespace Maispace\MaiSeo\Tests\Unit\ViewHelper;
 
-use Maispace\MaispacesSeo\Service\CanonicalService;
-use Maispace\MaispacesSeo\ViewHelpers\Seo\CanonicalViewHelper;
+use Maispace\MaiSeo\Service\CanonicalService;
+use Maispace\MaiSeo\ViewHelpers\Seo\CanonicalViewHelper;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;

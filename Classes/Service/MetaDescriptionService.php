@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Service;
+namespace Maispace\MaiSeo\Service;
 
-use Maispace\MaispacesSeo\Event\BeforeMetaDescriptionRenderedEvent;
+use Maispace\MaiSeo\Event\BeforeMetaDescriptionRenderedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class MetaDescriptionService
@@ -18,7 +18,7 @@ class MetaDescriptionService
      * Build the meta description string from a page record and TypoScript settings.
      *
      * Priority:
-     *   1. Custom override field `tx_maispace_seo_meta_description`
+     *   1. Custom override field `tx_maiseo_meta_description`
      *   2. TYPO3 core `description` field
      *   3. TYPO3 `abstract` field
      *
@@ -38,7 +38,7 @@ class MetaDescriptionService
         }
 
         // Custom override field takes precedence
-        $description = self::str($pageRecord['tx_maispace_seo_meta_description'] ?? null);
+        $description = self::str($pageRecord['tx_maiseo_meta_description'] ?? null);
 
         // Fall back to TYPO3 core description field
         if ($description === '') {

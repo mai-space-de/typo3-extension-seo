@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Service;
+namespace Maispace\MaiSeo\Service;
 
-use Maispace\MaispacesSeo\Event\BeforeJsonLdRenderedEvent;
+use Maispace\MaiSeo\Event\BeforeJsonLdRenderedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class JsonLdService
@@ -24,7 +24,7 @@ class JsonLdService
      */
     public function buildSchema(array $pageRecord, array $settings): array
     {
-        $type = self::str($pageRecord['tx_maispace_seo_jsonld_type'] ?? null);
+        $type = self::str($pageRecord['tx_maiseo_jsonld_type'] ?? null);
         if ($type === '') {
             $jsonLdSettings = is_array($settings['jsonLd.'] ?? null) ? $settings['jsonLd.'] : [];
             $type = self::str($jsonLdSettings['defaultType'] ?? null) ?: 'WebPage';
@@ -37,7 +37,7 @@ class JsonLdService
         ];
 
         // Name: use override or fall back to page title
-        $name = self::str($pageRecord['tx_maispace_seo_jsonld_name'] ?? null);
+        $name = self::str($pageRecord['tx_maiseo_jsonld_name'] ?? null);
         if ($name === '') {
             $name = self::str($pageRecord['title'] ?? null);
         }
@@ -46,7 +46,7 @@ class JsonLdService
         }
 
         // Description: use override or fall back to abstract
-        $description = self::str($pageRecord['tx_maispace_seo_jsonld_description'] ?? null);
+        $description = self::str($pageRecord['tx_maiseo_jsonld_description'] ?? null);
         if ($description === '') {
             $description = self::str($pageRecord['abstract'] ?? null);
         }
@@ -61,19 +61,19 @@ class JsonLdService
         }
 
         // Date published
-        $datePublished = self::int_($pageRecord['tx_maispace_seo_jsonld_date_published'] ?? null);
+        $datePublished = self::int_($pageRecord['tx_maiseo_jsonld_date_published'] ?? null);
         if ($datePublished > 0) {
             $schema['datePublished'] = date('c', $datePublished);
         }
 
         // Date modified
-        $dateModified = self::int_($pageRecord['tx_maispace_seo_jsonld_date_modified'] ?? null);
+        $dateModified = self::int_($pageRecord['tx_maiseo_jsonld_date_modified'] ?? null);
         if ($dateModified > 0) {
             $schema['dateModified'] = date('c', $dateModified);
         }
 
         // Author
-        $author = self::str($pageRecord['tx_maispace_seo_jsonld_author'] ?? null);
+        $author = self::str($pageRecord['tx_maiseo_jsonld_author'] ?? null);
         if ($author !== '') {
             $schema['author'] = ['@type' => 'Person', 'name' => $author];
         }
@@ -98,7 +98,7 @@ class JsonLdService
         }
 
         // Merge custom JSON-LD if set and valid
-        $customJson = self::str($pageRecord['tx_maispace_seo_jsonld_custom'] ?? null);
+        $customJson = self::str($pageRecord['tx_maiseo_jsonld_custom'] ?? null);
         if ($customJson !== '') {
             $decoded = json_decode($customJson, true);
             if (is_array($decoded)) {

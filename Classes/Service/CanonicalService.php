@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Service;
+namespace Maispace\MaiSeo\Service;
 
-use Maispace\MaispacesSeo\Event\BeforeCanonicalRenderedEvent;
+use Maispace\MaiSeo\Event\BeforeCanonicalRenderedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class CanonicalService
@@ -18,7 +18,7 @@ class CanonicalService
      * Build the canonical URL from a page record and TypoScript settings.
      *
      * Priority:
-     *   1. Custom override field `tx_maispace_seo_canonical_url`
+     *   1. Custom override field `tx_maiseo_canonical_url`
      *   2. TYPO3 core `canonical_link` field
      *
      * Returns an empty string when the feature is disabled via TypoScript or
@@ -37,7 +37,7 @@ class CanonicalService
         }
 
         // Custom override field takes precedence
-        $url = self::str($pageRecord['tx_maispace_seo_canonical_url'] ?? null);
+        $url = self::str($pageRecord['tx_maiseo_canonical_url'] ?? null);
 
         // Fall back to TYPO3 core canonical_link
         if ($url === '') {

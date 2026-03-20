@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Service;
+namespace Maispace\MaiSeo\Service;
 
-use Maispace\MaispacesSeo\Event\BeforeAiRobotsRenderedEvent;
+use Maispace\MaiSeo\Event\BeforeAiRobotsRenderedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class AiRobotsService
@@ -22,7 +22,7 @@ class AiRobotsService
     /**
      * Build the list of AI robots meta tags from a page record and TypoScript settings.
      *
-     * When `tx_maispace_seo_ai_noindex` is set, a `noindex` meta tag is emitted
+     * When `tx_maiseo_ai_noindex` is set, a `noindex` meta tag is emitted
      * for every bot listed in `aiRobots.bots` (TypoScript), defaulting to a
      * curated list of well-known AI crawlers.
      *
@@ -45,7 +45,7 @@ class AiRobotsService
 
         $tags = [];
 
-        $noIndex = self::int_($pageRecord['tx_maispace_seo_ai_noindex'] ?? null) !== 0;
+        $noIndex = self::int_($pageRecord['tx_maiseo_ai_noindex'] ?? null) !== 0;
         if ($noIndex) {
             $botsConfig = self::str($aiSettings['bots'] ?? null);
             if ($botsConfig === '') {

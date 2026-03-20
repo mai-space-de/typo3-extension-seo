@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Tests\Unit\ViewHelper;
+namespace Maispace\MaiSeo\Tests\Unit\ViewHelper;
 
-use Maispace\MaispacesSeo\Service\JsonLdService;
-use Maispace\MaispacesSeo\ViewHelpers\Seo\JsonLdViewHelper;
+use Maispace\MaiSeo\Service\JsonLdService;
+use Maispace\MaiSeo\ViewHelpers\Seo\JsonLdViewHelper;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -41,7 +41,7 @@ class JsonLdViewHelperTest extends TestCase
 
     public function testRenderCallsServiceAndAddsToPageRenderer(): void
     {
-        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maispace_seo_jsonld_type' => 'WebPage'];
+        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maiseo_jsonld_type' => 'WebPage'];
         $schema = ['@context' => 'https://schema.org', '@type' => 'WebPage', 'name' => 'Test Page'];
         $script = '<script type="application/ld+json">{}</script>';
 

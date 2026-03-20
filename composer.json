@@ -1,5 +1,5 @@
 {
-  "name": "maispace/seo",
+  "name": "maispace/mai-seo",
   "description": "SEO helpers for TYPO3: JSON-LD structured data, Open Graph meta tags, page property fields, and a backend statistics module.",
   "type": "typo3-cms-extension",
   "license": "GPL-2.0-or-later",
@@ -24,17 +24,17 @@
   },
   "autoload": {
     "psr-4": {
-      "Maispace\\MaispacesSeo\\": "Classes"
+      "Maispace\\MaiSeo\\": "Classes"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Maispace\\MaispacesSeo\\Tests\\": "Tests"
+      "Maispace\\MaiSeo\\Tests\\": "Tests"
     }
   },
   "extra": {
     "typo3/cms": {
-      "extension-key": "maispace_seo"
+      "extension-key": "mai_seo"
     },
     "branch-alias": {
       "dev-main": "13.0.x-dev"

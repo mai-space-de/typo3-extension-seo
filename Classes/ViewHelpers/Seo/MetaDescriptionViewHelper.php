@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\ViewHelpers\Seo;
+namespace Maispace\MaiSeo\ViewHelpers\Seo;
 
-use Maispace\MaispacesSeo\Event\AfterMetaDescriptionRenderedEvent;
-use Maispace\MaispacesSeo\Service\MetaDescriptionService;
+use Maispace\MaiSeo\Event\AfterMetaDescriptionRenderedEvent;
+use Maispace\MaiSeo\Service\MetaDescriptionService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 

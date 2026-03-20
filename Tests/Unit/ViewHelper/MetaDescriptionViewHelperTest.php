@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Tests\Unit\ViewHelper;
+namespace Maispace\MaiSeo\Tests\Unit\ViewHelper;
 
-use Maispace\MaispacesSeo\Event\AfterMetaDescriptionRenderedEvent;
-use Maispace\MaispacesSeo\Service\MetaDescriptionService;
-use Maispace\MaispacesSeo\ViewHelpers\Seo\MetaDescriptionViewHelper;
+use Maispace\MaiSeo\Event\AfterMetaDescriptionRenderedEvent;
+use Maispace\MaiSeo\Service\MetaDescriptionService;
+use Maispace\MaiSeo\ViewHelpers\Seo\MetaDescriptionViewHelper;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -41,7 +41,7 @@ class MetaDescriptionViewHelperTest extends TestCase
 
     public function testRenderCallsServiceAndAddsToPageRenderer(): void
     {
-        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maispace_seo_meta_description' => 'A test description.'];
+        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maiseo_meta_description' => 'A test description.'];
 
         $service = $this->createMock(MetaDescriptionService::class);
         $service->method('buildDescription')->willReturn('A test description.');
@@ -83,7 +83,7 @@ class MetaDescriptionViewHelperTest extends TestCase
 
     public function testRenderDoesNotCallPageRendererWhenDescriptionIsEmpty(): void
     {
-        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maispace_seo_meta_description' => ''];
+        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maiseo_meta_description' => ''];
 
         $service = $this->createMock(MetaDescriptionService::class);
         $service->method('buildDescription')->willReturn('');
@@ -124,7 +124,7 @@ class MetaDescriptionViewHelperTest extends TestCase
 
     public function testRenderUsesModifiedDescriptionFromAfterEvent(): void
     {
-        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maispace_seo_meta_description' => 'Original description.'];
+        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maiseo_meta_description' => 'Original description.'];
 
         $service = $this->createMock(MetaDescriptionService::class);
         $service->method('buildDescription')->willReturn('Original description.');

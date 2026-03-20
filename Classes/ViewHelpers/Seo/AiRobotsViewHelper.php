@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\ViewHelpers\Seo;
+namespace Maispace\MaiSeo\ViewHelpers\Seo;
 
-use Maispace\MaispacesSeo\Event\AfterAiRobotsRenderedEvent;
-use Maispace\MaispacesSeo\Service\AiRobotsService;
+use Maispace\MaiSeo\Event\AfterAiRobotsRenderedEvent;
+use Maispace\MaiSeo\Service\AiRobotsService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 

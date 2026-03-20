@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\ViewHelpers\Seo;
+namespace Maispace\MaiSeo\ViewHelpers\Seo;
 
-use Maispace\MaispacesSeo\Event\AfterCanonicalRenderedEvent;
-use Maispace\MaispacesSeo\Service\CanonicalService;
+use Maispace\MaiSeo\Event\AfterCanonicalRenderedEvent;
+use Maispace\MaiSeo\Service\CanonicalService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 

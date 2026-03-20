@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\ViewHelpers\Seo;
+namespace Maispace\MaiSeo\ViewHelpers\Seo;
 
-use Maispace\MaispacesSeo\Event\AfterOpenGraphRenderedEvent;
-use Maispace\MaispacesSeo\Service\CanonicalService;
-use Maispace\MaispacesSeo\Service\OpenGraphService;
+use Maispace\MaiSeo\Event\AfterOpenGraphRenderedEvent;
+use Maispace\MaiSeo\Service\CanonicalService;
+use Maispace\MaiSeo\Service\OpenGraphService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 

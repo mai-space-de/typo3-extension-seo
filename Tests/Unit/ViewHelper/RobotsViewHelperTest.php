@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Tests\Unit\ViewHelper;
+namespace Maispace\MaiSeo\Tests\Unit\ViewHelper;
 
-use Maispace\MaispacesSeo\Service\RobotsService;
-use Maispace\MaispacesSeo\ViewHelpers\Seo\RobotsViewHelper;
+use Maispace\MaiSeo\Service\RobotsService;
+use Maispace\MaiSeo\ViewHelpers\Seo\RobotsViewHelper;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;

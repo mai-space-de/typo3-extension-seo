@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Tests\Unit\Service;
+namespace Maispace\MaiSeo\Tests\Unit\Service;
 
-use Maispace\MaispacesSeo\Event\BeforeJsonLdRenderedEvent;
-use Maispace\MaispacesSeo\Service\JsonLdService;
+use Maispace\MaiSeo\Event\BeforeJsonLdRenderedEvent;
+use Maispace\MaiSeo\Service\JsonLdService;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -27,7 +27,7 @@ class JsonLdServiceTest extends TestCase
     public function testBuildSchemaReturnsCorrectContextAndType(): void
     {
         $schema = $this->subject->buildSchema(
-            ['title' => 'Test Page', 'tx_maispace_seo_jsonld_type' => 'Article'],
+            ['title' => 'Test Page', 'tx_maiseo_jsonld_type' => 'Article'],
             []
         );
 
@@ -38,7 +38,7 @@ class JsonLdServiceTest extends TestCase
     public function testBuildSchemaUsesDefaultTypeWebPageWhenNoneSet(): void
     {
         $schema = $this->subject->buildSchema(
-            ['title' => 'Test Page', 'tx_maispace_seo_jsonld_type' => ''],
+            ['title' => 'Test Page', 'tx_maiseo_jsonld_type' => ''],
             ['jsonLd.' => ['defaultType' => 'WebPage']]
         );
 
@@ -48,7 +48,7 @@ class JsonLdServiceTest extends TestCase
     public function testBuildSchemaUsesFallbackWebPageWhenSettingsEmpty(): void
     {
         $schema = $this->subject->buildSchema(
-            ['title' => 'Test Page', 'tx_maispace_seo_jsonld_type' => ''],
+            ['title' => 'Test Page', 'tx_maiseo_jsonld_type' => ''],
             []
         );
 
@@ -58,7 +58,7 @@ class JsonLdServiceTest extends TestCase
     public function testBuildSchemaUsesPageTitleAsNameWhenOverrideIsEmpty(): void
     {
         $schema = $this->subject->buildSchema(
-            ['title' => 'My Page Title', 'tx_maispace_seo_jsonld_type' => 'WebPage', 'tx_maispace_seo_jsonld_name' => ''],
+            ['title' => 'My Page Title', 'tx_maiseo_jsonld_type' => 'WebPage', 'tx_maiseo_jsonld_name' => ''],
             []
         );
 
@@ -68,7 +68,7 @@ class JsonLdServiceTest extends TestCase
     public function testBuildSchemaUsesNameOverrideWhenSet(): void
     {
         $schema = $this->subject->buildSchema(
-            ['title' => 'My Page Title', 'tx_maispace_seo_jsonld_type' => 'WebPage', 'tx_maispace_seo_jsonld_name' => 'Custom Name'],
+            ['title' => 'My Page Title', 'tx_maiseo_jsonld_type' => 'WebPage', 'tx_maiseo_jsonld_name' => 'Custom Name'],
             []
         );
 
@@ -79,7 +79,7 @@ class JsonLdServiceTest extends TestCase
     {
         $customJson = json_encode(['customField' => 'customValue', 'anotherField' => 42]);
         $schema = $this->subject->buildSchema(
-            ['title' => 'Page', 'tx_maispace_seo_jsonld_type' => 'WebPage', 'tx_maispace_seo_jsonld_custom' => $customJson],
+            ['title' => 'Page', 'tx_maiseo_jsonld_type' => 'WebPage', 'tx_maiseo_jsonld_custom' => $customJson],
             []
         );
 
@@ -90,7 +90,7 @@ class JsonLdServiceTest extends TestCase
     public function testBuildSchemaAddsPublisherWhenOrganizationNameSet(): void
     {
         $schema = $this->subject->buildSchema(
-            ['title' => 'Page', 'tx_maispace_seo_jsonld_type' => 'WebPage'],
+            ['title' => 'Page', 'tx_maiseo_jsonld_type' => 'WebPage'],
             ['jsonLd.' => ['organizationName' => 'Acme Corp', 'organizationUrl' => 'https://acme.example']]
         );
 
@@ -103,7 +103,7 @@ class JsonLdServiceTest extends TestCase
     public function testBuildSchemaDoesNotAddPublisherWhenOrganizationNameEmpty(): void
     {
         $schema = $this->subject->buildSchema(
-            ['title' => 'Page', 'tx_maispace_seo_jsonld_type' => 'WebPage'],
+            ['title' => 'Page', 'tx_maiseo_jsonld_type' => 'WebPage'],
             ['jsonLd.' => ['organizationName' => '']]
         );
 
@@ -113,7 +113,7 @@ class JsonLdServiceTest extends TestCase
     public function testBuildSchemaAddsAuthorWhenSet(): void
     {
         $schema = $this->subject->buildSchema(
-            ['title' => 'Page', 'tx_maispace_seo_jsonld_type' => 'Article', 'tx_maispace_seo_jsonld_author' => 'Jane Doe'],
+            ['title' => 'Page', 'tx_maiseo_jsonld_type' => 'Article', 'tx_maiseo_jsonld_author' => 'Jane Doe'],
             []
         );
 
@@ -126,7 +126,7 @@ class JsonLdServiceTest extends TestCase
     {
         $timestamp = mktime(12, 0, 0, 6, 15, 2024);
         $schema = $this->subject->buildSchema(
-            ['title' => 'Page', 'tx_maispace_seo_jsonld_type' => 'Article', 'tx_maispace_seo_jsonld_date_published' => $timestamp],
+            ['title' => 'Page', 'tx_maiseo_jsonld_type' => 'Article', 'tx_maiseo_jsonld_date_published' => $timestamp],
             []
         );
 
@@ -136,7 +136,7 @@ class JsonLdServiceTest extends TestCase
     public function testBuildSchemaDoesNotAddDatePublishedWhenTimestampIsZero(): void
     {
         $schema = $this->subject->buildSchema(
-            ['title' => 'Page', 'tx_maispace_seo_jsonld_type' => 'WebPage', 'tx_maispace_seo_jsonld_date_published' => 0],
+            ['title' => 'Page', 'tx_maiseo_jsonld_type' => 'WebPage', 'tx_maiseo_jsonld_date_published' => 0],
             []
         );
 
@@ -146,7 +146,7 @@ class JsonLdServiceTest extends TestCase
     public function testBuildSchemaIgnoresInvalidCustomJson(): void
     {
         $schema = $this->subject->buildSchema(
-            ['title' => 'Page', 'tx_maispace_seo_jsonld_type' => 'WebPage', 'tx_maispace_seo_jsonld_custom' => '{not valid json'],
+            ['title' => 'Page', 'tx_maiseo_jsonld_type' => 'WebPage', 'tx_maiseo_jsonld_custom' => '{not valid json'],
             []
         );
 
@@ -166,7 +166,7 @@ class JsonLdServiceTest extends TestCase
 
         $subject = new JsonLdService($dispatcher);
         $schema = $subject->buildSchema(
-            ['title' => 'Page', 'tx_maispace_seo_jsonld_type' => 'WebPage'],
+            ['title' => 'Page', 'tx_maiseo_jsonld_type' => 'WebPage'],
             []
         );
 

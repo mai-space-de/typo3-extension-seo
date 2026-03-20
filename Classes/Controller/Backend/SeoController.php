@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Controller\Backend;
+namespace Maispace\MaiSeo\Controller\Backend;
 
 use Doctrine\DBAL\ParameterType;
 use Psr\Http\Message\ResponseInterface;
@@ -28,11 +28,11 @@ class SeoController
         $rows = $qb->select(
             'uid',
             'title',
-            'tx_maispace_seo_jsonld_type',
-            'tx_maispace_seo_jsonld_name',
-            'tx_maispace_seo_og_title',
-            'tx_maispace_seo_og_description',
-            'tx_maispace_seo_og_image'
+            'tx_maiseo_jsonld_type',
+            'tx_maiseo_jsonld_name',
+            'tx_maiseo_og_title',
+            'tx_maiseo_og_description',
+            'tx_maiseo_og_image'
         )
             ->from('pages')
             ->where(
@@ -50,12 +50,12 @@ class SeoController
         $pagesMissingOgImage = 0;
 
         foreach ($rows as $row) {
-            if (self::int_($row['tx_maispace_seo_og_image']) > 0) {
+            if (self::int_($row['tx_maiseo_og_image']) > 0) {
                 ++$pagesWithOgImage;
             } else {
                 ++$pagesMissingOgImage;
             }
-            $ogTitle = self::str($row['tx_maispace_seo_og_title'] ?? null);
+            $ogTitle = self::str($row['tx_maiseo_og_title'] ?? null);
             $pageTitle = self::str($row['title'] ?? null);
             if ($ogTitle === '' && $pageTitle === '') {
                 ++$pagesMissingTitle;
@@ -80,7 +80,7 @@ class SeoController
 
         // Schema type distribution
         $qb = $this->connectionPool->getQueryBuilderForTable('pages');
-        $typeRows = $qb->select('tx_maispace_seo_jsonld_type')
+        $typeRows = $qb->select('tx_maiseo_jsonld_type')
             ->addSelectLiteral('COUNT(*) AS page_count')
             ->from('pages')
             ->where(
@@ -88,7 +88,7 @@ class SeoController
                 $qb->expr()->eq('hidden', $qb->createNamedParameter(0, ParameterType::INTEGER)),
                 $qb->expr()->eq('sys_language_uid', $qb->createNamedParameter(0, ParameterType::INTEGER))
             )
-            ->groupBy('tx_maispace_seo_jsonld_type')
+            ->groupBy('tx_maiseo_jsonld_type')
             ->orderBy('page_count', 'DESC')
             ->executeQuery()
             ->fetchAllAssociative();
@@ -99,7 +99,7 @@ class SeoController
         foreach ($typeRows as $row) {
             $count = self::int_($row['page_count']);
             $typeStats[] = [
-                'type'       => self::str($row['tx_maispace_seo_jsonld_type'] ?? null) !== '' ? self::str($row['tx_maispace_seo_jsonld_type']) : '(none)',
+                'type'       => self::str($row['tx_maiseo_jsonld_type'] ?? null) !== '' ? self::str($row['tx_maiseo_jsonld_type']) : '(none)',
                 'count'      => $count,
                 'percentage' => $totalPages > 0 ? round(($count / $totalPages) * 100, 1) : 0,
             ];
@@ -113,7 +113,7 @@ class SeoController
                 $qb2->expr()->eq('deleted', $qb2->createNamedParameter(0, ParameterType::INTEGER)),
                 $qb2->expr()->eq('hidden', $qb2->createNamedParameter(0, ParameterType::INTEGER)),
                 $qb2->expr()->eq('sys_language_uid', $qb2->createNamedParameter(0, ParameterType::INTEGER)),
-                $qb2->expr()->gt('tx_maispace_seo_og_image', $qb2->createNamedParameter(0, ParameterType::INTEGER))
+                $qb2->expr()->gt('tx_maiseo_og_image', $qb2->createNamedParameter(0, ParameterType::INTEGER))
             )
             ->executeQuery()
             ->fetchOne());
@@ -127,7 +127,7 @@ class SeoController
             'withImage'       => $withImage,
             'withoutImage'    => $withoutImage,
             'imagePercentage' => $imagePercentage,
-            'indexUri'        => (string)$this->uriBuilder->buildUriFromRoute('maispace_seo'),
+            'indexUri'        => (string)$this->uriBuilder->buildUriFromRoute('mai_seo'),
         ]);
 
         return $moduleTemplate->renderResponse('Backend/Statistics');

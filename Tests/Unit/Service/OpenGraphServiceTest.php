@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Tests\Unit\Service;
+namespace Maispace\MaiSeo\Tests\Unit\Service;
 
-use Maispace\MaispacesSeo\Event\BeforeOpenGraphRenderedEvent;
-use Maispace\MaispacesSeo\Service\OpenGraphService;
+use Maispace\MaiSeo\Event\BeforeOpenGraphRenderedEvent;
+use Maispace\MaiSeo\Service\OpenGraphService;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -38,7 +38,7 @@ class OpenGraphServiceTest extends TestCase
     public function testBuildPropertiesUsesPageTitleAsFallbackForOgTitle(): void
     {
         $properties = $this->subject->buildProperties(
-            ['title' => 'My Page', 'tx_maispace_seo_og_title' => ''],
+            ['title' => 'My Page', 'tx_maiseo_og_title' => ''],
             []
         );
 
@@ -48,7 +48,7 @@ class OpenGraphServiceTest extends TestCase
     public function testBuildPropertiesUsesOgTitleOverrideWhenSet(): void
     {
         $properties = $this->subject->buildProperties(
-            ['title' => 'My Page', 'tx_maispace_seo_og_title' => 'Custom OG Title'],
+            ['title' => 'My Page', 'tx_maiseo_og_title' => 'Custom OG Title'],
             []
         );
 
@@ -58,7 +58,7 @@ class OpenGraphServiceTest extends TestCase
     public function testBuildPropertiesDefaultsOgTypeToWebsite(): void
     {
         $properties = $this->subject->buildProperties(
-            ['title' => 'My Page', 'tx_maispace_seo_og_type' => ''],
+            ['title' => 'My Page', 'tx_maiseo_og_type' => ''],
             []
         );
 
@@ -68,7 +68,7 @@ class OpenGraphServiceTest extends TestCase
     public function testBuildPropertiesUsesOgTypeOverride(): void
     {
         $properties = $this->subject->buildProperties(
-            ['title' => 'My Page', 'tx_maispace_seo_og_type' => 'article'],
+            ['title' => 'My Page', 'tx_maiseo_og_type' => 'article'],
             []
         );
 
@@ -78,7 +78,7 @@ class OpenGraphServiceTest extends TestCase
     public function testBuildPropertiesIncludesTwitterPropertiesWhenEnabled(): void
     {
         $properties = $this->subject->buildProperties(
-            ['title' => 'My Page', 'tx_maispace_seo_og_title' => '', 'tx_maispace_seo_og_type' => '', 'tx_maispace_seo_twitter_card' => 'summary'],
+            ['title' => 'My Page', 'tx_maiseo_og_title' => '', 'tx_maiseo_og_type' => '', 'tx_maiseo_twitter_card' => 'summary'],
             ['openGraph.' => ['twitter' => '1']]
         );
 

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\ViewHelpers\Seo;
+namespace Maispace\MaiSeo\ViewHelpers\Seo;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;

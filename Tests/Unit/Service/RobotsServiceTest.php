@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Tests\Unit\Service;
+namespace Maispace\MaiSeo\Tests\Unit\Service;
 
-use Maispace\MaispacesSeo\Event\BeforeRobotsRenderedEvent;
-use Maispace\MaispacesSeo\Service\RobotsService;
+use Maispace\MaiSeo\Event\BeforeRobotsRenderedEvent;
+use Maispace\MaiSeo\Service\RobotsService;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -27,7 +27,7 @@ class RobotsServiceTest extends TestCase
     public function testBuildDirectivesReturnsIndexFollowByDefault(): void
     {
         $directives = $this->subject->buildDirectives(
-            ['tx_maispace_seo_robots_noindex' => 0, 'tx_maispace_seo_robots_nofollow' => 0, 'tx_maispace_seo_robots_noarchive' => 0],
+            ['tx_maiseo_robots_noindex' => 0, 'tx_maiseo_robots_nofollow' => 0, 'tx_maiseo_robots_noarchive' => 0],
             []
         );
 
@@ -37,7 +37,7 @@ class RobotsServiceTest extends TestCase
     public function testBuildDirectivesReturnsNoindexWhenFlagIsSet(): void
     {
         $directives = $this->subject->buildDirectives(
-            ['tx_maispace_seo_robots_noindex' => 1, 'tx_maispace_seo_robots_nofollow' => 0],
+            ['tx_maiseo_robots_noindex' => 1, 'tx_maiseo_robots_nofollow' => 0],
             []
         );
 
@@ -47,7 +47,7 @@ class RobotsServiceTest extends TestCase
     public function testBuildDirectivesReturnsNofollowWhenFlagIsSet(): void
     {
         $directives = $this->subject->buildDirectives(
-            ['tx_maispace_seo_robots_noindex' => 0, 'tx_maispace_seo_robots_nofollow' => 1],
+            ['tx_maiseo_robots_noindex' => 0, 'tx_maiseo_robots_nofollow' => 1],
             []
         );
 
@@ -57,7 +57,7 @@ class RobotsServiceTest extends TestCase
     public function testBuildDirectivesAddsNoarchiveWhenFlagIsSet(): void
     {
         $directives = $this->subject->buildDirectives(
-            ['tx_maispace_seo_robots_noindex' => 0, 'tx_maispace_seo_robots_nofollow' => 0, 'tx_maispace_seo_robots_noarchive' => 1],
+            ['tx_maiseo_robots_noindex' => 0, 'tx_maiseo_robots_nofollow' => 0, 'tx_maiseo_robots_noarchive' => 1],
             []
         );
 
@@ -67,7 +67,7 @@ class RobotsServiceTest extends TestCase
     public function testBuildDirectivesDoesNotAddNoarchiveWhenFlagIsNotSet(): void
     {
         $directives = $this->subject->buildDirectives(
-            ['tx_maispace_seo_robots_noindex' => 0, 'tx_maispace_seo_robots_nofollow' => 0, 'tx_maispace_seo_robots_noarchive' => 0],
+            ['tx_maiseo_robots_noindex' => 0, 'tx_maiseo_robots_nofollow' => 0, 'tx_maiseo_robots_noarchive' => 0],
             []
         );
 
@@ -77,7 +77,7 @@ class RobotsServiceTest extends TestCase
     public function testBuildDirectivesReturnsEmptyStringWhenFeatureIsDisabledViaTypoScript(): void
     {
         $directives = $this->subject->buildDirectives(
-            ['tx_maispace_seo_robots_noindex' => 0, 'tx_maispace_seo_robots_nofollow' => 0],
+            ['tx_maiseo_robots_noindex' => 0, 'tx_maiseo_robots_nofollow' => 0],
             ['robots.' => ['enable' => '0']]
         );
 
@@ -97,7 +97,7 @@ class RobotsServiceTest extends TestCase
 
         $subject = new RobotsService($dispatcher);
         $directives = $subject->buildDirectives(
-            ['tx_maispace_seo_robots_noindex' => 0, 'tx_maispace_seo_robots_nofollow' => 0],
+            ['tx_maiseo_robots_noindex' => 0, 'tx_maiseo_robots_nofollow' => 0],
             []
         );
 
@@ -117,7 +117,7 @@ class RobotsServiceTest extends TestCase
 
         $subject = new RobotsService($dispatcher);
         $directives = $subject->buildDirectives(
-            ['tx_maispace_seo_robots_noindex' => 0, 'tx_maispace_seo_robots_nofollow' => 0],
+            ['tx_maiseo_robots_noindex' => 0, 'tx_maiseo_robots_nofollow' => 0],
             []
         );
 

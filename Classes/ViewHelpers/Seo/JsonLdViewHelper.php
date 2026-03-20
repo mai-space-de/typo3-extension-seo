@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\ViewHelpers\Seo;
+namespace Maispace\MaiSeo\ViewHelpers\Seo;
 
-use Maispace\MaispacesSeo\Event\AfterJsonLdRenderedEvent;
-use Maispace\MaispacesSeo\Service\JsonLdService;
+use Maispace\MaiSeo\Event\AfterJsonLdRenderedEvent;
+use Maispace\MaiSeo\Service\JsonLdService;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Page\PageRenderer;
 

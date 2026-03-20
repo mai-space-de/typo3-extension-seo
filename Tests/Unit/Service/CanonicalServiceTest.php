@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Tests\Unit\Service;
+namespace Maispace\MaiSeo\Tests\Unit\Service;
 
-use Maispace\MaispacesSeo\Event\BeforeCanonicalRenderedEvent;
-use Maispace\MaispacesSeo\Service\CanonicalService;
+use Maispace\MaiSeo\Event\BeforeCanonicalRenderedEvent;
+use Maispace\MaiSeo\Service\CanonicalService;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -27,7 +27,7 @@ class CanonicalServiceTest extends TestCase
     public function testBuildCanonicalUrlReturnsCustomOverrideWhenSet(): void
     {
         $url = $this->subject->buildCanonicalUrl(
-            ['tx_maispace_seo_canonical_url' => 'https://example.com/custom', 'canonical_link' => 'https://example.com/core'],
+            ['tx_maiseo_canonical_url' => 'https://example.com/custom', 'canonical_link' => 'https://example.com/core'],
             []
         );
 
@@ -37,7 +37,7 @@ class CanonicalServiceTest extends TestCase
     public function testBuildCanonicalUrlFallsBackToCoreCanonicalLink(): void
     {
         $url = $this->subject->buildCanonicalUrl(
-            ['tx_maispace_seo_canonical_url' => '', 'canonical_link' => 'https://example.com/core'],
+            ['tx_maiseo_canonical_url' => '', 'canonical_link' => 'https://example.com/core'],
             []
         );
 
@@ -47,7 +47,7 @@ class CanonicalServiceTest extends TestCase
     public function testBuildCanonicalUrlReturnsEmptyStringWhenBothFieldsAreEmpty(): void
     {
         $url = $this->subject->buildCanonicalUrl(
-            ['tx_maispace_seo_canonical_url' => '', 'canonical_link' => ''],
+            ['tx_maiseo_canonical_url' => '', 'canonical_link' => ''],
             []
         );
 
@@ -57,7 +57,7 @@ class CanonicalServiceTest extends TestCase
     public function testBuildCanonicalUrlReturnsEmptyStringWhenFeatureIsDisabledViaTypoScript(): void
     {
         $url = $this->subject->buildCanonicalUrl(
-            ['tx_maispace_seo_canonical_url' => 'https://example.com/custom'],
+            ['tx_maiseo_canonical_url' => 'https://example.com/custom'],
             ['canonical.' => ['enable' => '0']]
         );
 
@@ -77,7 +77,7 @@ class CanonicalServiceTest extends TestCase
 
         $subject = new CanonicalService($dispatcher);
         $url = $subject->buildCanonicalUrl(
-            ['tx_maispace_seo_canonical_url' => 'https://example.com/custom'],
+            ['tx_maiseo_canonical_url' => 'https://example.com/custom'],
             []
         );
 
@@ -97,7 +97,7 @@ class CanonicalServiceTest extends TestCase
 
         $subject = new CanonicalService($dispatcher);
         $url = $subject->buildCanonicalUrl(
-            ['tx_maispace_seo_canonical_url' => 'https://example.com/original'],
+            ['tx_maiseo_canonical_url' => 'https://example.com/original'],
             []
         );
 

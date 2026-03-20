@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'maispace_seo' => [
+    'mai_seo' => [
         'parent'         => 'web',
         'position'       => ['after' => 'web_info'],
         'access'         => 'user',
@@ -14,10 +14,10 @@ return [
         'packageName'    => 'maispace/seo',
         'routes'         => [
             '_default' => [
-                'target' => \Maispace\MaispacesSeo\Controller\Backend\SeoController::class . '::indexAction',
+                'target' => \Maispace\MaiSeo\Controller\Backend\SeoController::class . '::indexAction',
             ],
             'statistics' => [
-                'target' => \Maispace\MaispacesSeo\Controller\Backend\SeoController::class . '::statisticsAction',
+                'target' => \Maispace\MaiSeo\Controller\Backend\SeoController::class . '::statisticsAction',
             ],
         ],
     ],

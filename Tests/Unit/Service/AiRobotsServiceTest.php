@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Tests\Unit\Service;
+namespace Maispace\MaiSeo\Tests\Unit\Service;
 
-use Maispace\MaispacesSeo\Event\BeforeAiRobotsRenderedEvent;
-use Maispace\MaispacesSeo\Service\AiRobotsService;
+use Maispace\MaiSeo\Event\BeforeAiRobotsRenderedEvent;
+use Maispace\MaiSeo\Service\AiRobotsService;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -27,7 +27,7 @@ class AiRobotsServiceTest extends TestCase
     public function testBuildTagsReturnsEmptyArrayWhenNoindexIsNotSet(): void
     {
         $tags = $this->subject->buildTags(
-            ['tx_maispace_seo_ai_noindex' => 0],
+            ['tx_maiseo_ai_noindex' => 0],
             []
         );
 
@@ -37,7 +37,7 @@ class AiRobotsServiceTest extends TestCase
     public function testBuildTagsReturnsPerBotNoindexTagsWhenNoindexIsSet(): void
     {
         $tags = $this->subject->buildTags(
-            ['tx_maispace_seo_ai_noindex' => 1],
+            ['tx_maiseo_ai_noindex' => 1],
             []
         );
 
@@ -51,7 +51,7 @@ class AiRobotsServiceTest extends TestCase
     public function testBuildTagsUsesDefaultBotsWhenNotConfigured(): void
     {
         $tags = $this->subject->buildTags(
-            ['tx_maispace_seo_ai_noindex' => 1],
+            ['tx_maiseo_ai_noindex' => 1],
             []
         );
 
@@ -64,7 +64,7 @@ class AiRobotsServiceTest extends TestCase
     public function testBuildTagsUsesConfiguredBotsFromTypoScript(): void
     {
         $tags = $this->subject->buildTags(
-            ['tx_maispace_seo_ai_noindex' => 1],
+            ['tx_maiseo_ai_noindex' => 1],
             ['aiRobots.' => ['bots' => 'GPTBot, MyCustomBot']]
         );
 
@@ -75,7 +75,7 @@ class AiRobotsServiceTest extends TestCase
     public function testBuildTagsReturnsEmptyArrayWhenFeatureIsDisabledViaTypoScript(): void
     {
         $tags = $this->subject->buildTags(
-            ['tx_maispace_seo_ai_noindex' => 1],
+            ['tx_maiseo_ai_noindex' => 1],
             ['aiRobots.' => ['enable' => '0']]
         );
 
@@ -95,7 +95,7 @@ class AiRobotsServiceTest extends TestCase
 
         $subject = new AiRobotsService($dispatcher);
         $tags = $subject->buildTags(
-            ['tx_maispace_seo_ai_noindex' => 1],
+            ['tx_maiseo_ai_noindex' => 1],
             []
         );
 
@@ -115,7 +115,7 @@ class AiRobotsServiceTest extends TestCase
 
         $subject = new AiRobotsService($dispatcher);
         $tags = $subject->buildTags(
-            ['tx_maispace_seo_ai_noindex' => 1],
+            ['tx_maiseo_ai_noindex' => 1],
             []
         );
 
@@ -126,7 +126,7 @@ class AiRobotsServiceTest extends TestCase
     public function testBuildTagsFiltersEmptyBotNamesFromConfig(): void
     {
         $tags = $this->subject->buildTags(
-            ['tx_maispace_seo_ai_noindex' => 1],
+            ['tx_maiseo_ai_noindex' => 1],
             ['aiRobots.' => ['bots' => 'GPTBot, , ClaudeBot']]
         );
 

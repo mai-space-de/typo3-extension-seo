@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Event;
+namespace Maispace\MaiSeo\Event;
 
 final class BeforeJsonLdRenderedEvent
 {

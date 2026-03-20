@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Tests\Unit\ViewHelper;
+namespace Maispace\MaiSeo\Tests\Unit\ViewHelper;
 
-use Maispace\MaispacesSeo\Event\AfterAiRobotsRenderedEvent;
-use Maispace\MaispacesSeo\Service\AiRobotsService;
-use Maispace\MaispacesSeo\ViewHelpers\Seo\AiRobotsViewHelper;
+use Maispace\MaiSeo\Event\AfterAiRobotsRenderedEvent;
+use Maispace\MaiSeo\Service\AiRobotsService;
+use Maispace\MaiSeo\ViewHelpers\Seo\AiRobotsViewHelper;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -41,7 +41,7 @@ class AiRobotsViewHelperTest extends TestCase
 
     public function testRenderCallsServiceAndAddsPerBotTagsToPageRenderer(): void
     {
-        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maispace_seo_ai_noindex' => 1];
+        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maiseo_ai_noindex' => 1];
         $tags = [
             ['name' => 'GPTBot', 'content' => 'noindex'],
             ['name' => 'ClaudeBot', 'content' => 'noindex'],
@@ -87,7 +87,7 @@ class AiRobotsViewHelperTest extends TestCase
 
     public function testRenderDoesNotCallPageRendererWhenTagsAreEmpty(): void
     {
-        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maispace_seo_ai_noindex' => 0];
+        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maiseo_ai_noindex' => 0];
 
         $service = $this->createMock(AiRobotsService::class);
         $service->method('buildTags')->willReturn([]);
@@ -128,7 +128,7 @@ class AiRobotsViewHelperTest extends TestCase
 
     public function testRenderSkipsTagsWithEmptyNameAddedByListener(): void
     {
-        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maispace_seo_ai_noindex' => 1];
+        $pageRecord = ['uid' => 1, 'title' => 'Test Page', 'tx_maiseo_ai_noindex' => 1];
 
         $service = $this->createMock(AiRobotsService::class);
         $service->method('buildTags')->willReturn([['name' => 'GPTBot', 'content' => 'noindex']]);

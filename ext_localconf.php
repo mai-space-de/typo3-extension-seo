@@ -9,12 +9,12 @@ call_user_func(static function (): void {
     // Appends to the existing 'mai' namespace (e.g. registered by maispace/assets)
     // so that <mai:seo.jsonLd> and <mai:seo.openGraph> are available globally.
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['mai'][] =
-        'Maispace\\MaispacesSeo\\ViewHelpers';
+        'Maispace\\MaiSeo\\ViewHelpers';
 
-    // Register the maispace_seo caching framework cache.
+    // Register the mai_seo caching framework cache.
     // Grouped with pages so a page cache flush also clears cached SEO data.
-    if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['maispace_seo'])) {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['maispace_seo'] = [
+    if (!isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['mai_seo'])) {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['mai_seo'] = [
             'frontend' => \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class,
             'backend'  => \TYPO3\CMS\Core\Cache\Backend\FileBackend::class,
             'options'  => [

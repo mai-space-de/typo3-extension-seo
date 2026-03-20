@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Service;
+namespace Maispace\MaiSeo\Service;
 
-use Maispace\MaispacesSeo\Event\BeforeRobotsRenderedEvent;
+use Maispace\MaiSeo\Event\BeforeRobotsRenderedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class RobotsService
@@ -18,9 +18,9 @@ class RobotsService
      * Build the robots directives string from a page record and TypoScript settings.
      *
      * Generates a comma-separated list of robot instructions:
-     *   - index/noindex  — controlled by `tx_maispace_seo_robots_noindex`
-     *   - follow/nofollow — controlled by `tx_maispace_seo_robots_nofollow`
-     *   - noarchive      — added when `tx_maispace_seo_robots_noarchive` is set
+     *   - index/noindex  — controlled by `tx_maiseo_robots_noindex`
+     *   - follow/nofollow — controlled by `tx_maiseo_robots_nofollow`
+     *   - noarchive      — added when `tx_maiseo_robots_noarchive` is set
      *
      * Returns an empty string when the feature is disabled via TypoScript or
      * when a listener calls {@see BeforeRobotsRenderedEvent::disable()}.
@@ -39,13 +39,13 @@ class RobotsService
 
         $parts = [];
 
-        $noIndex = self::int_($pageRecord['tx_maispace_seo_robots_noindex'] ?? null) !== 0;
+        $noIndex = self::int_($pageRecord['tx_maiseo_robots_noindex'] ?? null) !== 0;
         $parts[] = $noIndex ? 'noindex' : 'index';
 
-        $noFollow = self::int_($pageRecord['tx_maispace_seo_robots_nofollow'] ?? null) !== 0;
+        $noFollow = self::int_($pageRecord['tx_maiseo_robots_nofollow'] ?? null) !== 0;
         $parts[] = $noFollow ? 'nofollow' : 'follow';
 
-        $noArchive = self::int_($pageRecord['tx_maispace_seo_robots_noarchive'] ?? null) !== 0;
+        $noArchive = self::int_($pageRecord['tx_maiseo_robots_noarchive'] ?? null) !== 0;
         if ($noArchive) {
             $parts[] = 'noarchive';
         }

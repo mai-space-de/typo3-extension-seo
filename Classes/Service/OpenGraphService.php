@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Service;
+namespace Maispace\MaiSeo\Service;
 
-use Maispace\MaispacesSeo\Event\BeforeOpenGraphRenderedEvent;
+use Maispace\MaiSeo\Event\BeforeOpenGraphRenderedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class OpenGraphService
@@ -34,14 +34,14 @@ class OpenGraphService
         $ogSettings = is_array($settings['openGraph.'] ?? null) ? $settings['openGraph.'] : [];
 
         // og:type
-        $ogType = self::str($pageRecord['tx_maispace_seo_og_type'] ?? null);
+        $ogType = self::str($pageRecord['tx_maiseo_og_type'] ?? null);
         if ($ogType === '') {
             $ogType = 'website';
         }
         $properties[] = ['property' => 'og:type', 'content' => $ogType];
 
         // og:title — override or fall back to page title
-        $ogTitle = self::str($pageRecord['tx_maispace_seo_og_title'] ?? null);
+        $ogTitle = self::str($pageRecord['tx_maiseo_og_title'] ?? null);
         if ($ogTitle === '') {
             $ogTitle = self::str($pageRecord['title'] ?? null);
         }
@@ -50,7 +50,7 @@ class OpenGraphService
         }
 
         // og:description — override or fall back to abstract
-        $ogDescription = self::str($pageRecord['tx_maispace_seo_og_description'] ?? null);
+        $ogDescription = self::str($pageRecord['tx_maiseo_og_description'] ?? null);
         if ($ogDescription === '') {
             $ogDescription = self::str($pageRecord['abstract'] ?? null);
         }
@@ -81,7 +81,7 @@ class OpenGraphService
         $rawTwitterEnabled = $ogSettings['twitter'] ?? null;
         $twitterEnabled = is_scalar($rawTwitterEnabled) ? (string)$rawTwitterEnabled : '1';
         if ($twitterEnabled === '1') {
-            $twitterCard = self::str($pageRecord['tx_maispace_seo_twitter_card'] ?? null);
+            $twitterCard = self::str($pageRecord['tx_maiseo_twitter_card'] ?? null);
             if ($twitterCard === '') {
                 $twitterCard = 'summary';
             }

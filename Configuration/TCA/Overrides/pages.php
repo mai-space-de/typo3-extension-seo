@@ -10,9 +10,9 @@ $llPrefix = 'LLL:EXT:maispace_seo/Resources/Private/Language/locallang_tca.xlf:'
 $allowedImageTypes = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? 'gif,jpg,jpeg,png,webp,svg';
 
 $newColumns = [
-    'tx_maispace_seo_jsonld_type' => [
+    'tx_maiseo_jsonld_type' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_jsonld_type',
+        'label'   => $llPrefix . 'pages.tx_maiseo_jsonld_type',
         'config'  => [
             'type'       => 'select',
             'renderType' => 'selectSingle',
@@ -32,9 +32,9 @@ $newColumns = [
             'default'    => '',
         ],
     ],
-    'tx_maispace_seo_jsonld_name' => [
+    'tx_maiseo_jsonld_name' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_jsonld_name',
+        'label'   => $llPrefix . 'pages.tx_maiseo_jsonld_name',
         'config'  => [
             'type' => 'input',
             'size' => 50,
@@ -42,27 +42,27 @@ $newColumns = [
             'eval' => 'trim',
         ],
     ],
-    'tx_maispace_seo_jsonld_description' => [
+    'tx_maiseo_jsonld_description' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_jsonld_description',
+        'label'   => $llPrefix . 'pages.tx_maiseo_jsonld_description',
         'config'  => [
             'type' => 'text',
             'rows' => 4,
             'cols' => 50,
         ],
     ],
-    'tx_maispace_seo_jsonld_image' => [
+    'tx_maiseo_jsonld_image' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_jsonld_image',
+        'label'   => $llPrefix . 'pages.tx_maiseo_jsonld_image',
         'config'  => ExtensionManagementUtility::getFileFieldTCAConfig(
-            'tx_maispace_seo_jsonld_image',
+            'tx_maiseo_jsonld_image',
             ['maxitems' => 1, 'minitems' => 0],
             $allowedImageTypes
         ),
     ],
-    'tx_maispace_seo_jsonld_author' => [
+    'tx_maiseo_jsonld_author' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_jsonld_author',
+        'label'   => $llPrefix . 'pages.tx_maiseo_jsonld_author',
         'config'  => [
             'type' => 'input',
             'size' => 50,
@@ -70,36 +70,36 @@ $newColumns = [
             'eval' => 'trim',
         ],
     ],
-    'tx_maispace_seo_jsonld_date_published' => [
+    'tx_maiseo_jsonld_date_published' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_jsonld_date_published',
+        'label'   => $llPrefix . 'pages.tx_maiseo_jsonld_date_published',
         'config'  => [
             'type'     => 'datetime',
             'format'   => 'datetime',
             'default'  => 0,
         ],
     ],
-    'tx_maispace_seo_jsonld_date_modified' => [
+    'tx_maiseo_jsonld_date_modified' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_jsonld_date_modified',
+        'label'   => $llPrefix . 'pages.tx_maiseo_jsonld_date_modified',
         'config'  => [
             'type'    => 'datetime',
             'format'  => 'datetime',
             'default' => 0,
         ],
     ],
-    'tx_maispace_seo_jsonld_custom' => [
+    'tx_maiseo_jsonld_custom' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_jsonld_custom',
+        'label'   => $llPrefix . 'pages.tx_maiseo_jsonld_custom',
         'config'  => [
             'type' => 'text',
             'rows' => 6,
             'cols' => 50,
         ],
     ],
-    'tx_maispace_seo_og_title' => [
+    'tx_maiseo_og_title' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_og_title',
+        'label'   => $llPrefix . 'pages.tx_maiseo_og_title',
         'config'  => [
             'type' => 'input',
             'size' => 50,
@@ -107,27 +107,27 @@ $newColumns = [
             'eval' => 'trim',
         ],
     ],
-    'tx_maispace_seo_og_description' => [
+    'tx_maiseo_og_description' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_og_description',
+        'label'   => $llPrefix . 'pages.tx_maiseo_og_description',
         'config'  => [
             'type' => 'text',
             'rows' => 4,
             'cols' => 50,
         ],
     ],
-    'tx_maispace_seo_og_image' => [
+    'tx_maiseo_og_image' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_og_image',
+        'label'   => $llPrefix . 'pages.tx_maiseo_og_image',
         'config'  => ExtensionManagementUtility::getFileFieldTCAConfig(
-            'tx_maispace_seo_og_image',
+            'tx_maiseo_og_image',
             ['maxitems' => 1, 'minitems' => 0],
             $allowedImageTypes
         ),
     ],
-    'tx_maispace_seo_og_type' => [
+    'tx_maiseo_og_type' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_og_type',
+        'label'   => $llPrefix . 'pages.tx_maiseo_og_type',
         'config'  => [
             'type'       => 'select',
             'renderType' => 'selectSingle',
@@ -143,9 +143,9 @@ $newColumns = [
             'default'    => 'website',
         ],
     ],
-    'tx_maispace_seo_twitter_card' => [
+    'tx_maiseo_twitter_card' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_twitter_card',
+        'label'   => $llPrefix . 'pages.tx_maiseo_twitter_card',
         'config'  => [
             'type'       => 'select',
             'renderType' => 'selectSingle',
@@ -158,18 +158,18 @@ $newColumns = [
             'default'    => 'summary',
         ],
     ],
-    'tx_maispace_seo_twitter_image' => [
+    'tx_maiseo_twitter_image' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_twitter_image',
+        'label'   => $llPrefix . 'pages.tx_maiseo_twitter_image',
         'config'  => ExtensionManagementUtility::getFileFieldTCAConfig(
-            'tx_maispace_seo_twitter_image',
+            'tx_maiseo_twitter_image',
             ['maxitems' => 1, 'minitems' => 0],
             $allowedImageTypes
         ),
     ],
-    'tx_maispace_seo_canonical_url' => [
+    'tx_maiseo_canonical_url' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_canonical_url',
+        'label'   => $llPrefix . 'pages.tx_maiseo_canonical_url',
         'config'  => [
             'type' => 'input',
             'size' => 50,
@@ -177,42 +177,42 @@ $newColumns = [
             'eval' => 'trim',
         ],
     ],
-    'tx_maispace_seo_robots_noindex' => [
+    'tx_maiseo_robots_noindex' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_robots_noindex',
+        'label'   => $llPrefix . 'pages.tx_maiseo_robots_noindex',
         'config'  => [
             'type'    => 'check',
             'default' => 0,
         ],
     ],
-    'tx_maispace_seo_robots_nofollow' => [
+    'tx_maiseo_robots_nofollow' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_robots_nofollow',
+        'label'   => $llPrefix . 'pages.tx_maiseo_robots_nofollow',
         'config'  => [
             'type'    => 'check',
             'default' => 0,
         ],
     ],
-    'tx_maispace_seo_robots_noarchive' => [
+    'tx_maiseo_robots_noarchive' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_robots_noarchive',
+        'label'   => $llPrefix . 'pages.tx_maiseo_robots_noarchive',
         'config'  => [
             'type'    => 'check',
             'default' => 0,
         ],
     ],
-    'tx_maispace_seo_meta_description' => [
+    'tx_maiseo_meta_description' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_meta_description',
+        'label'   => $llPrefix . 'pages.tx_maiseo_meta_description',
         'config'  => [
             'type' => 'text',
             'rows' => 3,
             'cols' => 50,
         ],
     ],
-    'tx_maispace_seo_ai_noindex' => [
+    'tx_maiseo_ai_noindex' => [
         'exclude' => true,
-        'label'   => $llPrefix . 'pages.tx_maispace_seo_ai_noindex',
+        'label'   => $llPrefix . 'pages.tx_maiseo_ai_noindex',
         'config'  => [
             'type'    => 'check',
             'default' => 0,
@@ -225,36 +225,36 @@ ExtensionManagementUtility::addTCAcolumns('pages', $newColumns);
 // Define palettes so that the group labels appear in the form engine
 ExtensionManagementUtility::addFieldsToPalette(
     'pages',
-    'tx_maispace_seo_jsonld',
-    'tx_maispace_seo_jsonld_type, tx_maispace_seo_jsonld_name, tx_maispace_seo_jsonld_description, --linebreak--, '
-    . 'tx_maispace_seo_jsonld_image, tx_maispace_seo_jsonld_author, --linebreak--, '
-    . 'tx_maispace_seo_jsonld_date_published, tx_maispace_seo_jsonld_date_modified, --linebreak--, '
-    . 'tx_maispace_seo_jsonld_custom'
+    'tx_maiseo_jsonld',
+    'tx_maiseo_jsonld_type, tx_maiseo_jsonld_name, tx_maiseo_jsonld_description, --linebreak--, '
+    . 'tx_maiseo_jsonld_image, tx_maiseo_jsonld_author, --linebreak--, '
+    . 'tx_maiseo_jsonld_date_published, tx_maiseo_jsonld_date_modified, --linebreak--, '
+    . 'tx_maiseo_jsonld_custom'
 );
 
 ExtensionManagementUtility::addFieldsToPalette(
     'pages',
-    'tx_maispace_seo_og',
-    'tx_maispace_seo_og_title, tx_maispace_seo_og_description, --linebreak--, '
-    . 'tx_maispace_seo_og_image, tx_maispace_seo_og_type, --linebreak--, '
-    . 'tx_maispace_seo_twitter_card, tx_maispace_seo_twitter_image'
+    'tx_maiseo_og',
+    'tx_maiseo_og_title, tx_maiseo_og_description, --linebreak--, '
+    . 'tx_maiseo_og_image, tx_maiseo_og_type, --linebreak--, '
+    . 'tx_maiseo_twitter_card, tx_maiseo_twitter_image'
 );
 
 ExtensionManagementUtility::addFieldsToPalette(
     'pages',
-    'tx_maispace_seo_advanced',
-    'tx_maispace_seo_meta_description, --linebreak--, '
-    . 'tx_maispace_seo_canonical_url, --linebreak--, '
-    . 'tx_maispace_seo_robots_noindex, tx_maispace_seo_robots_nofollow, tx_maispace_seo_robots_noarchive, --linebreak--, '
-    . 'tx_maispace_seo_ai_noindex'
+    'tx_maiseo_advanced',
+    'tx_maiseo_meta_description, --linebreak--, '
+    . 'tx_maiseo_canonical_url, --linebreak--, '
+    . 'tx_maiseo_robots_noindex, tx_maiseo_robots_nofollow, tx_maiseo_robots_noarchive, --linebreak--, '
+    . 'tx_maiseo_ai_noindex'
 );
 
 ExtensionManagementUtility::addToAllTCAtypes(
     'pages',
     '--div--;' . $llPrefix . 'tab.seo,'
-    . '--palette--;' . $llPrefix . 'tab.seo.jsonld;tx_maispace_seo_jsonld,'
-    . '--palette--;' . $llPrefix . 'tab.seo.opengraph;tx_maispace_seo_og,'
-    . '--palette--;' . $llPrefix . 'tab.seo.advanced;tx_maispace_seo_advanced',
+    . '--palette--;' . $llPrefix . 'tab.seo.jsonld;tx_maiseo_jsonld,'
+    . '--palette--;' . $llPrefix . 'tab.seo.opengraph;tx_maiseo_og,'
+    . '--palette--;' . $llPrefix . 'tab.seo.advanced;tx_maiseo_advanced',
     '',
     'after:title'
 );

@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Maispace\MaispacesSeo\Tests\Unit\Service;
+namespace Maispace\MaiSeo\Tests\Unit\Service;
 
-use Maispace\MaispacesSeo\Event\BeforeMetaDescriptionRenderedEvent;
-use Maispace\MaispacesSeo\Service\MetaDescriptionService;
+use Maispace\MaiSeo\Event\BeforeMetaDescriptionRenderedEvent;
+use Maispace\MaiSeo\Service\MetaDescriptionService;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -28,7 +28,7 @@ class MetaDescriptionServiceTest extends TestCase
     {
         $description = $this->subject->buildDescription(
             [
-                'tx_maispace_seo_meta_description' => 'Custom meta description',
+                'tx_maiseo_meta_description' => 'Custom meta description',
                 'description'                      => 'Core description',
                 'abstract'                         => 'Page abstract',
             ],
@@ -42,7 +42,7 @@ class MetaDescriptionServiceTest extends TestCase
     {
         $description = $this->subject->buildDescription(
             [
-                'tx_maispace_seo_meta_description' => '',
+                'tx_maiseo_meta_description' => '',
                 'description'                      => 'Core description',
                 'abstract'                         => 'Page abstract',
             ],
@@ -56,7 +56,7 @@ class MetaDescriptionServiceTest extends TestCase
     {
         $description = $this->subject->buildDescription(
             [
-                'tx_maispace_seo_meta_description' => '',
+                'tx_maiseo_meta_description' => '',
                 'description'                      => '',
                 'abstract'                         => 'Page abstract',
             ],
@@ -70,7 +70,7 @@ class MetaDescriptionServiceTest extends TestCase
     {
         $description = $this->subject->buildDescription(
             [
-                'tx_maispace_seo_meta_description' => '',
+                'tx_maiseo_meta_description' => '',
                 'description'                      => '',
                 'abstract'                         => '',
             ],
@@ -83,7 +83,7 @@ class MetaDescriptionServiceTest extends TestCase
     public function testBuildDescriptionReturnsEmptyStringWhenFeatureIsDisabledViaTypoScript(): void
     {
         $description = $this->subject->buildDescription(
-            ['tx_maispace_seo_meta_description' => 'Custom meta description'],
+            ['tx_maiseo_meta_description' => 'Custom meta description'],
             ['metaDescription.' => ['enable' => '0']]
         );
 
@@ -103,7 +103,7 @@ class MetaDescriptionServiceTest extends TestCase
 
         $subject = new MetaDescriptionService($dispatcher);
         $description = $subject->buildDescription(
-            ['tx_maispace_seo_meta_description' => 'Custom meta description'],
+            ['tx_maiseo_meta_description' => 'Custom meta description'],
             []
         );
 
@@ -123,7 +123,7 @@ class MetaDescriptionServiceTest extends TestCase
 
         $subject = new MetaDescriptionService($dispatcher);
         $description = $subject->buildDescription(
-            ['tx_maispace_seo_meta_description' => 'Original description'],
+            ['tx_maiseo_meta_description' => 'Original description'],
             []
         );
 
