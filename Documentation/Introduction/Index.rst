@@ -6,7 +6,7 @@ Introduction
 What does it do?
 ----------------
 
-**maispace/seo** is a TYPO3 extension that covers the most important on-page
+**maispace/mai-seo** is a TYPO3 extension that covers the most important on-page
 SEO signals without requiring any external services or data transmission. It
 is built for TYPO3 13.4 LTS and PHP 8.2+.
 
@@ -44,7 +44,7 @@ Features at a glance
 Why use this extension?
 -----------------------
 
-TYPO3 ships basic SEO support via ``EXT:seo``. The ``maispace/seo`` extension
+TYPO3 ships basic SEO support via ``EXT:seo``. The ``maispace/mai-seo`` extension
 complements it with:
 
 *  Granular **JSON-LD / structured data** control (10 schema types, custom

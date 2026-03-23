@@ -8,7 +8,7 @@ Composer install
 
 .. code-block:: bash
 
-    composer require maispace/seo
+    composer require maispace/mai-seo
 
 Include TypoScript
 ------------------
@@ -18,7 +18,7 @@ an ``@import`` statement in your TypoScript root template:
 
 .. code-block:: typoscript
 
-    @import 'EXT:maispace_seo/Configuration/TypoScript/setup.typoscript'
+    @import 'EXT:mai_seo/Configuration/TypoScript/setup.typoscript'
 
 Database update
 ---------------

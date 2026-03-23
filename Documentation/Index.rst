@@ -5,10 +5,10 @@ maispace/seo
 ===========
 
 :Extension key:
-    maispace_seo
+    mai_seo
 
 :Package name:
-    maispace/seo
+    maispace/mai-seo
 
 :Version:
     |release|
