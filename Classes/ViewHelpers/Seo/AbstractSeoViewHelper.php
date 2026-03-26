@@ -59,7 +59,7 @@ abstract class AbstractSeoViewHelper extends AbstractViewHelper
     {
         $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
         $typoscript = $request->getAttribute('frontend.typoscript');
-        if ($typoscript instanceof FrontendTypoScript) {
+        if ($typoscript instanceof FrontendTypoScript && $typoscript->hasSetup()) {
             $setup = $typoscript->getSetupArray();
             $pluginSetup = is_array($setup['plugin.'] ?? null) ? $setup['plugin.'] : [];
             /** @var array<string, mixed> $seoSettings */

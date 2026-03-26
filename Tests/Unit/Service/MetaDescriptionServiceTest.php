@@ -28,7 +28,7 @@ class MetaDescriptionServiceTest extends TestCase
     {
         $description = $this->subject->buildDescription(
             [
-                'tx_maiseo_meta_description' => 'Custom meta description',
+                'tx_maiseo_meta_description'       => 'Custom meta description',
                 'description'                      => 'Core description',
                 'abstract'                         => 'Page abstract',
             ],
@@ -42,7 +42,7 @@ class MetaDescriptionServiceTest extends TestCase
     {
         $description = $this->subject->buildDescription(
             [
-                'tx_maiseo_meta_description' => '',
+                'tx_maiseo_meta_description'       => '',
                 'description'                      => 'Core description',
                 'abstract'                         => 'Page abstract',
             ],
@@ -56,7 +56,7 @@ class MetaDescriptionServiceTest extends TestCase
     {
         $description = $this->subject->buildDescription(
             [
-                'tx_maiseo_meta_description' => '',
+                'tx_maiseo_meta_description'       => '',
                 'description'                      => '',
                 'abstract'                         => 'Page abstract',
             ],
@@ -70,7 +70,7 @@ class MetaDescriptionServiceTest extends TestCase
     {
         $description = $this->subject->buildDescription(
             [
-                'tx_maiseo_meta_description' => '',
+                'tx_maiseo_meta_description'       => '',
                 'description'                      => '',
                 'abstract'                         => '',
             ],
