@@ -26,4 +26,8 @@ plugin.tx_maispace_seo {
         enable = 1
         bots = GPTBot, OAI-SearchBot, ClaudeBot, Google-Extended, PerplexityBot, CCBot, Bytespider, Amazonbot
     }
+    llmsTxt {
+        enable = 1
+        url = /llms.txt
+    }
 }
