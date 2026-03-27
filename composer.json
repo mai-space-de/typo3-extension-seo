@@ -15,12 +15,12 @@
   },
   "require-dev": {
     "armin/editorconfig-cli": "^2.1",
-    "friendsofphp/php-cs-fixer": "^3.0",
+    "friendsofphp/php-cs-fixer": "*",
     "helmich/typo3-typoscript-lint": "^3.1",
-    "phpstan/phpstan": "^2.0",
-    "phpunit/phpunit": "^10.5 || ^11.0",
+    "phpstan/phpstan": "*",
+    "phpunit/phpunit": "^11.0",
     "saschaegerer/phpstan-typo3": "^2.0",
-    "typo3/testing-framework": "^8.0"
+    "typo3/testing-framework": "*"
   },
   "autoload": {
     "psr-4": {
