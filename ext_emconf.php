@@ -1,21 +1,17 @@
 <?php
-
 $EM_CONF[$_EXTKEY] = [
-    'title'            => 'Maispace SEO',
-    'description'      => 'SEO helpers for TYPO3: JSON-LD structured data and Open Graph meta tags on pages, Fluid ViewHelpers, PSR-14 events, and a backend overview module.',
-    'category'         => 'fe',
-    'version'          => '1.0.0',
-    'state'            => 'stable',
-    'author'           => 'Maispace',
-    'author_email'     => '',
-    'author_company'   => 'Maispace',
-    'clearCacheOnLoad' => true,
-    'constraints'      => [
-        'depends'   => [
-            'php'   => '8.2.0-0.0.0',
-            'typo3' => '13.4.0-13.9.99',
+    'title' => 'Mai Seo',
+    'description' => 'SEO helpers for TYPO3 providing JSON-LD structured data, Open Graph meta tags, additional page property fields, a backend statistics module, redirect management, and Matomo analytics widgets.',
+    'category' => 'module',
+    'author' => 'Maispace',
+    'author_email' => '',
+    'state' => 'stable',
+    'version' => '1.0.0',
+    'constraints' => [
+        'depends' => [
+            'typo3' => '13.4.0-14.99.99',
         ],
         'conflicts' => [],
-        'suggests'  => [],
+        'suggests' => [],
     ],
 ];
