@@ -5,7 +5,7 @@
 
 SEO helpers for TYPO3 providing JSON-LD structured data, Open Graph meta tags, additional page property fields, a backend statistics module, redirect management, and Matomo analytics widgets.
 
-**Requires:** TYPO3 13.4 LTS / 14.0 · PHP 8.2+
+**Requires:** TYPO3 13.4 LTS / 14.1 · PHP 8.2+
 
 ---
 
