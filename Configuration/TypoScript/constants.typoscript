@@ -1,0 +1,12 @@
+plugin.tx_maiseo {
+    settings {
+        structuredData {
+            autoGenerate = 1
+            injectViaPageRenderer = 1
+            defaultRootType = WebPage
+            editorAllowedTypes =
+            showAutoNodes = 1
+            maxNestingDepth = 5
+        }
+    }
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="messages" date="2024-01-01T00:00:00Z" product-name="mai_seo">
+        <header/>
+        <body>
+            <trans-unit id="tab.seo_overrides">
+                <source>SEO</source>
+            </trans-unit>
+            <trans-unit id="palette.mai_seo">
+                <source>Open Graph &amp; Schema</source>
+            </trans-unit>
+
+            <trans-unit id="pages.tx_maiseo_og_title">
+                <source>Open Graph Title</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_og_title.description">
+                <source>Overrides the page title used in og:title meta tag. Leave empty to use the page title.</source>
+            </trans-unit>
+
+            <trans-unit id="pages.tx_maiseo_og_description">
+                <source>Open Graph Description</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_og_description.description">
+                <source>Overrides the description used in og:description meta tag. Leave empty to use the page description.</source>
+            </trans-unit>
+
+            <trans-unit id="pages.tx_maiseo_og_image">
+                <source>Open Graph Image</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_og_image.description">
+                <source>Image used for og:image. Recommended size: 1200×630 px.</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_og_image.addFile">
+                <source>Add image</source>
+            </trans-unit>
+
+            <trans-unit id="pages.tx_maiseo_schema_type">
+                <source>Schema.org Type</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_schema_type.description">
+                <source>Overrides the root @type for this page's JSON-LD structured data.</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_schema_type.auto">
+                <source>Auto (detect from page type)</source>
+            </trans-unit>
+
+            <trans-unit id="pages.tx_maiseo_structured_data">
+                <source>Structured Data (JSON-LD)</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_structured_data.description">
+                <source>Visual editor for schema.org JSON-LD structured data. Auto-generated values are shown with a lock icon and can be overridden.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

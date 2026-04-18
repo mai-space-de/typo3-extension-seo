@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-use Maispace\MaiBase\TableConfigurationArray\Field;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 $lang = static function (string $key): string {
     return 'LLL:EXT:mai_seo/Resources/Private/Language/Default/locallang_tca.xlf:' . $key;
 };
 
-// Add SEO override fields to pages
 ExtensionManagementUtility::addTCAcolumns(
     'pages',
     [
@@ -29,6 +27,10 @@ ExtensionManagementUtility::addTCAcolumns(
                     ['label' => 'BreadcrumbList', 'value' => 'BreadcrumbList'],
                     ['label' => 'Event', 'value' => 'Event'],
                     ['label' => 'FAQPage', 'value' => 'FAQPage'],
+                    ['label' => 'LocalBusiness', 'value' => 'LocalBusiness'],
+                    ['label' => 'Person', 'value' => 'Person'],
+                    ['label' => 'Product', 'value' => 'Product'],
+                    ['label' => 'WebSite', 'value' => 'WebSite'],
                 ],
                 'default' => '',
             ],
@@ -40,7 +42,6 @@ ExtensionManagementUtility::addTCAcolumns(
                 'type' => 'input',
                 'size' => 50,
                 'max' => 255,
-                'eval' => 'trim',
             ],
         ],
         'tx_maiseo_og_description' => [
@@ -50,7 +51,6 @@ ExtensionManagementUtility::addTCAcolumns(
                 'type' => 'text',
                 'rows' => 3,
                 'cols' => 50,
-                'eval' => 'trim',
             ],
         ],
         'tx_maiseo_og_image' => [
@@ -65,19 +65,26 @@ ExtensionManagementUtility::addTCAcolumns(
                 ],
             ],
         ],
+        'tx_maiseo_structured_data' => [
+            'label' => $lang('pages.tx_maiseo_structured_data'),
+            'description' => $lang('pages.tx_maiseo_structured_data.description'),
+            'config' => [
+                'type' => 'user',
+                'renderType' => 'maiseoStructuredDataTree',
+                'default' => '',
+            ],
+        ],
     ]
 );
 
-// Add SEO palette
 $GLOBALS['TCA']['pages']['palettes']['mai_seo'] = [
     'label' => $lang('palette.mai_seo'),
-    'showitem' => 'tx_maiseo_og_title, tx_maiseo_og_description, tx_maiseo_og_image, tx_maiseo_schema_type',
+    'showitem' => 'tx_maiseo_og_title, tx_maiseo_og_description, --linebreak--, tx_maiseo_og_image, tx_maiseo_schema_type',
 ];
 
-// Add SEO fields to standard page types
 ExtensionManagementUtility::addToAllTCAtypes(
     'pages',
-    '--div--;' . $lang('tab.seo_overrides') . ', --palette--;;mai_seo',
+    '--div--;' . $lang('tab.seo_overrides') . ', --palette--;;mai_seo, tx_maiseo_structured_data',
     '1,4',
     'after:keywords'
 );

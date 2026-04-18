@@ -1,0 +1,10 @@
+page {
+    10 {
+        dataProcessing {
+            200 = Maispace\MaiSeo\DataProcessing\StructuredDataProcessor
+            200 {
+                as = structuredData
+            }
+        }
+    }
+}

@@ -9,6 +9,16 @@
             "role": "Developer"
         }
     ],
+    "require": {
+        "php": "^8.2",
+        "typo3/cms-core": "^13.4 || ^14.0",
+        "typo3/cms-seo": "^13.4 || ^14.0",
+        "typo3/cms-redirects": "^13.4 || ^14.0",
+        "maispace/mai-base": "@dev"
+    },
+    "suggest": {
+        "brotkrueml/typo3-matomo-widgets": "^3.1 — Matomo analytics dashboard widgets"
+    },
     "autoload": {
         "psr-4": {
             "Maispace\\MaiSeo\\": "Classes"

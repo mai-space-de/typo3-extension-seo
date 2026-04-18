@@ -1,0 +1,124 @@
+{
+  "types": {
+    "Thing": {
+      "label": "Thing",
+      "ancestors": [],
+      "properties": ["name", "description", "url", "image", "identifier", "sameAs"],
+      "description": "The most generic type of item."
+    },
+    "WebPage": {
+      "label": "WebPage",
+      "ancestors": ["Thing"],
+      "properties": ["name", "url", "description", "breadcrumb", "mainEntity", "author", "datePublished", "dateModified", "image", "inLanguage", "keywords", "isPartOf"],
+      "description": "A web page."
+    },
+    "AboutPage": {
+      "label": "AboutPage",
+      "ancestors": ["Thing", "WebPage"],
+      "properties": ["name", "url", "description", "author", "datePublished", "dateModified"],
+      "description": "Web page type: About page."
+    },
+    "ContactPage": {
+      "label": "ContactPage",
+      "ancestors": ["Thing", "WebPage"],
+      "properties": ["name", "url", "description", "contactType", "contactOption"],
+      "description": "Web page type: Contact page."
+    },
+    "FAQPage": {
+      "label": "FAQPage",
+      "ancestors": ["Thing", "WebPage"],
+      "properties": ["name", "url", "description", "mainEntity"],
+      "description": "A FAQPage is a WebPage presenting one or more Frequently asked questions."
+    },
+    "Article": {
+      "label": "Article",
+      "ancestors": ["Thing"],
+      "properties": ["headline", "name", "author", "datePublished", "dateModified", "image", "description", "articleBody", "wordCount", "publisher", "keywords"],
+      "description": "An article, such as a news article or piece of investigative report."
+    },
+    "Organization": {
+      "label": "Organization",
+      "ancestors": ["Thing"],
+      "properties": ["name", "url", "logo", "address", "telephone", "email", "sameAs", "description", "numberOfEmployees", "foundingDate", "legalName"],
+      "description": "An organization such as a school, NGO, corporation, club, etc."
+    },
+    "LocalBusiness": {
+      "label": "LocalBusiness",
+      "ancestors": ["Thing", "Organization"],
+      "properties": ["name", "url", "address", "telephone", "openingHours", "geo", "priceRange", "image", "currenciesAccepted", "paymentAccepted"],
+      "description": "A particular physical business or branch of an organization."
+    },
+    "Person": {
+      "label": "Person",
+      "ancestors": ["Thing"],
+      "properties": ["name", "url", "image", "email", "jobTitle", "worksFor", "sameAs", "birthDate", "birthPlace", "alumniOf"],
+      "description": "A person (alive, dead, undead, or fictional)."
+    },
+    "Event": {
+      "label": "Event",
+      "ancestors": ["Thing"],
+      "properties": ["name", "startDate", "endDate", "location", "description", "image", "url", "organizer", "performer", "eventStatus", "eventAttendanceMode"],
+      "description": "An event happening at a certain time and location."
+    },
+    "Product": {
+      "label": "Product",
+      "ancestors": ["Thing"],
+      "properties": ["name", "description", "image", "sku", "brand", "offers", "aggregateRating", "review", "gtin", "mpn"],
+      "description": "Any offered product or service."
+    },
+    "WebSite": {
+      "label": "WebSite",
+      "ancestors": ["Thing"],
+      "properties": ["name", "url", "description", "inLanguage", "potentialAction", "publisher"],
+      "description": "A WebSite is a set of related web pages and other items typically served from a single web domain."
+    },
+    "BreadcrumbList": {
+      "label": "BreadcrumbList",
+      "ancestors": ["Thing"],
+      "properties": ["itemListElement", "name", "description"],
+      "description": "A BreadcrumbList is an ItemList consisting of a chain of linked Web pages."
+    },
+    "ImageObject": {
+      "label": "ImageObject",
+      "ancestors": ["Thing"],
+      "properties": ["url", "width", "height", "caption", "description", "contentUrl"],
+      "description": "An image file."
+    },
+    "PostalAddress": {
+      "label": "PostalAddress",
+      "ancestors": ["Thing"],
+      "properties": ["streetAddress", "addressLocality", "addressRegion", "postalCode", "addressCountry"],
+      "description": "The mailing address."
+    }
+  },
+  "properties": {
+    "name": { "label": "Name", "expectedTypes": ["Text"], "description": "The name of the item." },
+    "description": { "label": "Description", "expectedTypes": ["Text"], "description": "A description of the item." },
+    "url": { "label": "URL", "expectedTypes": ["URL"], "description": "URL of the item." },
+    "image": { "label": "Image", "expectedTypes": ["ImageObject", "URL"], "description": "An image of the item." },
+    "identifier": { "label": "Identifier", "expectedTypes": ["Text", "URL"], "description": "The identifier property represents any kind of identifier." },
+    "sameAs": { "label": "Same As", "expectedTypes": ["URL"], "description": "URL of a reference Web page that unambiguously indicates the item's identity." },
+    "datePublished": { "label": "Date Published", "expectedTypes": ["Date", "DateTime"], "description": "Date of first broadcast/publication." },
+    "dateModified": { "label": "Date Modified", "expectedTypes": ["Date", "DateTime"], "description": "The date on which the CreativeWork was most recently modified." },
+    "author": { "label": "Author", "expectedTypes": ["Person", "Organization"], "description": "The author of this content." },
+    "publisher": { "label": "Publisher", "expectedTypes": ["Person", "Organization"], "description": "The publisher of the creative work." },
+    "headline": { "label": "Headline", "expectedTypes": ["Text"], "description": "Headline of the article." },
+    "keywords": { "label": "Keywords", "expectedTypes": ["Text"], "description": "Keywords or tags used to describe this content." },
+    "inLanguage": { "label": "In Language", "expectedTypes": ["Language", "Text"], "description": "The language of the content or performance." },
+    "breadcrumb": { "label": "Breadcrumb", "expectedTypes": ["BreadcrumbList", "Text"], "description": "A set of links that can help a user understand and navigate a website hierarchy." },
+    "mainEntity": { "label": "Main Entity", "expectedTypes": ["Thing"], "description": "Indicates the primary entity described in some page or other CreativeWork." },
+    "logo": { "label": "Logo", "expectedTypes": ["ImageObject", "URL"], "description": "An associated logo." },
+    "address": { "label": "Address", "expectedTypes": ["PostalAddress", "Text"], "description": "Physical address of the item." },
+    "telephone": { "label": "Telephone", "expectedTypes": ["Text"], "description": "The telephone number." },
+    "email": { "label": "Email", "expectedTypes": ["Text"], "description": "Email address." },
+    "openingHours": { "label": "Opening Hours", "expectedTypes": ["Text"], "description": "The general opening hours for a business. Opening hours can be specified as a weekly time range." },
+    "startDate": { "label": "Start Date", "expectedTypes": ["Date", "DateTime"], "description": "The start date and time of the item." },
+    "endDate": { "label": "End Date", "expectedTypes": ["Date", "DateTime"], "description": "The end date and time of the item." },
+    "location": { "label": "Location", "expectedTypes": ["Place", "Text"], "description": "The location of, for example, where an event is happening." },
+    "jobTitle": { "label": "Job Title", "expectedTypes": ["Text"], "description": "The job title of the person." },
+    "worksFor": { "label": "Works For", "expectedTypes": ["Organization"], "description": "Organizations that the person works for." },
+    "itemListElement": { "label": "Item List Element", "expectedTypes": ["ListItem"], "description": "For itemListElement values, you can use Simple values such as 'Peter', 'Paul', and 'Mary', Zip codes such as '98052', or Simple tuples such as (1,1) = 1 gadget." },
+    "offers": { "label": "Offers", "expectedTypes": ["Offer"], "description": "An offer to provide this item." },
+    "aggregateRating": { "label": "Aggregate Rating", "expectedTypes": ["AggregateRating"], "description": "The overall rating, based on a collection of reviews or ratings, of the item." }
+  }
+}

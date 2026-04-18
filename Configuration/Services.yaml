@@ -1,9 +1,48 @@
 services:
-  _defaults:
-    autowire: true
-    autoconfigure: true
-    public: false
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
-  Maispace\MaiSeo\:
-    resource: '../Classes/*'
-    exclude: '../Classes/Domain/Model/*'
+    Maispace\MaiSeo\:
+        resource: '../Classes/*'
+        exclude:
+            - '../Classes/Domain/Model/*'
+            - '../Classes/Event/*'
+
+    Maispace\MaiSeo\Schema\VocabularyRegistry:
+        public: true
+
+    Maispace\MaiSeo\StructuredData\StructuredDataService:
+        public: true
+
+    Maispace\MaiSeo\StructuredData\AutoGenerator:
+        public: true
+
+    Maispace\MaiSeo\StructuredData\Collector\CollectorRegistry:
+        public: true
+
+    Maispace\MaiSeo\DataProcessing\StructuredDataProcessor:
+        public: true
+
+    Maispace\MaiSeo\Hook\PageRecordSaveHook:
+        public: true
+
+    Maispace\MaiSeo\StructuredData\Collector\PageCollector:
+        tags:
+            - name: 'maiseo.structured_data.collector'
+
+    Maispace\MaiSeo\StructuredData\Collector\BreadcrumbCollector:
+        tags:
+            - name: 'maiseo.structured_data.collector'
+
+    Maispace\MaiSeo\EventListener\PageRecordSavedListener:
+        tags:
+            - name: 'event.listener'
+              identifier: 'maiseo/page-record-saved'
+              event: Maispace\MaiSeo\Event\PageRecordSavedEvent
+
+    Maispace\MaiSeo\Form\Element\StructuredDataTreeElement:
+        tags:
+            - name: 'backend.form.element'
+              identifier: 'maiseoStructuredDataTree'
