@@ -29,7 +29,7 @@ final class AutoGenerator implements SingletonInterface
         $cacheKey = 'auto_' . $pageUid;
 
         if ($useCache && $cache->has($cacheKey)) {
-            return (array)$cache->get($cacheKey);
+            return (array) $cache->get($cacheKey);
         }
 
         $pageRecord = $this->fetchPageRecord($pageUid);
@@ -72,6 +72,6 @@ final class AutoGenerator implements SingletonInterface
             ->executeQuery()
             ->fetchAssociative();
 
-        return $row === false ? null : (array)$row;
+        return $row === false ? null : (array) $row;
     }
 }

@@ -32,7 +32,7 @@ final class StructuredDataProcessor implements DataProcessorInterface
         }
 
         $as = $processorConfiguration['as'] ?? 'structuredData';
-        $processedData[(string)$as] = [
+        $processedData[(string) $as] = [
             'json' => json_encode($graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT),
             'graph' => $graph,
         ];

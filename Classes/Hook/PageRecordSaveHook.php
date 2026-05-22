@@ -26,8 +26,8 @@ final class PageRecordSaveHook
         }
 
         $pageUid = $status === 'new'
-            ? (int)($dataHandler->substNEWwithIDs[$id] ?? 0)
-            : (int)$id;
+            ? (int) ($dataHandler->substNEWwithIDs[$id] ?? 0)
+            : (int) $id;
 
         if ($pageUid === 0) {
             return;

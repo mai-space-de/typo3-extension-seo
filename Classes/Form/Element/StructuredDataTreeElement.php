@@ -25,7 +25,7 @@ final class StructuredDataTreeElement extends AbstractFormElement
         $result = $this->initializeResultArray();
 
         $row = $this->data['databaseRow'] ?? [];
-        $pageUid = (int)($row['uid'] ?? 0);
+        $pageUid = (int) ($row['uid'] ?? 0);
         $parameterArray = $this->data['parameterArray'];
         $fieldName = $parameterArray['itemFormElName'];
         $currentValue = $parameterArray['itemFormElValue'] ?? '';

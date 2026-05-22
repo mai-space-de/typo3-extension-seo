@@ -99,7 +99,7 @@ final class VocabularyRegistry implements VocabularyRegistryInterface, Singleton
             return;
         }
 
-        $data = json_decode((string)file_get_contents($vocabFile), true);
+        $data = json_decode((string) file_get_contents($vocabFile), true);
         if (!is_array($data)) {
             $this->loadFallbackVocabulary();
             return;

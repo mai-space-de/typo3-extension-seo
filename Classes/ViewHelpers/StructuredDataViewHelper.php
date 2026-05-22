@@ -22,9 +22,9 @@ final class StructuredDataViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
-        $pageUid = (int)$this->arguments['pageUid'];
+        $pageUid = (int) $this->arguments['pageUid'];
         if ($pageUid === 0) {
-            $pageUid = $GLOBALS['TSFE']?->id ?? 0;
+            $pageUid = $GLOBALS['TSFE']->id ?? 0;
         }
         if ($pageUid === 0) {
             return '';

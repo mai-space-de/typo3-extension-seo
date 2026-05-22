@@ -25,11 +25,11 @@ final class PageCollector implements CollectorInterface
         }
 
         if (!empty($record['crdate'])) {
-            $event->addToGraph('datePublished', date('c', (int)$record['crdate']));
+            $event->addToGraph('datePublished', date('c', (int) $record['crdate']));
         }
 
         if (!empty($record['tstamp'])) {
-            $event->addToGraph('dateModified', date('c', (int)$record['tstamp']));
+            $event->addToGraph('dateModified', date('c', (int) $record['tstamp']));
         }
 
         $schemaType = $record['tx_maiseo_schema_type'] ?? '';

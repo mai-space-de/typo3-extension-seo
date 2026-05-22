@@ -5,25 +5,22 @@ declare(strict_types=1);
 namespace Maispace\MaiSeo\StructuredData\Collector;
 
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 final class BreadcrumbCollector implements CollectorInterface
 {
-    public function __construct(
-        private readonly RootlineUtility $rootlineUtility,
-    ) {}
-
     public function collect(StructuredDataCollectionEvent $event): void
     {
         try {
-            $rootline = $this->rootlineUtility->getRootline($event->pageUid);
+            $rootline = GeneralUtility::makeInstance(RootlineUtility::class, $event->pageUid)->get();
         } catch (\Throwable) {
             return;
         }
 
         $filteredRootline = array_filter(
             $rootline,
-            static fn(array $page): bool => (int)($page['doktype'] ?? 0) !== 254 && !empty($page['title'])
+            static fn(array $page): bool => (int) ($page['doktype'] ?? 0) !== 254 && !empty($page['title']),
         );
 
         if (count($filteredRootline) < 2) {

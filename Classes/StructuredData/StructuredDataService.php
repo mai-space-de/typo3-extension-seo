@@ -60,7 +60,7 @@ final class StructuredDataService implements SingletonInterface
             return [];
         }
 
-        $decoded = json_decode((string)$row['tx_maiseo_structured_data'], true);
+        $decoded = json_decode((string) $row['tx_maiseo_structured_data'], true);
         return is_array($decoded) ? $decoded : [];
     }
 }
