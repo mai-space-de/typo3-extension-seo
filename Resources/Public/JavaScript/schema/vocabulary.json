@@ -89,6 +89,18 @@
       "ancestors": ["Thing"],
       "properties": ["streetAddress", "addressLocality", "addressRegion", "postalCode", "addressCountry"],
       "description": "The mailing address."
+    },
+    "CollectionPage": {
+      "label": "CollectionPage",
+      "ancestors": ["Thing", "WebPage"],
+      "properties": ["name", "url", "description", "breadcrumb", "mainEntity", "datePublished", "dateModified", "numberOfItems"],
+      "description": "Web page type: Collection page."
+    },
+    "JobPosting": {
+      "label": "JobPosting",
+      "ancestors": ["Thing"],
+      "properties": ["title", "description", "responsibilities", "validThrough", "employmentType", "datePosted", "url", "hiringOrganization", "jobLocation", "directApply"],
+      "description": "A listing that describes a job opening in a certain organization."
     }
   },
   "properties": {
@@ -119,6 +131,15 @@
     "worksFor": { "label": "Works For", "expectedTypes": ["Organization"], "description": "Organizations that the person works for." },
     "itemListElement": { "label": "Item List Element", "expectedTypes": ["ListItem"], "description": "For itemListElement values, you can use Simple values such as 'Peter', 'Paul', and 'Mary', Zip codes such as '98052', or Simple tuples such as (1,1) = 1 gadget." },
     "offers": { "label": "Offers", "expectedTypes": ["Offer"], "description": "An offer to provide this item." },
-    "aggregateRating": { "label": "Aggregate Rating", "expectedTypes": ["AggregateRating"], "description": "The overall rating, based on a collection of reviews or ratings, of the item." }
+    "aggregateRating": { "label": "Aggregate Rating", "expectedTypes": ["AggregateRating"], "description": "The overall rating, based on a collection of reviews or ratings, of the item." },
+    "title": { "label": "Title", "expectedTypes": ["Text"], "description": "The title of the job." },
+    "employmentType": { "label": "Employment Type", "expectedTypes": ["Text"], "description": "Type of employment (e.g. full-time, part-time, contract, temporary, seasonal, internship)." },
+    "hiringOrganization": { "label": "Hiring Organization", "expectedTypes": ["Organization"], "description": "Organization offering the job position." },
+    "validThrough": { "label": "Valid Through", "expectedTypes": ["Date", "DateTime"], "description": "The date after which the item is not valid." },
+    "datePosted": { "label": "Date Posted", "expectedTypes": ["Date", "DateTime"], "description": "Publication date of an online listing." },
+    "responsibilities": { "label": "Responsibilities", "expectedTypes": ["Text"], "description": "Responsibilities associated with this role or Occupation." },
+    "directApply": { "label": "Direct Apply", "expectedTypes": ["Boolean"], "description": "Indicates whether an url that is associated with a JobPosting enables direct application to the job." },
+    "jobLocation": { "label": "Job Location", "expectedTypes": ["Place", "PostalAddress"], "description": "A (typically single) geographic location associated with the job position." },
+    "numberOfItems": { "label": "Number Of Items", "expectedTypes": ["Integer"], "description": "The number of items in an ItemList." }
   }
 }

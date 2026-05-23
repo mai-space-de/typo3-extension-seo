@@ -31,6 +31,8 @@ ExtensionManagementUtility::addTCAcolumns(
                     ['label' => 'Person', 'value' => 'Person'],
                     ['label' => 'Product', 'value' => 'Product'],
                     ['label' => 'WebSite', 'value' => 'WebSite'],
+                    ['label' => 'CollectionPage', 'value' => 'CollectionPage'],
+                    ['label' => 'JobPosting', 'value' => 'JobPosting'],
                 ],
                 'default' => '',
             ],
