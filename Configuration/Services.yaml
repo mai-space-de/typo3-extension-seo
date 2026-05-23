@@ -36,6 +36,22 @@ services:
         tags:
             - name: 'maiseo.structured_data.collector'
 
+    Maispace\MaiSeo\StructuredData\Collector\NewsArticleCollector:
+        tags:
+            - name: 'maiseo.structured_data.collector'
+
+    Maispace\MaiSeo\StructuredData\Collector\JobPostingCollector:
+        tags:
+            - name: 'maiseo.structured_data.collector'
+
+    Maispace\MaiSeo\StructuredData\Collector\PersonCollector:
+        tags:
+            - name: 'maiseo.structured_data.collector'
+
+    Maispace\MaiSeo\StructuredData\Collector\PlaceCollector:
+        tags:
+            - name: 'maiseo.structured_data.collector'
+
     Maispace\MaiSeo\EventListener\PageRecordSavedListener:
         tags:
             - name: 'event.listener'
