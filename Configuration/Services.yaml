@@ -28,6 +28,9 @@ services:
     Maispace\MaiSeo\Hook\PageRecordSaveHook:
         public: true
 
+    Maispace\MaiSeo\Hook\ExtensionRecordSaveHook:
+        public: true
+
     Maispace\MaiSeo\StructuredData\Collector\PageCollector:
         tags:
             - name: 'maiseo.structured_data.collector'

@@ -12,9 +12,14 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['maiseo_str
     'groups'   => ['pages'],
 ];
 
-// DataHandler hook — triggers auto-regeneration when a page record is saved
+// DataHandler hook — triggers cache invalidation when a page record is saved
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][]
     = \Maispace\MaiSeo\Hook\PageRecordSaveHook::class;
+
+// DataHandler hook — invalidates cache when an extension record that feeds
+// structured-data collectors is created or updated (news, jobs, team, locations)
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][]
+    = \Maispace\MaiSeo\Hook\ExtensionRecordSaveHook::class;
 
 // TypoScript — auto-include constants and setup
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants(
