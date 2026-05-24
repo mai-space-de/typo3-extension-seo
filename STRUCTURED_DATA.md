@@ -1037,7 +1037,7 @@ Classes/
       PageCollector.php
       BreadcrumbCollector.php
       ContentElementCollector.php
-      OrganizationCollector.php            — Reads site config for Organization data
+      OrganizationCollector.php            — Reads site config and settings.yaml for Organization data
 
     ContentElement/
       ContentElementHandlerInterface.php
@@ -1173,7 +1173,7 @@ ext_tables.sql                             — Column definition for tx_maiseo_s
 - [ ] DI tag documentation
 - [ ] TypoScript configuration documented
 - [ ] Example extension skeleton (`mai_seo_news_connector`)
-- [ ] `OrganizationCollector` reading from site configuration
+- [x] `OrganizationCollector` reading from site configuration
 - [ ] Multi-language support (per-language override JSON)
 
 ---

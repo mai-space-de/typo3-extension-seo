@@ -55,6 +55,18 @@ services:
         tags:
             - name: 'maiseo.structured_data.collector'
 
+    Maispace\MaiSeo\StructuredData\Collector\OrganizationCollector:
+        tags:
+            - name: 'maiseo.structured_data.collector'
+
+    Maispace\MaiSeo\StructuredData\Collector\FaqCollector:
+        tags:
+            - name: 'maiseo.structured_data.collector'
+
+    Maispace\MaiSeo\StructuredData\Collector\EventCollector:
+        tags:
+            - name: 'maiseo.structured_data.collector'
+
     Maispace\MaiSeo\EventListener\PageRecordSavedListener:
         tags:
             - name: 'event.listener'

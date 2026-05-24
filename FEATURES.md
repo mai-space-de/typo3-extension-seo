@@ -71,9 +71,9 @@ Builds a `BreadcrumbList` from the page rootline:
 4. Builds `ListItem` array in top-to-bottom order (`position` 1 = root).
 5. Adds `breadcrumb: {BreadcrumbList, itemListElement: [...]}` to the graph.
 
-**Known limitation:** BreadcrumbCollector constructs item URLs as
-`'https://' . $_SERVER['HTTP_HOST'] . '/?id=' . $page['uid']`
-which produces `?id=N` parameter URLs instead of human-readable slugs. A future improvement is to use `UriBuilder` / `LinkService` for proper slug-based URLs.
+Breadcrumb item URLs are generated via the site router (`PageRouter::generateUri()`),
+producing clean, absolute slug-based URLs (e.g. `https://example.com/about` instead
+of `?id=N`).
 
 ## Schema.org Vocabulary Registry
 
@@ -115,7 +115,7 @@ This section maps every functional page type in the `bgm-pulheim.org` site to it
 
 | Functional page type | Recommended `@type` | Auto support | Gap / notes |
 |---|---|---|---|
-| Homepage | `Organization` | 🔧 Manual | No `OrganizationCollector` — `name`, `url`, `description` come from PageCollector; `logo`, `address`, `telephone`, `foundingDate` must be added via the editor or a future `OrganizationCollector` reading from site configuration |
+| Homepage | `Organization` | ✅ Auto | `OrganizationCollector` reads site config (name, url) and settings.yaml (logo) for the homepage; `address`, `telephone`, `foundingDate` still require manual editor overrides |
 | News listing | `WebPage` | ✅ Auto (default) | No gap — generic `WebPage` with breadcrumb is appropriate |
 | News detail | `Article` | 🔧 Manual | Set `tx_maiseo_schema_type=Article` per page; PageCollector maps `title→name`, `crdate→datePublished`, `tstamp→dateModified`; `headline`, `articleBody`, `author` must be added manually or by a future news connector |
 | FAQ page | `FAQPage` | 🔧 Manual | Set `tx_maiseo_schema_type=FAQPage`; `mainEntity` (the Q&A pairs from `mai_faq`) is not auto-populated — a `FAQCollector` listening to `StructuredDataCollectionEvent` would pull `tx_maifaq_faq` records and build the `mainEntity` array |
@@ -148,10 +148,10 @@ This section maps every functional page type in the `bgm-pulheim.org` site to it
 | Priority | Action |
 |---|---|
 | High | Add `JobPosting` type to `vocabulary.json` and TCA select options (see `mai_jobs` FEATURES.md §10) |
-| Medium | Implement `OrganizationCollector` reading from `config/sites/bgm-pulheim/settings.yaml` — fills `Organization.name`, `.url`, `.logo`, `.address`, `.telephone` |
+| ✅ Done (2026-05-24) | Implement `OrganizationCollector` reading from `config/sites/bgm-pulheim/settings.yaml` — fills `Organization.name`, `.url`, `.logo`; `address`, `telephone` added when present in site settings |
 | Medium | Implement `FAQCollector` — reads `tx_maifaq_faq` records for the current page's storage PID and builds `FAQPage.mainEntity` array |
 | Low | Add `CollectionPage`, `Review`, `AggregateRating`, `ProfilePage` to vocabulary.json |
-| Low | Fix `BreadcrumbCollector` to use `UriBuilder` for slug-based item URLs |
+| ✅ Done (2026-05-24) | Fix `BreadcrumbCollector` to use site router for slug-based item URLs |
 
 ## TCA Page Overrides
 
