@@ -10,6 +10,16 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 
 final class PlaceCollector implements CollectorInterface
 {
+    private const DAY_OF_WEEK_MAP = [
+        '0' => 'https://schema.org/Monday',
+        '1' => 'https://schema.org/Tuesday',
+        '2' => 'https://schema.org/Wednesday',
+        '3' => 'https://schema.org/Thursday',
+        '4' => 'https://schema.org/Friday',
+        '5' => 'https://schema.org/Saturday',
+        '6' => 'https://schema.org/Sunday',
+    ];
+
     public function __construct(
         private readonly ConnectionPool $connectionPool,
     ) {}
@@ -66,6 +76,11 @@ final class PlaceCollector implements CollectorInterface
                 'longitude' => $lng,
             ]);
         }
+
+        $openingHours = $this->fetchOpeningHoursSpecification((int) $row['uid']);
+        if ($openingHours !== []) {
+            $event->addToGraph('openingHoursSpecification', $openingHours);
+        }
     }
 
     private function buildPostalAddress(array $row): array
@@ -94,6 +109,52 @@ final class PlaceCollector implements CollectorInterface
         }
 
         return $address;
+    }
+
+    private function fetchOpeningHoursSpecification(int $locationUid): array
+    {
+        $qb = $this->connectionPool->getQueryBuilderForTable('tx_mailocations_opening_hours');
+        $rows = $qb
+            ->select('day_of_week', 'time_open', 'time_close', 'is_closed', 'special_date')
+            ->from('tx_mailocations_opening_hours')
+            ->where(
+                $qb->expr()->eq('parentid', $qb->createNamedParameter($locationUid, Connection::PARAM_INT)),
+                $qb->expr()->eq('parenttable', $qb->createNamedParameter('tx_mailocations_location')),
+                $qb->expr()->eq('is_closed', $qb->createNamedParameter(0, Connection::PARAM_INT)),
+            )
+            ->orderBy('sorting', 'ASC')
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $specs = [];
+        foreach ($rows as $hour) {
+            $spec = ['@type' => 'OpeningHoursSpecification'];
+
+            $specialDate = (string) ($hour['special_date'] ?? '');
+            if ($specialDate !== '' && $specialDate !== '0000-00-00') {
+                $spec['validFrom'] = $specialDate;
+                $spec['validThrough'] = $specialDate;
+            } else {
+                $dayOfWeek = (string) ($hour['day_of_week'] ?? '');
+                $dayUri = self::DAY_OF_WEEK_MAP[$dayOfWeek] ?? null;
+                if ($dayUri === null) {
+                    continue;
+                }
+                $spec['dayOfWeek'] = $dayUri;
+            }
+
+            if (!empty($hour['time_open'])) {
+                $spec['opens'] = $hour['time_open'];
+            }
+
+            if (!empty($hour['time_close'])) {
+                $spec['closes'] = $hour['time_close'];
+            }
+
+            $specs[] = $spec;
+        }
+
+        return $specs;
     }
 
     public function supportedTypes(): array
