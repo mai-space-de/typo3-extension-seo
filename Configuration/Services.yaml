@@ -25,6 +25,12 @@ services:
     Maispace\MaiSeo\DataProcessing\StructuredDataProcessor:
         public: true
 
+    Maispace\MaiSeo\MetaTag\OpenGraphMetaTagGenerator:
+        public: true
+
+    Maispace\MaiSeo\MetaTag\OpenGraphValueResolver:
+        public: true
+
     Maispace\MaiSeo\Hook\PageRecordSaveHook:
         public: true
 

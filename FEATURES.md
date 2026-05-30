@@ -167,6 +167,24 @@ This section maps every functional page type in the `bgm-pulheim.org` site to it
 
 The palette order is: `tx_maiseo_og_title`, `tx_maiseo_og_description`, `tx_maiseo_og_image`, `tx_maiseo_schema_type`.
 
+## Open Graph & Twitter Card Meta Tags
+
+`OpenGraphMetaTagGenerator` hooks into TYPO3's `generateMetaTags` SC_OPTION and emits `og:*` and `twitter:*` tags via the core `MetaTagManagerRegistry` (same API as `typo3/cms-seo`).
+
+**Fallback chain:**
+
+| Tag | Priority |
+|---|---|
+| `og:title` / `twitter:title` | `tx_maiseo_og_title` → `pages.title` → site `websiteTitle` |
+| `og:description` / `twitter:description` | `tx_maiseo_og_description` → `pages.description` |
+| `og:image` / `twitter:image` | `tx_maiseo_og_image` → `pages.media` (first image) |
+| `og:type` | Mapped from `tx_maiseo_schema_type` (`Article` → `article`, `Person` → `profile`, default → `website`) |
+| `og:url` | `pages.canonical_link` or current page URL |
+| `og:site_name` | Language-specific `websiteTitle` or site config fallback |
+| `twitter:card` | `summary_large_image` when an image is present, otherwise `summary` |
+
+Canonical URL and hreflang tags are provided by the core `typo3/cms-seo` extension (`CanonicalGenerator`, `HrefLangGenerator`); no mai_seo override is required.
+
 ## Backend Structured Data Tree Editor
 
 `StructuredDataTreeElement` is a custom TCA `renderType` backed by class

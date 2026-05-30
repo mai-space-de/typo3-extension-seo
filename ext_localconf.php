@@ -21,6 +21,10 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][]
     = \Maispace\MaiSeo\Hook\ExtensionRecordSaveHook::class;
 
+// Open Graph + Twitter Card meta tags from tx_maiseo_og_* page fields
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Frontend\Page\PageGenerator']['generateMetaTags']['maiseo_opengraph']
+    = \Maispace\MaiSeo\MetaTag\OpenGraphMetaTagGenerator::class . '->generate';
+
 // TypoScript — auto-include constants and setup
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants(
     '@import "EXT:mai_seo/Configuration/TypoScript/constants.typoscript"'
