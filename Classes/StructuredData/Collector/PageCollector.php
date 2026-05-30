@@ -32,11 +32,9 @@ final class PageCollector implements CollectorInterface
             $event->addToGraph('dateModified', date('c', (int) $record['tstamp']));
         }
 
-        $schemaType = $record['tx_maiseo_schema_type'] ?? '';
-        if ($schemaType !== '') {
-            $event->setRootType($schemaType);
-        } elseif (empty($event->getGraph()['@type'])) {
-            $event->setRootType('WebPage');
+        if (empty($event->getGraph()['@type'])) {
+            $schemaType = trim((string) ($record['tx_maiseo_schema_type'] ?? ''));
+            $event->setRootType($schemaType !== '' ? $schemaType : 'WebPage');
         }
     }
 

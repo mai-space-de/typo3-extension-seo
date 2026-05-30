@@ -8,17 +8,17 @@ use Doctrine\DBAL\Result;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
 use Maispace\MaiSeo\StructuredData\Collector\EventCollector;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
-final class EventCollectorTest extends TestCase
+final class EventCollectorTest extends CollectorTestCase
 {
     private function makeConnectionPool(array $rows): ConnectionPool
     {
         $exprBuilder = $this->createMock(ExpressionBuilder::class);
         $exprBuilder->method('eq')->willReturn('1=1');
+        $exprBuilder->method('in')->willReturn('pid IN (1)');
 
         $result = $this->createMock(Result::class);
         $result->method('fetchAllAssociative')->willReturn($rows);
@@ -41,7 +41,7 @@ final class EventCollectorTest extends TestCase
     #[Test]
     public function priorityIsSeventyTest(): void
     {
-        $collector = new EventCollector($this->makeConnectionPool([]));
+        $collector = new EventCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
 
         self::assertSame(70, $collector->priority());
     }
@@ -49,7 +49,7 @@ final class EventCollectorTest extends TestCase
     #[Test]
     public function supportedTypesContainsEventTest(): void
     {
-        $collector = new EventCollector($this->makeConnectionPool([]));
+        $collector = new EventCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
 
         self::assertSame(['Event'], $collector->supportedTypes());
     }
@@ -57,7 +57,7 @@ final class EventCollectorTest extends TestCase
     #[Test]
     public function collectSkipsWhenTypeIsNotEventTest(): void
     {
-        $collector = new EventCollector($this->makeConnectionPool([]));
+        $collector = new EventCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'WebPage');
 
@@ -81,7 +81,7 @@ final class EventCollectorTest extends TestCase
                 'end_date' => $timestamp + 7200,
             ],
         ];
-        $collector = new EventCollector($this->makeConnectionPool($rows));
+        $collector = new EventCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'Event');
 
@@ -112,7 +112,7 @@ final class EventCollectorTest extends TestCase
                 'end_date' => 0,
             ],
         ];
-        $collector = new EventCollector($this->makeConnectionPool($rows));
+        $collector = new EventCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'Event');
 
@@ -130,7 +130,7 @@ final class EventCollectorTest extends TestCase
     #[Test]
     public function collectSkipsWhenNoEventRecordFoundTest(): void
     {
-        $collector = new EventCollector($this->makeConnectionPool([]));
+        $collector = new EventCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'Event');
 

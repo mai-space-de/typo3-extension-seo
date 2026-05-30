@@ -9,7 +9,7 @@ use Maispace\MaiSeo\StructuredData\RecordStorageResolverInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 
-final class NewsArticleCollector implements CollectorInterface
+final class ReviewCollector implements CollectorInterface
 {
     public function __construct(
         private readonly ConnectionPool $connectionPool,
@@ -27,17 +27,17 @@ final class NewsArticleCollector implements CollectorInterface
             return;
         }
 
-        $qb = $this->connectionPool->getQueryBuilderForTable('tx_mainews_news');
+        $qb = $this->connectionPool->getQueryBuilderForTable('tx_maitestimonials_testimonial');
         $rows = $qb
-            ->select('uid', 'title', 'teaser', 'date')
-            ->from('tx_mainews_news')
+            ->select('uid', 'quote', 'author')
+            ->from('tx_maitestimonials_testimonial')
             ->where(
                 $qb->expr()->in(
                     'pid',
                     $qb->createNamedParameter($storagePids, Connection::PARAM_INT_ARRAY),
                 ),
             )
-            ->orderBy('date', 'DESC')
+            ->orderBy('sorting', 'ASC')
             ->setMaxResults(1)
             ->executeQuery()
             ->fetchAllAssociative();
@@ -48,20 +48,21 @@ final class NewsArticleCollector implements CollectorInterface
 
         $row = $rows[0];
 
-        $event->addToGraph('headline', $row['title']);
-
-        if (!empty($row['teaser'])) {
-            $event->addToGraph('description', $row['teaser']);
+        if (!empty($row['quote'])) {
+            $event->addToGraph('reviewBody', $row['quote']);
         }
 
-        if (!empty($row['date'])) {
-            $event->addToGraph('datePublished', date('c', (int) $row['date']));
+        if (!empty($row['author'])) {
+            $event->addToGraph('author', [
+                '@type' => 'Person',
+                'name' => $row['author'],
+            ]);
         }
     }
 
     public function supportedTypes(): array
     {
-        return ['NewsArticle', 'Article'];
+        return ['Review'];
     }
 
     public function priority(): int

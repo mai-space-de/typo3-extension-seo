@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Maispace\MaiSeo\StructuredData\Collector;
 
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
+use Maispace\MaiSeo\StructuredData\RecordStorageResolverInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 
@@ -22,6 +23,7 @@ final class PlaceCollector implements CollectorInterface
 
     public function __construct(
         private readonly ConnectionPool $connectionPool,
+        private readonly RecordStorageResolverInterface $recordStorageResolver,
     ) {}
 
     public function collect(StructuredDataCollectionEvent $event): void
@@ -30,11 +32,21 @@ final class PlaceCollector implements CollectorInterface
             return;
         }
 
+        $storagePids = $this->recordStorageResolver->resolveStoragePids($event->pageUid);
+        if ($storagePids === []) {
+            return;
+        }
+
         $qb = $this->connectionPool->getQueryBuilderForTable('tx_mailocations_location');
         $rows = $qb
             ->select('uid', 'name', 'street', 'zip', 'city', 'country', 'phone', 'email', 'latitude', 'longitude', 'description')
             ->from('tx_mailocations_location')
-            ->where($qb->expr()->eq('pid', $qb->createNamedParameter($event->pageUid, Connection::PARAM_INT)))
+            ->where(
+                $qb->expr()->in(
+                    'pid',
+                    $qb->createNamedParameter($storagePids, Connection::PARAM_INT_ARRAY),
+                ),
+            )
             ->orderBy('sorting', 'ASC')
             ->setMaxResults(1)
             ->executeQuery()

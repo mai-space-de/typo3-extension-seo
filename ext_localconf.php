@@ -25,6 +25,10 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Frontend\Page\PageGenerator']['generateMetaTags']['maiseo_opengraph']
     = \Maispace\MaiSeo\MetaTag\OpenGraphMetaTagGenerator::class . '->generate';
 
+// JSON-LD structured data injection into page head
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Frontend\Page\PageGenerator']['generateMetaTags']['maiseo_structured_data']
+    = \Maispace\MaiSeo\MetaTag\StructuredDataInjector::class . '->generate';
+
 // TypoScript — auto-include constants and setup
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptConstants(
     '@import "EXT:mai_seo/Configuration/TypoScript/constants.typoscript"'

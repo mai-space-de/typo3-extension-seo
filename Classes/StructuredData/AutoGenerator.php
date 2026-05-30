@@ -7,7 +7,6 @@ namespace Maispace\MaiSeo\StructuredData;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
 use Maispace\MaiSeo\Event\StructuredDataRenderEvent;
 use Maispace\MaiSeo\StructuredData\Collector\CollectorRegistry;
-use Maispace\MaiSeo\Utility\JsonMerge;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\Connection;
@@ -21,6 +20,7 @@ final class AutoGenerator implements SingletonInterface
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly CacheManager $cacheManager,
         private readonly ConnectionPool $connectionPool,
+        private readonly PageRoleResolver $pageRoleResolver,
     ) {}
 
     public function generateForPage(int $pageUid, bool $useCache = true): array
@@ -37,12 +37,38 @@ final class AutoGenerator implements SingletonInterface
             return [];
         }
 
-        $collectionEvent = new StructuredDataCollectionEvent($pageUid, $pageRecord);
-        foreach ($this->collectorRegistry->getCollectors() as $collector) {
-            $collector->collect($collectionEvent);
+        $schemaTypes = $this->pageRoleResolver->resolve($pageUid, $pageRecord);
+        if ($schemaTypes === []) {
+            $schemaTypes = ['WebPage'];
         }
 
-        $graph = $collectionEvent->getGraph();
+        $nodes = [];
+        foreach ($schemaTypes as $schemaType) {
+            $collectionEvent = new StructuredDataCollectionEvent($pageUid, $pageRecord);
+            $collectionEvent->setRootType($schemaType);
+
+            foreach ($this->collectorRegistry->getCollectors() as $collector) {
+                $collector->collect($collectionEvent);
+            }
+
+            $node = $collectionEvent->getGraph();
+            if ($node === [] || !isset($node['@type'])) {
+                continue;
+            }
+
+            $nodes[] = $node;
+        }
+
+        if ($nodes === []) {
+            return [];
+        }
+
+        if (count($nodes) === 1) {
+            $graph = $nodes[0];
+        } else {
+            $graph = ['@graph' => $nodes];
+        }
+
         $graph['@context'] = 'https://schema.org';
 
         $renderEvent = new StructuredDataRenderEvent($pageUid, $graph);

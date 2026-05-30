@@ -9,6 +9,7 @@ services:
         exclude:
             - '../Classes/Domain/Model/*'
             - '../Classes/Event/*'
+            - '../Classes/MetaTag/StructuredDataInjector.php'
 
     Maispace\MaiSeo\Schema\VocabularyRegistry:
         public: true
@@ -17,6 +18,20 @@ services:
         public: true
 
     Maispace\MaiSeo\StructuredData\AutoGenerator:
+        public: true
+
+    Maispace\MaiSeo\StructuredData\PageRoleResolver:
+        public: true
+
+    Maispace\MaiSeo\StructuredData\RecordStorageResolver:
+        public: true
+
+    Maispace\MaiSeo\StructuredData\RecordStorageResolverInterface:
+        alias: Maispace\MaiSeo\StructuredData\RecordStorageResolver
+        public: true
+
+    Maispace\MaiSeo\StructuredData\StructuredDataProviderInterface:
+        alias: Maispace\MaiSeo\StructuredData\StructuredDataService
         public: true
 
     Maispace\MaiSeo\StructuredData\Collector\CollectorRegistry:
@@ -29,6 +44,9 @@ services:
         public: true
 
     Maispace\MaiSeo\MetaTag\OpenGraphValueResolver:
+        public: true
+
+    Maispace\MaiSeo\MetaTag\StructuredDataInjector:
         public: true
 
     Maispace\MaiSeo\Hook\PageRecordSaveHook:
@@ -70,6 +88,14 @@ services:
             - name: 'maiseo.structured_data.collector'
 
     Maispace\MaiSeo\StructuredData\Collector\EventCollector:
+        tags:
+            - name: 'maiseo.structured_data.collector'
+
+    Maispace\MaiSeo\StructuredData\Collector\WebSiteCollector:
+        tags:
+            - name: 'maiseo.structured_data.collector'
+
+    Maispace\MaiSeo\StructuredData\Collector\ReviewCollector:
         tags:
             - name: 'maiseo.structured_data.collector'
 

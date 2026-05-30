@@ -8,17 +8,17 @@ use Doctrine\DBAL\Result;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
 use Maispace\MaiSeo\StructuredData\Collector\PersonCollector;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
-final class PersonCollectorTest extends TestCase
+final class PersonCollectorTest extends CollectorTestCase
 {
     private function makeConnectionPool(array $rows): ConnectionPool
     {
         $exprBuilder = $this->createMock(ExpressionBuilder::class);
         $exprBuilder->method('eq')->willReturn('1=1');
+        $exprBuilder->method('in')->willReturn('pid IN (1)');
 
         $result = $this->createMock(Result::class);
         $result->method('fetchAllAssociative')->willReturn($rows);
@@ -42,7 +42,7 @@ final class PersonCollectorTest extends TestCase
     #[Test]
     public function priorityIsSeventyTest(): void
     {
-        $collector = new PersonCollector($this->makeConnectionPool([]));
+        $collector = new PersonCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
 
         self::assertSame(70, $collector->priority());
     }
@@ -50,7 +50,7 @@ final class PersonCollectorTest extends TestCase
     #[Test]
     public function supportedTypesContainsPersonTest(): void
     {
-        $collector = new PersonCollector($this->makeConnectionPool([]));
+        $collector = new PersonCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
 
         self::assertSame(['Person'], $collector->supportedTypes());
     }
@@ -58,7 +58,7 @@ final class PersonCollectorTest extends TestCase
     #[Test]
     public function collectSkipsWhenTypeIsNotPersonTest(): void
     {
-        $collector = new PersonCollector($this->makeConnectionPool([]));
+        $collector = new PersonCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'WebPage');
 
@@ -79,7 +79,7 @@ final class PersonCollectorTest extends TestCase
             'email' => 'john@example.com',
             'phone' => '+49123456',
         ]];
-        $collector = new PersonCollector($this->makeConnectionPool($rows));
+        $collector = new PersonCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'Person');
 
@@ -92,7 +92,7 @@ final class PersonCollectorTest extends TestCase
     #[Test]
     public function collectSkipsWhenNoRecordsFoundTest(): void
     {
-        $collector = new PersonCollector($this->makeConnectionPool([]));
+        $collector = new PersonCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'Person');
 

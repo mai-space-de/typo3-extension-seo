@@ -8,17 +8,17 @@ use Doctrine\DBAL\Result;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
 use Maispace\MaiSeo\StructuredData\Collector\PlaceCollector;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
-final class PlaceCollectorTest extends TestCase
+final class PlaceCollectorTest extends CollectorTestCase
 {
     private function makeConnectionPool(array $locationRows, array $openingHoursRows = []): ConnectionPool
     {
         $exprBuilder = $this->createMock(ExpressionBuilder::class);
         $exprBuilder->method('eq')->willReturn('1=1');
+        $exprBuilder->method('in')->willReturn('pid IN (1)');
 
         $locationResult = $this->createMock(Result::class);
         $locationResult->method('fetchAllAssociative')->willReturn($locationRows);
@@ -57,7 +57,7 @@ final class PlaceCollectorTest extends TestCase
     #[Test]
     public function priorityIsSeventyTest(): void
     {
-        $collector = new PlaceCollector($this->makeConnectionPool([]));
+        $collector = new PlaceCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
 
         self::assertSame(70, $collector->priority());
     }
@@ -65,7 +65,7 @@ final class PlaceCollectorTest extends TestCase
     #[Test]
     public function supportedTypesContainsPlaceAndLocalBusinessTest(): void
     {
-        $collector = new PlaceCollector($this->makeConnectionPool([]));
+        $collector = new PlaceCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
 
         self::assertSame(['Place', 'LocalBusiness'], $collector->supportedTypes());
     }
@@ -73,7 +73,7 @@ final class PlaceCollectorTest extends TestCase
     #[Test]
     public function collectSkipsWhenTypeIsNotPlaceOrLocalBusinessTest(): void
     {
-        $collector = new PlaceCollector($this->makeConnectionPool([]));
+        $collector = new PlaceCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'WebPage');
 
@@ -98,7 +98,7 @@ final class PlaceCollectorTest extends TestCase
             'longitude' => '6.8000000',
             'description' => 'HQ',
         ]];
-        $collector = new PlaceCollector($this->makeConnectionPool($rows));
+        $collector = new PlaceCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'Place');
 
@@ -114,7 +114,7 @@ final class PlaceCollectorTest extends TestCase
     #[Test]
     public function collectSkipsWhenNoRecordsFoundTest(): void
     {
-        $collector = new PlaceCollector($this->makeConnectionPool([]));
+        $collector = new PlaceCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'Place');
 
@@ -139,7 +139,7 @@ final class PlaceCollectorTest extends TestCase
             'longitude' => '6.8000000',
             'description' => '',
         ]];
-        $collector = new PlaceCollector($this->makeConnectionPool($rows));
+        $collector = new PlaceCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'Place');
 
@@ -183,7 +183,7 @@ final class PlaceCollectorTest extends TestCase
                 'special_date' => null,
             ],
         ];
-        $collector = new PlaceCollector($this->makeConnectionPool($locationRows, $openingHoursRows));
+        $collector = new PlaceCollector($this->makeConnectionPool($locationRows, $openingHoursRows), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'LocalBusiness');
 
@@ -230,7 +230,7 @@ final class PlaceCollectorTest extends TestCase
                 'special_date' => '2024-12-26',
             ],
         ];
-        $collector = new PlaceCollector($this->makeConnectionPool($locationRows, $openingHoursRows));
+        $collector = new PlaceCollector($this->makeConnectionPool($locationRows, $openingHoursRows), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'LocalBusiness');
 
@@ -265,7 +265,7 @@ final class PlaceCollectorTest extends TestCase
             'longitude' => '0.0000000',
             'description' => '',
         ]];
-        $collector = new PlaceCollector($this->makeConnectionPool($locationRows, []));
+        $collector = new PlaceCollector($this->makeConnectionPool($locationRows, []), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'Place');
 
@@ -300,7 +300,7 @@ final class PlaceCollectorTest extends TestCase
             ],
             ['0', '1', '2', '3', '4', '5', '6'],
         );
-        $collector = new PlaceCollector($this->makeConnectionPool($locationRows, $openingHoursRows));
+        $collector = new PlaceCollector($this->makeConnectionPool($locationRows, $openingHoursRows), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'Place');
 
@@ -348,7 +348,7 @@ final class PlaceCollectorTest extends TestCase
                 'special_date' => null,
             ],
         ];
-        $collector = new PlaceCollector($this->makeConnectionPool($locationRows, $openingHoursRows));
+        $collector = new PlaceCollector($this->makeConnectionPool($locationRows, $openingHoursRows), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'Place');
 

@@ -8,17 +8,17 @@ use Doctrine\DBAL\Result;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
 use Maispace\MaiSeo\StructuredData\Collector\NewsArticleCollector;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
-final class NewsArticleCollectorTest extends TestCase
+final class NewsArticleCollectorTest extends CollectorTestCase
 {
     private function makeConnectionPool(array $rows): ConnectionPool
     {
         $exprBuilder = $this->createMock(ExpressionBuilder::class);
         $exprBuilder->method('eq')->willReturn('1=1');
+        $exprBuilder->method('in')->willReturn('pid IN (1)');
 
         $result = $this->createMock(Result::class);
         $result->method('fetchAllAssociative')->willReturn($rows);
@@ -42,7 +42,7 @@ final class NewsArticleCollectorTest extends TestCase
     #[Test]
     public function priorityIsSeventyTest(): void
     {
-        $collector = new NewsArticleCollector($this->makeConnectionPool([]));
+        $collector = new NewsArticleCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
 
         self::assertSame(70, $collector->priority());
     }
@@ -50,15 +50,15 @@ final class NewsArticleCollectorTest extends TestCase
     #[Test]
     public function supportedTypesContainsNewsArticleTest(): void
     {
-        $collector = new NewsArticleCollector($this->makeConnectionPool([]));
+        $collector = new NewsArticleCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
 
-        self::assertSame(['NewsArticle'], $collector->supportedTypes());
+        self::assertSame(['NewsArticle', 'Article'], $collector->supportedTypes());
     }
 
     #[Test]
     public function collectSkipsWhenTypeIsNotNewsArticleTest(): void
     {
-        $collector = new NewsArticleCollector($this->makeConnectionPool([]));
+        $collector = new NewsArticleCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'WebPage');
 
@@ -71,7 +71,7 @@ final class NewsArticleCollectorTest extends TestCase
     public function collectAddsHeadlineFromNewsRecordTest(): void
     {
         $rows = [['uid' => 1, 'title' => 'Test News', 'teaser' => 'Summary', 'date' => 1700000000]];
-        $collector = new NewsArticleCollector($this->makeConnectionPool($rows));
+        $collector = new NewsArticleCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'NewsArticle');
 
@@ -83,7 +83,7 @@ final class NewsArticleCollectorTest extends TestCase
     #[Test]
     public function collectSkipsWhenNoRecordsFoundTest(): void
     {
-        $collector = new NewsArticleCollector($this->makeConnectionPool([]));
+        $collector = new NewsArticleCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'NewsArticle');
 

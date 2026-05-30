@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace Maispace\MaiSeo\Tests\Unit\StructuredData\Collector;
 
-use Doctrine\DBAL\Result;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
 use Maispace\MaiSeo\StructuredData\Collector\FaqCollector;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
-final class FaqCollectorTest extends TestCase
+final class FaqCollectorTest extends CollectorTestCase
 {
     private function makeConnectionPool(array $rows): ConnectionPool
     {
         $exprBuilder = $this->createMock(ExpressionBuilder::class);
         $exprBuilder->method('eq')->willReturn('1=1');
+        $exprBuilder->method('in')->willReturn('pid IN (1)');
 
-        $result = $this->createMock(Result::class);
+        $result = $this->createMock(\Doctrine\DBAL\Result::class);
         $result->method('fetchAllAssociative')->willReturn($rows);
 
         $qb = $this->createMock(QueryBuilder::class);
@@ -41,7 +40,7 @@ final class FaqCollectorTest extends TestCase
     #[Test]
     public function priorityIsSeventyTest(): void
     {
-        $collector = new FaqCollector($this->makeConnectionPool([]));
+        $collector = new FaqCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
 
         self::assertSame(70, $collector->priority());
     }
@@ -49,7 +48,7 @@ final class FaqCollectorTest extends TestCase
     #[Test]
     public function supportedTypesContainsFAQPageTest(): void
     {
-        $collector = new FaqCollector($this->makeConnectionPool([]));
+        $collector = new FaqCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
 
         self::assertSame(['FAQPage'], $collector->supportedTypes());
     }
@@ -57,7 +56,7 @@ final class FaqCollectorTest extends TestCase
     #[Test]
     public function collectSkipsWhenTypeIsNotFAQPageTest(): void
     {
-        $collector = new FaqCollector($this->makeConnectionPool([]));
+        $collector = new FaqCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'WebPage');
 
@@ -81,7 +80,7 @@ final class FaqCollectorTest extends TestCase
                 'answer' => '<p>You can register online at our website.</p>',
             ],
         ];
-        $collector = new FaqCollector($this->makeConnectionPool($rows));
+        $collector = new FaqCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'FAQPage');
 
@@ -109,7 +108,7 @@ final class FaqCollectorTest extends TestCase
                 'answer' => '',
             ],
         ];
-        $collector = new FaqCollector($this->makeConnectionPool($rows));
+        $collector = new FaqCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'FAQPage');
 
@@ -125,7 +124,7 @@ final class FaqCollectorTest extends TestCase
     #[Test]
     public function collectSkipsWhenNoFaqRecordsFoundTest(): void
     {
-        $collector = new FaqCollector($this->makeConnectionPool([]));
+        $collector = new FaqCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'FAQPage');
 
