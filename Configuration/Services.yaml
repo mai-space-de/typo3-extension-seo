@@ -36,6 +36,8 @@ services:
 
     Maispace\MaiSeo\StructuredData\Collector\CollectorRegistry:
         public: true
+        arguments:
+            $collectors: !tagged_iterator maiseo.structured_data.collector
 
     Maispace\MaiSeo\DataProcessing\StructuredDataProcessor:
         public: true

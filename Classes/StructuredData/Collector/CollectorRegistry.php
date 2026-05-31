@@ -6,14 +6,25 @@ namespace Maispace\MaiSeo\StructuredData\Collector;
 
 final class CollectorRegistry
 {
-    /** @var CollectorInterface[] */
-    private array $collectors = [];
+    /** @var list<CollectorInterface> */
+    private array $collectors;
+
+    /** @param iterable<CollectorInterface> $collectors */
+    public function __construct(
+        iterable $collectors = [],
+    ) {
+        $this->collectors = [];
+        foreach ($collectors as $collector) {
+            $this->collectors[] = $collector;
+        }
+    }
 
     public function addCollector(CollectorInterface $collector): void
     {
         $this->collectors[] = $collector;
     }
 
+    /** @return list<CollectorInterface> */
     public function getCollectors(): array
     {
         $collectors = $this->collectors;
