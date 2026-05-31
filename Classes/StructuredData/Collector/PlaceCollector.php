@@ -6,6 +6,7 @@ namespace Maispace\MaiSeo\StructuredData\Collector;
 
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
 use Maispace\MaiSeo\StructuredData\RecordStorageResolverInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 
@@ -32,7 +33,7 @@ final class PlaceCollector implements CollectorInterface
             return;
         }
 
-        $storagePids = $this->recordStorageResolver->resolveStoragePids($event->pageUid);
+        $storagePids = $this->resolveStoragePids($event->pageUid);
         if ($storagePids === []) {
             return;
         }
@@ -177,5 +178,59 @@ final class PlaceCollector implements CollectorInterface
     public function priority(): int
     {
         return 70;
+    }
+
+    /**
+     * @return list<int>
+     */
+    private function resolveStoragePids(int $pageUid): array
+    {
+        $pids = $this->recordStorageResolver->resolveStoragePids($pageUid);
+
+        $typoScriptPids = $this->resolveTypoScriptStoragePids();
+        if ($typoScriptPids !== []) {
+            $pids = array_values(array_unique([...$pids, ...$typoScriptPids]));
+        }
+
+        return $pids;
+    }
+
+    /**
+     * @return list<int>
+     */
+    private function resolveTypoScriptStoragePids(): array
+    {
+        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
+        if (!$request instanceof ServerRequestInterface) {
+            return [];
+        }
+
+        $frontendTypoScript = $request->getAttribute('frontend.typoscript');
+        if (!is_array($frontendTypoScript)) {
+            return [];
+        }
+
+        $pids = [];
+        $pluginConfigs = [
+            $frontendTypoScript['plugin.']['tx_mailocations.']['persistence.'] ?? [],
+            $frontendTypoScript['plugin.']['tx_mailocations_list.']['persistence.'] ?? [],
+            $frontendTypoScript['plugin.']['tx_mailocations_detail.']['persistence.'] ?? [],
+        ];
+
+        foreach ($pluginConfigs as $persistence) {
+            $storagePid = $persistence['storagePid'] ?? '';
+            if ($storagePid === '' || !is_string($storagePid)) {
+                continue;
+            }
+            $parsed = array_filter(
+                array_map('intval', explode(',', $storagePid)),
+                static fn(int $pid): bool => $pid > 0,
+            );
+            foreach ($parsed as $pid) {
+                $pids[] = $pid;
+            }
+        }
+
+        return array_values(array_unique($pids));
     }
 }
