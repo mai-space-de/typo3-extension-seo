@@ -135,8 +135,8 @@ final class PlaceCollectorTest extends CollectorTestCase
             'country' => '',
             'phone' => '',
             'email' => '',
-            'latitude' => '50.9000000',
-            'longitude' => '6.8000000',
+            'latitude' => '51.0280000',
+            'longitude' => '7.0050000',
             'description' => '',
         ]];
         $collector = new PlaceCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
@@ -145,10 +145,67 @@ final class PlaceCollectorTest extends CollectorTestCase
 
         $collector->collect($event);
 
-        self::assertArrayHasKey('geo', $event->getGraph());
-        self::assertSame('GeoCoordinates', $event->getGraph()['geo']['@type']);
-        self::assertSame(50.9, $event->getGraph()['geo']['latitude']);
-        self::assertSame(6.8, $event->getGraph()['geo']['longitude']);
+        $geo = $event->getGraph()['geo'] ?? null;
+        self::assertIsArray($geo);
+        self::assertSame('GeoCoordinates', $geo['@type']);
+        self::assertIsFloat($geo['latitude']);
+        self::assertIsFloat($geo['longitude']);
+        self::assertSame(51.028, $geo['latitude']);
+        self::assertSame(7.005, $geo['longitude']);
+    }
+
+    #[Test]
+    public function geoIsOmittedWhenLatitudeAndLongitudeAreZeroTest(): void
+    {
+        $rows = [[
+            'uid' => 1,
+            'name' => 'Coordless Office',
+            'street' => '',
+            'zip' => '',
+            'city' => '',
+            'country' => '',
+            'phone' => '',
+            'email' => '',
+            'latitude' => '0.0000000',
+            'longitude' => '0.0000000',
+            'description' => '',
+        ]];
+        $collector = new PlaceCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
+        $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
+        $event->addToGraph('@type', 'Place');
+
+        $collector->collect($event);
+
+        self::assertArrayNotHasKey('geo', $event->getGraph());
+    }
+
+    #[Test]
+    public function geoEncodesAsValidJsonLdGeoCoordinatesTest(): void
+    {
+        $rows = [[
+            'uid' => 1,
+            'name' => 'Main Office',
+            'street' => '',
+            'zip' => '',
+            'city' => '',
+            'country' => '',
+            'phone' => '',
+            'email' => '',
+            'latitude' => '51.0280000',
+            'longitude' => '7.0050000',
+            'description' => '',
+        ]];
+        $collector = new PlaceCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
+        $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
+        $event->addToGraph('@type', 'Place');
+
+        $collector->collect($event);
+
+        $json = json_encode($event->getGraph()['geo'], JSON_UNESCAPED_SLASHES);
+        self::assertSame(
+            '{"@type":"GeoCoordinates","latitude":51.028,"longitude":7.005}',
+            $json,
+        );
     }
 
     #[Test]
