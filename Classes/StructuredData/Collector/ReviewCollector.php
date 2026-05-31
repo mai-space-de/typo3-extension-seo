@@ -29,7 +29,7 @@ final class ReviewCollector implements CollectorInterface
 
         $qb = $this->connectionPool->getQueryBuilderForTable('tx_maitestimonials_testimonial');
         $rows = $qb
-            ->select('uid', 'quote', 'author')
+            ->select('uid', 'quote', 'author_name')
             ->from('tx_maitestimonials_testimonial')
             ->where(
                 $qb->expr()->in(
@@ -52,10 +52,10 @@ final class ReviewCollector implements CollectorInterface
             $event->addToGraph('reviewBody', $row['quote']);
         }
 
-        if (!empty($row['author'])) {
+        if (!empty($row['author_name'])) {
             $event->addToGraph('author', [
                 '@type' => 'Person',
-                'name' => $row['author'],
+                'name' => $row['author_name'],
             ]);
         }
     }
