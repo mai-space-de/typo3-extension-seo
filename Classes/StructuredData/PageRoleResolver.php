@@ -37,6 +37,7 @@ final class PageRoleResolver
         'maicanteen_week' => ['WebPage'],
         'maicanteen_print' => ['WebPage'],
         'maiaccount_account' => ['WebPage'],
+        'maiaccount_register' => ['WebPage'],
         'maiaccount_mfa' => ['WebPage'],
         'maiaccount_stories' => ['WebPage'],
         'mainewsletter_newsletter' => ['WebPage'],
