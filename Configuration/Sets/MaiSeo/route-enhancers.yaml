@@ -1,0 +1,16 @@
+routeEnhancers:
+  Sitemap:
+    type: Simple
+    routePath: 'sitemap-type/{sitemap}'
+    aspects:
+      sitemap:
+        type: StaticValueMapper
+        map:
+          pages: pages
+          news: news
+          jobs: jobs
+          locations: locations
+          team: team
+          gallery: gallery
+    _arguments:
+      sitemap: 'tx_seo/sitemap'

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2026-07-24T21:00:00Z" product-name="mai-seo">
+        <header/>
+        <body>
+            <trans-unit id="label">
+                <source>Mai SEO (Sitemap)</source>
+            </trans-unit>
+
+            <trans-unit id="categories.mai-seo">
+                <source>SEO</source>
+            </trans-unit>
+            <trans-unit id="categories.mai-seo.sitemap">
+                <source>XML Sitemap</source>
+            </trans-unit>
+
+            <trans-unit id="settings.seo.sitemap.records.storagePid">
+                <source>Record storage page</source>
+            </trans-unit>
+            <trans-unit id="settings.description.seo.sitemap.records.storagePid">
+                <source>Sysfolder that holds news, jobs and other sitemap records (default: Datensätze).</source>
+            </trans-unit>
+
+            <trans-unit id="settings.seo.sitemap.records.news.detailPid">
+                <source>News detail page</source>
+            </trans-unit>
+            <trans-unit id="settings.description.seo.sitemap.records.news.detailPid">
+                <source>Page that hosts the news list/detail plugin.</source>
+            </trans-unit>
+
+            <trans-unit id="settings.seo.sitemap.records.jobs.detailPid">
+                <source>Jobs detail page</source>
+            </trans-unit>
+            <trans-unit id="settings.description.seo.sitemap.records.jobs.detailPid">
+                <source>Page that hosts the jobs detail plugin.</source>
+            </trans-unit>
+
+            <trans-unit id="settings.seo.sitemap.records.locations.detailPid">
+                <source>Locations detail page</source>
+            </trans-unit>
+            <trans-unit id="settings.description.seo.sitemap.records.locations.detailPid">
+                <source>Page that hosts the locations detail plugin. Set to 0 to skip until configured.</source>
+            </trans-unit>
+
+            <trans-unit id="settings.seo.sitemap.records.team.detailPid">
+                <source>Team detail page</source>
+            </trans-unit>
+            <trans-unit id="settings.description.seo.sitemap.records.team.detailPid">
+                <source>Page that hosts the team view plugin. Set to 0 to skip until configured.</source>
+            </trans-unit>
+
+            <trans-unit id="settings.seo.sitemap.records.gallery.detailPid">
+                <source>Gallery detail page</source>
+            </trans-unit>
+            <trans-unit id="settings.description.seo.sitemap.records.gallery.detailPid">
+                <source>Page that hosts the gallery plugin. Set to 0 to skip until configured.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

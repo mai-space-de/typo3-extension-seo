@@ -1,0 +1,4 @@
+name: maispace/mai-seo
+label: 'Mai SEO (Sitemap)'
+dependencies:
+  - typo3/seo-sitemap

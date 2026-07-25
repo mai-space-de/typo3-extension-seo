@@ -1,0 +1,30 @@
+categories:
+  mai-seo: ~
+  mai-seo.sitemap:
+    parent: mai-seo
+
+settings:
+  seo.sitemap.records.storagePid:
+    default: 27
+    type: page
+    category: mai-seo.sitemap
+  seo.sitemap.records.news.detailPid:
+    default: 12
+    type: page
+    category: mai-seo.sitemap
+  seo.sitemap.records.jobs.detailPid:
+    default: 14
+    type: page
+    category: mai-seo.sitemap
+  seo.sitemap.records.locations.detailPid:
+    default: 0
+    type: page
+    category: mai-seo.sitemap
+  seo.sitemap.records.team.detailPid:
+    default: 0
+    type: page
+    category: mai-seo.sitemap
+  seo.sitemap.records.gallery.detailPid:
+    default: 0
+    type: page
+    category: mai-seo.sitemap

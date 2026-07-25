@@ -1,0 +1,108 @@
+plugin.tx_seo {
+  config {
+    xmlSitemap {
+      sitemaps {
+        news {
+          provider = TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider
+          config {
+            table = tx_mainews_news
+            sortField = uid
+            lastModifiedField = tstamp
+            pid = {$seo.sitemap.records.storagePid}
+            recursive = 0
+            url {
+              pageId = {$seo.sitemap.records.news.detailPid}
+              fieldToParameterMap {
+                uid = tx_mainews_list[news]
+              }
+              additionalGetParameters {
+                tx_mainews_list.controller = News
+                tx_mainews_list.action = detail
+              }
+            }
+          }
+        }
+        jobs {
+          provider = TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider
+          config {
+            table = tx_maijobs_job
+            sortField = sorting
+            lastModifiedField = tstamp
+            pid = {$seo.sitemap.records.storagePid}
+            recursive = 0
+            url {
+              pageId = {$seo.sitemap.records.jobs.detailPid}
+              fieldToParameterMap {
+                uid = tx_maijobs_detail[job]
+              }
+              additionalGetParameters {
+                tx_maijobs_detail.controller = Job
+                tx_maijobs_detail.action = detail
+              }
+            }
+          }
+        }
+        locations {
+          provider = TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider
+          config {
+            table = tx_mailocations_location
+            sortField = sorting
+            lastModifiedField = tstamp
+            pid = {$seo.sitemap.records.storagePid}
+            recursive = 0
+            url {
+              pageId = {$seo.sitemap.records.locations.detailPid}
+              fieldToParameterMap {
+                uid = tx_mailocations_detail[location]
+              }
+              additionalGetParameters {
+                tx_mailocations_detail.controller = Location
+                tx_mailocations_detail.action = detail
+              }
+            }
+          }
+        }
+        team {
+          provider = TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider
+          config {
+            table = tx_maiteam_team_member
+            sortField = sorting
+            lastModifiedField = tstamp
+            pid = {$seo.sitemap.records.storagePid}
+            recursive = 0
+            url {
+              pageId = {$seo.sitemap.records.team.detailPid}
+              fieldToParameterMap {
+                uid = tx_maiteam_view[teamMember]
+              }
+              additionalGetParameters {
+                tx_maiteam_view.controller = TeamMember
+                tx_maiteam_view.action = detail
+              }
+            }
+          }
+        }
+        gallery {
+          provider = TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider
+          config {
+            table = tx_maigallery_gallery
+            sortField = uid
+            lastModifiedField = tstamp
+            pid = {$seo.sitemap.records.storagePid}
+            recursive = 0
+            url {
+              pageId = {$seo.sitemap.records.gallery.detailPid}
+              fieldToParameterMap {
+                uid = tx_maigallery_gallery[uid]
+              }
+              additionalGetParameters {
+                tx_maigallery_gallery.controller = Gallery
+                tx_maigallery_gallery.action = show
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
