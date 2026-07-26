@@ -188,6 +188,28 @@ The palette order is: `tx_maiseo_og_title`, `tx_maiseo_og_description`, `tx_mais
 
 Canonical URL and hreflang tags are provided by the core `typo3/cms-seo` extension (`CanonicalGenerator`, `HrefLangGenerator`); no mai_seo override is required.
 
+## Browser language redirect
+
+`LanguageRedirectMiddleware` negotiates the visitor's `Accept-Language` header against the site languages and redirects first-time visitors on the default language to the best match.
+
+| Behaviour | Detail |
+|---|---|
+| Trigger | GET/HEAD on the default language when preference cookie is absent |
+| Match order | Exact `hreflang` → locale name → primary language subtag (`en` → `en-GB`) |
+| Scope | Default `rootOnly=true` — only the language root (`/`); set `false` to include deep paths |
+| Cookie | `mai_seo_lang` (language UID); written only when absent so later requests stay cacheable; presence skips redirect |
+| Status | `302` (not `301`) so browsers can revise the choice |
+| Stack position | After `typo3/cms-frontend/site`, before `base-redirect-resolver` / `page-resolver` |
+
+Site settings (`MaiSeo` set):
+
+| Setting | Default | Purpose |
+|---|---|---|
+| `seo.languageRedirect.enabled` | `true` | Master switch |
+| `seo.languageRedirect.rootOnly` | `true` | Limit redirect to language root |
+| `seo.languageRedirect.cookieName` | `mai_seo_lang` | Preference cookie name |
+| `seo.languageRedirect.cookieLifetime` | `31536000` | Cookie TTL in seconds (1 year) |
+
 ## Backend Structured Data Tree Editor
 
 `StructuredDataTreeElement` is a custom TCA `renderType` backed by class

@@ -2,6 +2,8 @@ categories:
   mai-seo: ~
   mai-seo.sitemap:
     parent: mai-seo
+  mai-seo.languageRedirect:
+    parent: mai-seo
 
 settings:
   seo.sitemap.records.storagePid:
@@ -28,3 +30,19 @@ settings:
     default: 0
     type: page
     category: mai-seo.sitemap
+  seo.languageRedirect.enabled:
+    default: true
+    type: bool
+    category: mai-seo.languageRedirect
+  seo.languageRedirect.rootOnly:
+    default: true
+    type: bool
+    category: mai-seo.languageRedirect
+  seo.languageRedirect.cookieName:
+    default: 'mai_seo_lang'
+    type: string
+    category: mai-seo.languageRedirect
+  seo.languageRedirect.cookieLifetime:
+    default: 31536000
+    type: int
+    category: mai-seo.languageRedirect
