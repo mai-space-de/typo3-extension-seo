@@ -142,6 +142,28 @@ final class BreadcrumbCollectorTest extends TestCase
     }
 
     #[Test]
+    public function collectFiltersOutSpacerPages(): void
+    {
+        $this->mockRootline([
+            ['uid' => 1, 'title' => 'Home', 'doktype' => 1],
+            ['uid' => 2, 'title' => 'Hauptnavigation', 'doktype' => 199],
+            ['uid' => 3, 'title' => 'About', 'doktype' => 1],
+        ]);
+
+        $collector = new BreadcrumbCollector(
+            $this->makeSiteFinder(urlMap: [1 => '/', 3 => '/about']),
+        );
+        $event = new StructuredDataCollectionEvent(pageUid: 3, pageRecord: []);
+
+        $collector->collect($event);
+
+        $items = $event->getGraph()['breadcrumb']['itemListElement'];
+        self::assertCount(2, $items);
+        self::assertSame('About', $items[0]['name']);
+        self::assertSame('Home', $items[1]['name']);
+    }
+
+    #[Test]
     public function collectFiltersOutPagesWithEmptyTitles(): void
     {
         $this->mockRootline([

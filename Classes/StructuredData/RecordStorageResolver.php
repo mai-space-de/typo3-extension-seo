@@ -6,6 +6,7 @@ namespace Maispace\MaiSeo\StructuredData;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
@@ -88,7 +89,7 @@ final class RecordStorageResolver implements RecordStorageResolverInterface
                     continue;
                 }
 
-                if ((int) ($row['doktype'] ?? 0) === 199) {
+                if ((int) ($row['doktype'] ?? 0) === PageRepository::DOKTYPE_SYSFOLDER) {
                     $sysfolderPids[] = $uid;
                 }
 

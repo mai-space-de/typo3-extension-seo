@@ -20,6 +20,7 @@ final class PageRoleResolver
      */
     private const PLUGIN_TYPES = [
         'maifaq_list' => ['FAQPage'],
+        'maispace_faq_list' => ['FAQPage'],
         'maijobs_detail' => ['JobPosting'],
         'maijobs_list' => ['CollectionPage', 'WebPage'],
         'mailocations_detail' => ['Place', 'LocalBusiness'],

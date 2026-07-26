@@ -45,6 +45,20 @@ final class PageRoleResolverTest extends TestCase
     }
 
     #[Test]
+    public function resolveAddsFaqPageForMaispaceFaqListCtypeTest(): void
+    {
+        $subject = new PageRoleResolver(
+            $this->makeConnectionPool(['maispace_faq_list']),
+            $this->makeSiteFinder(1),
+        );
+
+        $types = $subject->resolve(19, ['uid' => 19, 'tx_maiseo_schema_type' => '']);
+
+        self::assertContains('FAQPage', $types);
+        self::assertContains('WebPage', $types);
+    }
+
+    #[Test]
     public function resolveAddsCtypeSpecificTypesTest(): void
     {
         $subject = new PageRoleResolver(

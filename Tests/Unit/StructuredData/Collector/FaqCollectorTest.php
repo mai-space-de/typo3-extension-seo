@@ -26,6 +26,7 @@ final class FaqCollectorTest extends CollectorTestCase
         $qb->method('select')->willReturnSelf();
         $qb->method('from')->willReturnSelf();
         $qb->method('where')->willReturnSelf();
+        $qb->method('andWhere')->willReturnSelf();
         $qb->method('orderBy')->willReturnSelf();
         $qb->method('expr')->willReturn($exprBuilder);
         $qb->method('createNamedParameter')->willReturn(':p1');
@@ -99,13 +100,18 @@ final class FaqCollectorTest extends CollectorTestCase
     }
 
     #[Test]
-    public function collectHandlesFaqItemWithEmptyAnswerTest(): void
+    public function collectSkipsFaqItemWithEmptyAnswerTest(): void
     {
         $rows = [
             [
                 'uid' => 1,
                 'question' => 'What is the purpose?',
                 'answer' => '',
+            ],
+            [
+                'uid' => 2,
+                'question' => 'Where are you?',
+                'answer' => '<p>In Pulheim.</p>',
             ],
         ];
         $collector = new FaqCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
@@ -117,8 +123,52 @@ final class FaqCollectorTest extends CollectorTestCase
         $graph = $event->getGraph();
         self::assertArrayHasKey('mainEntity', $graph);
         self::assertCount(1, $graph['mainEntity']);
-        self::assertSame('What is the purpose?', $graph['mainEntity'][0]['name']);
-        self::assertArrayNotHasKey('acceptedAnswer', $graph['mainEntity'][0]);
+        self::assertSame('Where are you?', $graph['mainEntity'][0]['name']);
+    }
+
+    #[Test]
+    public function collectSkipsFaqItemWithEmptyQuestionTest(): void
+    {
+        $rows = [
+            [
+                'uid' => 1,
+                'question' => '',
+                'answer' => '<p>Orphan answer.</p>',
+            ],
+            [
+                'uid' => 2,
+                'question' => 'Valid question?',
+                'answer' => '<p>Valid answer.</p>',
+            ],
+        ];
+        $collector = new FaqCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
+        $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
+        $event->addToGraph('@type', 'FAQPage');
+
+        $collector->collect($event);
+
+        $graph = $event->getGraph();
+        self::assertCount(1, $graph['mainEntity']);
+        self::assertSame('Valid question?', $graph['mainEntity'][0]['name']);
+    }
+
+    #[Test]
+    public function collectSkipsWhenNoValidFaqRecordsFoundTest(): void
+    {
+        $rows = [
+            [
+                'uid' => 1,
+                'question' => '',
+                'answer' => '',
+            ],
+        ];
+        $collector = new FaqCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
+        $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
+        $event->addToGraph('@type', 'FAQPage');
+
+        $collector->collect($event);
+
+        self::assertArrayNotHasKey('mainEntity', $event->getGraph());
     }
 
     #[Test]

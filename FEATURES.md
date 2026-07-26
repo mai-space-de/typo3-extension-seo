@@ -66,7 +66,8 @@ The page `@type` defaults to `WebPage` unless the editor has selected a specific
 Builds a `BreadcrumbList` from the page rootline:
 
 1. Fetches rootline via `RootlineUtility` (wraps in try/catch — returns silently on error).
-2. Filters out sys-folder pages (`doktype=254`) and pages with empty titles.
+2. Filters out spacer pages (`doktype=199`), sys-folder pages (`doktype=254`),
+   backend-user sections, and pages with empty titles.
 3. Aborts if fewer than 2 pages remain after filtering (no breadcrumb for root or first-level pages).
 4. Builds `ListItem` array in top-to-bottom order (`position` 1 = root).
 5. Adds `breadcrumb: {BreadcrumbList, itemListElement: [...]}` to the graph.
@@ -149,7 +150,9 @@ This section maps every functional page type in the `bgm-pulheim.org` site to it
 |---|---|
 | High | Add `JobPosting` type to `vocabulary.json` and TCA select options (see `mai_jobs` FEATURES.md §10) |
 | ✅ Done (2026-05-24) | Implement `OrganizationCollector` reading from `config/sites/bgm-pulheim/settings.yaml` — fills `Organization.name`, `.url`, `.logo`; `address`, `telephone` added when present in site settings |
-| Medium | Implement `FAQCollector` — reads `tx_maifaq_faq` records for the current page's storage PID and builds `FAQPage.mainEntity` array |
+| ✅ Done (2026-07-26) | `FaqCollector` builds `FAQPage.mainEntity` from `tx_maifaq_faq`; maps `maispace_faq_list`; language + empty Q/A filter |
+| ✅ Done (2026-07-26) | `BreadcrumbCollector` also excludes spacer (`doktype=199`) and BE-user-section pages |
+| ✅ Done (2026-07-26) | `RecordStorageResolver` resolves sysfolders via `doktype=254` (not spacer 199) |
 | Low | Add `CollectionPage`, `Review`, `AggregateRating`, `ProfilePage` to vocabulary.json |
 | ✅ Done (2026-05-24) | Fix `BreadcrumbCollector` to use site router for slug-based item URLs |
 
