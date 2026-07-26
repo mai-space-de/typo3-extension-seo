@@ -195,7 +195,7 @@ Canonical URL and hreflang tags are provided by the core `typo3/cms-seo` extensi
 | Behaviour | Detail |
 |---|---|
 | Trigger | GET/HEAD on the default language when preference cookie is absent |
-| Match order | Exact `hreflang` → locale name → primary language subtag (`en` → `en-GB`) |
+| Match order | Exact `hreflang` → locale name → primary language subtag (`en` → `en-GB`); highest `q` wins; equal `q` keeps site language order (default first) |
 | Scope | Default `rootOnly=true` — only the language root (`/`); set `false` to include deep paths |
 | Cookie | `mai_seo_lang` (language UID); written only when absent so later requests stay cacheable; presence skips redirect |
 | Status | `302` (not `301`) so browsers can revise the choice |

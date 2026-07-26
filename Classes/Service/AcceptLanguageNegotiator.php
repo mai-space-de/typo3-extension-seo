@@ -8,6 +8,11 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
  * Picks the best matching site language for an HTTP Accept-Language header.
+ *
+ * Languages are scored by the highest matching tag quality. Equal scores break
+ * in site language order (default language first), so headers like `en,de`
+ * (both q=1.0) stay on German instead of redirecting solely because English
+ * appears first — a common mobile / browser preference-list quirk.
  */
 final class AcceptLanguageNegotiator
 {
@@ -25,20 +30,40 @@ final class AcceptLanguageNegotiator
             return null;
         }
 
-        foreach ($this->parseAcceptLanguage($acceptLanguageHeader) as $tag) {
-            $match = $this->matchTag($tag, $candidates);
-            if ($match instanceof SiteLanguage) {
-                return $match;
+        $weightedTags = $this->parseAcceptLanguageWeighted($acceptLanguageHeader);
+        if ($weightedTags === []) {
+            return null;
+        }
+
+        $bestLanguage = null;
+        $bestScore = 0.0;
+
+        foreach ($candidates as $language) {
+            $score = $this->scoreLanguage($language, $weightedTags);
+            if ($score > $bestScore) {
+                $bestScore = $score;
+                $bestLanguage = $language;
             }
         }
 
-        return null;
+        return $bestLanguage;
     }
 
     /**
      * @return list<string> Language tags ordered by descending quality
      */
     public function parseAcceptLanguage(string $header): array
+    {
+        return array_map(
+            static fn(array $item): string => $item['tag'],
+            $this->parseAcceptLanguageWeighted($header),
+        );
+    }
+
+    /**
+     * @return list<array{tag: string, quality: float, index: int}>
+     */
+    private function parseAcceptLanguageWeighted(string $header): array
     {
         $parts = explode(',', $header);
         $weighted = [];
@@ -81,53 +106,55 @@ final class AcceptLanguageNegotiator
             },
         );
 
-        return array_map(static fn(array $item): string => $item['tag'], $weighted);
+        return $weighted;
     }
 
     /**
-     * @param list<SiteLanguage> $languages
+     * @param list<array{tag: string, quality: float, index: int}> $weightedTags
      */
-    private function matchTag(string $tag, array $languages): ?SiteLanguage
+    private function scoreLanguage(SiteLanguage $language, array $weightedTags): float
+    {
+        $best = 0.0;
+
+        foreach ($weightedTags as $item) {
+            if ($this->languageMatchesTag($language, $item['tag'])) {
+                $best = max($best, $item['quality']);
+            }
+        }
+
+        return $best;
+    }
+
+    private function languageMatchesTag(SiteLanguage $language, string $tag): bool
     {
         if ($tag === '*') {
-            return $languages[0] ?? null;
+            return true;
         }
 
         $normalizedTag = strtolower(str_replace('_', '-', $tag));
 
-        foreach ($languages as $language) {
-            $hreflang = strtolower(str_replace('_', '-', $language->getHreflang()));
-            if ($hreflang !== '' && $hreflang === $normalizedTag) {
-                return $language;
-            }
+        $hreflang = strtolower(str_replace('_', '-', $language->getHreflang()));
+        if ($hreflang !== '' && $hreflang === $normalizedTag) {
+            return true;
         }
 
-        foreach ($languages as $language) {
-            $localeName = strtolower(str_replace('_', '-', $language->getLocale()->getName()));
-            if ($localeName !== '' && $localeName === $normalizedTag) {
-                return $language;
-            }
+        $localeName = strtolower(str_replace('_', '-', $language->getLocale()->getName()));
+        if ($localeName !== '' && $localeName === $normalizedTag) {
+            return true;
         }
 
         $primary = explode('-', $normalizedTag, 2)[0];
         if ($primary === '') {
-            return null;
+            return false;
         }
 
-        foreach ($languages as $language) {
-            $languageCode = strtolower($language->getLocale()->getLanguageCode());
-            if ($languageCode === $primary) {
-                return $language;
-            }
+        $languageCode = strtolower($language->getLocale()->getLanguageCode());
+        if ($languageCode === $primary) {
+            return true;
         }
 
-        foreach ($languages as $language) {
-            $hreflangPrimary = explode('-', strtolower(str_replace('_', '-', $language->getHreflang())), 2)[0];
-            if ($hreflangPrimary === $primary) {
-                return $language;
-            }
-        }
+        $hreflangPrimary = explode('-', $hreflang, 2)[0];
 
-        return null;
+        return $hreflangPrimary === $primary;
     }
 }

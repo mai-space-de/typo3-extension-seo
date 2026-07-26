@@ -114,6 +114,26 @@ final class LanguageRedirectMiddlewareTest extends TestCase
     }
 
     #[Test]
+    public function doesNotRedirectWhenGermanTiedWithEnglishAtEqualQuality(): void
+    {
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->expects(self::once())
+            ->method('handle')
+            ->willReturn(new HtmlResponse('ok'));
+
+        $response = $this->process(
+            path: '/',
+            acceptLanguage: 'en-US,de-DE',
+            cookies: [],
+            tail: '',
+            handler: $handler,
+        );
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertStringContainsString('mai_seo_lang=0', $response->getHeaderLine('Set-Cookie'));
+    }
+
+    #[Test]
     public function doesNotRedirectWhenFeatureDisabled(): void
     {
         $handler = $this->createMock(RequestHandlerInterface::class);

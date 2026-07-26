@@ -98,6 +98,25 @@ final class AcceptLanguageNegotiatorTest extends TestCase
         self::assertSame($expectedLanguageId, $match->getLanguageId());
     }
 
+    #[Test]
+    #[DataProvider('equalQualityPrefersSiteOrderProvider')]
+    public function negotiatePrefersSiteOrderOnEqualQuality(string $header, int $expectedLanguageId): void
+    {
+        $match = $this->subject->negotiate($header, $this->languages());
+
+        self::assertInstanceOf(SiteLanguage::class, $match);
+        self::assertSame($expectedLanguageId, $match->getLanguageId());
+    }
+
+    #[Test]
+    public function negotiateStillPrefersHigherQualityOverSiteOrder(): void
+    {
+        $match = $this->subject->negotiate('en;q=0.9,de;q=0.8', $this->languages());
+
+        self::assertInstanceOf(SiteLanguage::class, $match);
+        self::assertSame(1, $match->getLanguageId());
+    }
+
     /**
      * @return array<string, array{string, int}>
      */
@@ -106,6 +125,23 @@ final class AcceptLanguageNegotiatorTest extends TestCase
         return [
             'german primary' => ['de', 0],
             'english us maps via primary' => ['en-US,en;q=0.9', 1],
+        ];
+    }
+
+    /**
+     * Mobile browsers often list several languages at q=1.0 without explicit
+     * weights. English commonly appears before German; site order must win.
+     *
+     * @return array<string, array{string, int}>
+     */
+    public static function equalQualityPrefersSiteOrderProvider(): array
+    {
+        return [
+            'en before de without q' => ['en,de', 0],
+            'en-US before de-DE without q' => ['en-US,de-DE', 0],
+            'en-GB before de-DE without q' => ['en-GB,de-DE', 0],
+            'explicit equal q' => ['en;q=0.9,de;q=0.9', 0],
+            'de before en without q still german' => ['de,en', 0],
         ];
     }
 
