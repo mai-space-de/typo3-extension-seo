@@ -150,7 +150,7 @@ This section maps every functional page type in the `bgm-pulheim.org` site to it
 |---|---|
 | High | Add `JobPosting` type to `vocabulary.json` and TCA select options (see `mai_jobs` FEATURES.md §10) |
 | ✅ Done (2026-05-24) | Implement `OrganizationCollector` reading from `config/sites/bgm-pulheim/settings.yaml` — fills `Organization.name`, `.url`, `.logo`; `address`, `telephone` added when present in site settings |
-| ✅ Done (2026-07-26) | `FaqCollector` builds `FAQPage.mainEntity` from `tx_maifaq_faq`; maps `maispace_faq_list`; language + empty Q/A filter |
+| ✅ Done (2026-07-26) | `FaqCollector` builds `FAQPage.mainEntity` from `tx_maifaq_faq`; maps `maifaq_list`; language + empty Q/A filter |
 | ✅ Done (2026-07-26) | `BreadcrumbCollector` also excludes spacer (`doktype=199`) and BE-user-section pages |
 | ✅ Done (2026-07-26) | `RecordStorageResolver` resolves sysfolders via `doktype=254` (not spacer 199) |
 | Low | Add `CollectionPage`, `Review`, `AggregateRating`, `ProfilePage` to vocabulary.json |

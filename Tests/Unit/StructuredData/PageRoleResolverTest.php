@@ -48,7 +48,7 @@ final class PageRoleResolverTest extends TestCase
     public function resolveAddsFaqPageForMaispaceFaqListCtypeTest(): void
     {
         $subject = new PageRoleResolver(
-            $this->makeConnectionPool(['maispace_faq_list']),
+            $this->makeConnectionPool(['maifaq_list']),
             $this->makeSiteFinder(1),
         );
 
