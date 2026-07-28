@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages"
+          date="2025-01-01T00:00:00Z" product-name="mai_seo">
+        <header/>
+        <body>
+            <trans-unit id="tab.seo_overrides">
+                <source>SEO</source>
+                <target>SEO</target>
+            </trans-unit>
+            <trans-unit id="palette.mai_seo">
+                <source>Open Graph &amp; Schema</source>
+                <target>Open Graph &amp; Schema</target>
+            </trans-unit>
+
+            <trans-unit id="pages.tx_maiseo_og_title">
+                <source>Open Graph Title</source>
+                <target>Open-Graph-Titel</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_og_title.description">
+                <source>Overrides the page title used in og:title meta tag. Leave empty to use the page title.</source>
+                <target>Überschreibt den im Meta-Tag og:title verwendeten Seitentitel. Leer lassen, um den Seitentitel zu verwenden.</target>
+            </trans-unit>
+
+            <trans-unit id="pages.tx_maiseo_og_description">
+                <source>Open Graph Description</source>
+                <target>Open-Graph-Beschreibung</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_og_description.description">
+                <source>Overrides the description used in og:description meta tag. Leave empty to use the page description.</source>
+                <target>Überschreibt die im Meta-Tag og:description verwendete Beschreibung. Leer lassen, um die Seitenbeschreibung zu verwenden.</target>
+            </trans-unit>
+
+            <trans-unit id="pages.tx_maiseo_og_image">
+                <source>Open Graph Image</source>
+                <target>Open-Graph-Bild</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_og_image.description">
+                <source>Image used for og:image. Recommended size: 1200×630 px.</source>
+                <target>Bild für og:image. Empfohlene Größe: 1200×630 px.</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_og_image.addFile">
+                <source>Add image</source>
+                <target>Bild hinzufügen</target>
+            </trans-unit>
+
+            <trans-unit id="pages.tx_maiseo_schema_type">
+                <source>Schema.org Type</source>
+                <target>Schema.org-Typ</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_schema_type.description">
+                <source>Overrides the root @type for this page's JSON-LD structured data.</source>
+                <target>Überschreibt den Wurzel-@type der strukturierten JSON-LD-Daten dieser Seite.</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_schema_type.auto">
+                <source>Auto (detect from page type)</source>
+                <target>Automatisch (aus Seitentyp ermitteln)</target>
+            </trans-unit>
+
+            <trans-unit id="pages.tx_maiseo_structured_data">
+                <source>Structured Data (JSON-LD)</source>
+                <target>Strukturierte Daten (JSON-LD)</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_maiseo_structured_data.description">
+                <source>Visual editor for schema.org JSON-LD structured data. Auto-generated values are shown with a lock icon and can be overridden.</source>
+                <target>Visueller Editor für strukturierte JSON-LD-Daten nach schema.org. Automatisch generierte Werte werden mit einem Schloss-Symbol angezeigt und können überschrieben werden.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
