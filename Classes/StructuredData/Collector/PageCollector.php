@@ -6,8 +6,7 @@ namespace Maispace\MaiSeo\StructuredData\Collector;
 
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use Psr\Http\Message\UriInterface;
 
 final class PageCollector implements CollectorInterface
 {
@@ -73,21 +72,29 @@ final class PageCollector implements CollectorInterface
             return '';
         }
 
-        $pageType = $request->getAttribute('routing')?->getPageType() ?? 0;
-        $base = $language->getBase();
-
         $path = $this->getPagePath($pageUid, $request);
         if ($path === '') {
             return '';
         }
 
-        $uri = $base->withPath($base->getPath() . $path);
+        $uri = $this->joinBaseAndPath($language->getBase(), $path);
+
+        // PageArguments::getPageType() returns a string; cast before comparing.
+        $pageType = (int) ($request->getAttribute('routing')?->getPageType() ?? 0);
         if ($pageType !== 0) {
-            $query = http_build_query(['type' => $pageType]);
-            $uri = $uri->withQuery($query);
+            $uri = $uri->withQuery(http_build_query(['type' => $pageType]));
         }
 
         return (string) $uri;
+    }
+
+    private function joinBaseAndPath(UriInterface $base, string $path): UriInterface
+    {
+        $basePath = rtrim($base->getPath(), '/');
+        $pagePath = ($path === '/' || $path === '') ? '' : '/' . ltrim($path, '/');
+        $combined = ($basePath . $pagePath) !== '' ? $basePath . $pagePath : '/';
+
+        return $base->withPath($combined)->withQuery('')->withFragment('');
     }
 
     private function getPagePath(int $pageUid, ServerRequestInterface $request): string

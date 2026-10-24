@@ -15,7 +15,7 @@ settings:
     type: page
     category: mai-seo.sitemap
   seo.sitemap.records.jobs.detailPid:
-    default: 14
+    default: 32
     type: page
     category: mai-seo.sitemap
   seo.sitemap.records.locations.detailPid:

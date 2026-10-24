@@ -100,6 +100,78 @@ final class PageCollectorTest extends CollectorTestCase
             self::assertArrayHasKey('url', $event->getGraph());
             self::assertStringContainsString('www.bgm-pulheim.org.ddev.site', $event->getGraph()['url']);
             self::assertStringContainsString('/test-page', $event->getGraph()['url']);
+            self::assertStringNotContainsString('type=', $event->getGraph()['url']);
+        } finally {
+            unset($GLOBALS['TYPO3_REQUEST']);
+        }
+    }
+
+    #[Test]
+    public function collectBuildsCleanHomepageUrlWithoutDoubleSlashOrTypeZeroTest(): void
+    {
+        $pageRecord = ['uid' => 1, 'title' => 'Home', 'slug' => '/'];
+        $pageArguments = new PageArguments(1, '0', []);
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(1);
+        $pageInformation->setPageRecord($pageRecord);
+
+        $site = $this->createMock(Site::class);
+
+        $language = $this->createMock(SiteLanguage::class);
+        $language->method('getBase')->willReturn(new Uri('https://www.bgm-pulheim.org/'));
+
+        $request = new ServerRequest('https://www.bgm-pulheim.org/');
+        $request = $request->withAttribute('routing', $pageArguments);
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $request = $request->withAttribute('site', $site);
+        $request = $request->withAttribute('language', $language);
+
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
+        try {
+            $collector = new PageCollector();
+            $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: $pageRecord);
+
+            $collector->collect($event);
+
+            self::assertSame('https://www.bgm-pulheim.org/', $event->getGraph()['url']);
+        } finally {
+            unset($GLOBALS['TYPO3_REQUEST']);
+        }
+    }
+
+    #[Test]
+    public function collectKeepsNonZeroPageTypeInUrlQueryTest(): void
+    {
+        $pageRecord = ['uid' => 42, 'title' => 'Test Page', 'slug' => '/test-page'];
+        $pageArguments = new PageArguments(42, '1533906435', []);
+        $pageInformation = new PageInformation();
+        $pageInformation->setId(42);
+        $pageInformation->setPageRecord($pageRecord);
+
+        $site = $this->createMock(Site::class);
+
+        $language = $this->createMock(SiteLanguage::class);
+        $language->method('getBase')->willReturn(new Uri('https://www.bgm-pulheim.org/'));
+
+        $request = new ServerRequest('https://www.bgm-pulheim.org/test-page');
+        $request = $request->withAttribute('routing', $pageArguments);
+        $request = $request->withAttribute('frontend.page.information', $pageInformation);
+        $request = $request->withAttribute('site', $site);
+        $request = $request->withAttribute('language', $language);
+
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+
+        try {
+            $collector = new PageCollector();
+            $event = new StructuredDataCollectionEvent(pageUid: 42, pageRecord: $pageRecord);
+
+            $collector->collect($event);
+
+            self::assertSame(
+                'https://www.bgm-pulheim.org/test-page?type=1533906435',
+                $event->getGraph()['url'],
+            );
         } finally {
             unset($GLOBALS['TYPO3_REQUEST']);
         }
