@@ -4,70 +4,18 @@ declare(strict_types=1);
 
 namespace Maispace\MaiSeo\StructuredData\Collector;
 
+use Maispace\MaiBase\Backend\CustomPageModule\DoktypeIds;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
-use Maispace\MaiSeo\StructuredData\RecordStorageResolverInterface;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 
 final class PersonCollector implements CollectorInterface
 {
-    public function __construct(
-        private readonly ConnectionPool $connectionPool,
-        private readonly RecordStorageResolverInterface $recordStorageResolver,
-    ) {}
-
     public function collect(StructuredDataCollectionEvent $event): void
     {
         if (!in_array($event->getGraph()['@type'] ?? '', $this->supportedTypes(), true)) {
             return;
         }
 
-        $storagePids = $this->recordStorageResolver->resolveStoragePids($event->pageUid);
-        if ($storagePids === []) {
-            return;
-        }
-
-        $qb = $this->connectionPool->getQueryBuilderForTable('tx_maiteam_team_member');
-        $rows = $qb
-            ->select('uid', 'first_name', 'last_name', 'role', 'bio', 'email', 'phone')
-            ->from('tx_maiteam_team_member')
-            ->where(
-                $qb->expr()->in(
-                    'pid',
-                    $qb->createNamedParameter($storagePids, Connection::PARAM_INT_ARRAY),
-                ),
-            )
-            ->orderBy('sorting', 'ASC')
-            ->setMaxResults(1)
-            ->executeQuery()
-            ->fetchAllAssociative();
-
-        if ($rows === []) {
-            return;
-        }
-
-        $row = $rows[0];
-
-        $name = trim($row['first_name'] . ' ' . $row['last_name']);
-        if ($name !== '') {
-            $event->addToGraph('name', $name);
-        }
-
-        if (!empty($row['role'])) {
-            $event->addToGraph('jobTitle', $row['role']);
-        }
-
-        if (!empty($row['bio'])) {
-            $event->addToGraph('description', $row['bio']);
-        }
-
-        if (!empty($row['email'])) {
-            $event->addToGraph('email', $row['email']);
-        }
-
-        if (!empty($row['phone'])) {
-            $event->addToGraph('telephone', $row['phone']);
-        }
+        $this->collectFromMemberPage($event);
     }
 
     public function supportedTypes(): array
@@ -78,5 +26,45 @@ final class PersonCollector implements CollectorInterface
     public function priority(): int
     {
         return 70;
+    }
+
+    private function collectFromMemberPage(StructuredDataCollectionEvent $event): void
+    {
+        $record = $event->pageRecord;
+        $doktype = (int) ($record['doktype'] ?? 0);
+        $hasMemberFields = isset($record['tx_maimember_first_name']) || isset($record['tx_maimember_last_name']);
+
+        if ($doktype !== DoktypeIds::MEMBER && !$hasMemberFields) {
+            return;
+        }
+
+        $name = trim(
+            trim((string) ($record['tx_maimember_first_name'] ?? ''))
+            . ' '
+            . trim((string) ($record['tx_maimember_last_name'] ?? '')),
+        );
+        if ($name === '') {
+            $name = trim((string) ($record['title'] ?? ''));
+        }
+        if ($name === '') {
+            return;
+        }
+
+        $event->addToGraph('name', $name);
+
+        $jobTitle = trim((string) ($record['tx_maimember_position'] ?? ''));
+        if ($jobTitle !== '') {
+            $event->addToGraph('jobTitle', $jobTitle);
+        }
+
+        $email = trim((string) ($record['tx_maimember_email'] ?? ''));
+        if ($email !== '') {
+            $event->addToGraph('email', $email);
+        }
+
+        $phone = trim((string) ($record['tx_maimember_phone'] ?? ''));
+        if ($phone !== '') {
+            $event->addToGraph('telephone', $phone);
+        }
     }
 }

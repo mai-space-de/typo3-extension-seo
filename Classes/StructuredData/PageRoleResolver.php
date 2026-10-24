@@ -30,6 +30,8 @@ final class PageRoleResolver
         'mainews_rss' => ['WebPage'],
         'maigallery_gallery' => ['CollectionPage', 'WebPage'],
         'maimember_view' => ['CollectionPage', 'WebPage'],
+        'maimember_list' => ['CollectionPage', 'WebPage'],
+        'maimember_detail' => ['Person'],
         'maimember_application' => ['WebPage'],
         'maitestimonials_list' => ['CollectionPage', 'WebPage'],
         'maitestimonials_single' => ['Review'],
@@ -82,6 +84,12 @@ final class PageRoleResolver
         }
         if ($doktype === DoktypeIds::EVENT) {
             $types = array_merge($types, ['Event']);
+        }
+        if ($doktype === DoktypeIds::JOB) {
+            $types = array_merge($types, ['JobPosting']);
+        }
+        if ($doktype === DoktypeIds::MEMBER) {
+            $types = array_merge($types, ['Person']);
         }
 
         foreach ($this->fetchContentElementTypes($pageUid) as $contentType) {

@@ -4,45 +4,17 @@ declare(strict_types=1);
 
 namespace Maispace\MaiSeo\Tests\Unit\StructuredData\Collector;
 
-use Doctrine\DBAL\Result;
+use Maispace\MaiBase\Backend\CustomPageModule\DoktypeIds;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
 use Maispace\MaiSeo\StructuredData\Collector\JobPostingCollector;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 final class JobPostingCollectorTest extends CollectorTestCase
 {
-    private function makeConnectionPool(array $rows): ConnectionPool
-    {
-        $exprBuilder = $this->createMock(ExpressionBuilder::class);
-        $exprBuilder->method('eq')->willReturn('1=1');
-        $exprBuilder->method('in')->willReturn('pid IN (1)');
-
-        $result = $this->createMock(Result::class);
-        $result->method('fetchAllAssociative')->willReturn($rows);
-
-        $qb = $this->createMock(QueryBuilder::class);
-        $qb->method('select')->willReturnSelf();
-        $qb->method('from')->willReturnSelf();
-        $qb->method('where')->willReturnSelf();
-        $qb->method('orderBy')->willReturnSelf();
-        $qb->method('setMaxResults')->willReturnSelf();
-        $qb->method('expr')->willReturn($exprBuilder);
-        $qb->method('createNamedParameter')->willReturn(':p1');
-        $qb->method('executeQuery')->willReturn($result);
-
-        $pool = $this->createMock(ConnectionPool::class);
-        $pool->method('getQueryBuilderForTable')->willReturn($qb);
-
-        return $pool;
-    }
-
     #[Test]
     public function priorityIsSeventyTest(): void
     {
-        $collector = new JobPostingCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
+        $collector = new JobPostingCollector();
 
         self::assertSame(70, $collector->priority());
     }
@@ -50,7 +22,7 @@ final class JobPostingCollectorTest extends CollectorTestCase
     #[Test]
     public function supportedTypesContainsJobPostingTest(): void
     {
-        $collector = new JobPostingCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
+        $collector = new JobPostingCollector();
 
         self::assertSame(['JobPosting'], $collector->supportedTypes());
     }
@@ -58,7 +30,7 @@ final class JobPostingCollectorTest extends CollectorTestCase
     #[Test]
     public function collectSkipsWhenTypeIsNotJobPostingTest(): void
     {
-        $collector = new JobPostingCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
+        $collector = new JobPostingCollector();
         $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
         $event->addToGraph('@type', 'WebPage');
 
@@ -68,11 +40,16 @@ final class JobPostingCollectorTest extends CollectorTestCase
     }
 
     #[Test]
-    public function collectAddsTitleFromJobRecordTest(): void
+    public function collectAddsTitleFromJobPageRecordTest(): void
     {
-        $rows = [['uid' => 1, 'title' => 'PHP Dev', 'description' => 'Great job', 'deadline' => 1750000000, 'status' => 'open']];
-        $collector = new JobPostingCollector($this->makeConnectionPool($rows), $this->makeStorageResolver());
-        $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
+        $collector = new JobPostingCollector();
+        $event = new StructuredDataCollectionEvent(pageUid: 42, pageRecord: [
+            'doktype' => DoktypeIds::JOB,
+            'title' => 'PHP Dev',
+            'tx_maijobs_description' => 'Great job',
+            'tx_maijobs_deadline' => 1750000000,
+            'tx_maijobs_status' => 'open',
+        ]);
         $event->addToGraph('@type', 'JobPosting');
 
         $collector->collect($event);
@@ -84,10 +61,13 @@ final class JobPostingCollectorTest extends CollectorTestCase
     }
 
     #[Test]
-    public function collectSkipsWhenNoRecordsFoundTest(): void
+    public function collectSkipsWhenNoJobFieldsAndWrongDoktypeTest(): void
     {
-        $collector = new JobPostingCollector($this->makeConnectionPool([]), $this->makeStorageResolver());
-        $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: []);
+        $collector = new JobPostingCollector();
+        $event = new StructuredDataCollectionEvent(pageUid: 1, pageRecord: [
+            'doktype' => 1,
+            'title' => 'Plain page',
+        ]);
         $event->addToGraph('@type', 'JobPosting');
 
         $collector->collect($event);

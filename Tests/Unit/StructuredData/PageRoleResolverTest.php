@@ -111,6 +111,42 @@ final class PageRoleResolverTest extends TestCase
         self::assertContains('WebPage', $types);
     }
 
+    #[Test]
+    public function resolveAddsJobPostingForJobDoktypeTest(): void
+    {
+        $subject = new PageRoleResolver(
+            $this->makeConnectionPool([]),
+            $this->makeSiteFinder(1),
+        );
+
+        $types = $subject->resolve(77, [
+            'uid' => 77,
+            'doktype' => DoktypeIds::JOB,
+            'tx_maiseo_schema_type' => '',
+        ]);
+
+        self::assertContains('JobPosting', $types);
+        self::assertContains('WebPage', $types);
+    }
+
+    #[Test]
+    public function resolveAddsPersonForMemberDoktypeTest(): void
+    {
+        $subject = new PageRoleResolver(
+            $this->makeConnectionPool([]),
+            $this->makeSiteFinder(1),
+        );
+
+        $types = $subject->resolve(88, [
+            'uid' => 88,
+            'doktype' => DoktypeIds::MEMBER,
+            'tx_maiseo_schema_type' => '',
+        ]);
+
+        self::assertContains('Person', $types);
+        self::assertContains('WebPage', $types);
+    }
+
     /**
      * @param list<string> $cTypes
      */

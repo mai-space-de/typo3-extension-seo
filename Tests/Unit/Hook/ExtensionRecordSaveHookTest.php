@@ -125,6 +125,34 @@ final class ExtensionRecordSaveHookTest extends TestCase
         );
     }
 
+    #[Test]
+    public function legacyJobsTableDispatchesNoEventTest(): void
+    {
+        $this->dispatcher->expects(self::never())->method('dispatch');
+
+        $this->makeHook()->processDatamap_afterDatabaseOperations(
+            'update',
+            'tx_maijobs_job',
+            42,
+            ['pid' => 7, 'title' => 'Legacy'],
+            $this->dataHandler,
+        );
+    }
+
+    #[Test]
+    public function legacyTeamMemberTableDispatchesNoEventTest(): void
+    {
+        $this->dispatcher->expects(self::never())->method('dispatch');
+
+        $this->makeHook()->processDatamap_afterDatabaseOperations(
+            'update',
+            'tx_maiteam_team_member',
+            42,
+            ['pid' => 7, 'first_name' => 'Legacy'],
+            $this->dataHandler,
+        );
+    }
+
     // ---------------------------------------------------------------------------
     // New records — pid from fieldArray
     // ---------------------------------------------------------------------------
@@ -133,8 +161,6 @@ final class ExtensionRecordSaveHookTest extends TestCase
     public static function watchedTablesProvider(): array
     {
         return [
-            'jobs' => ['tx_maijobs_job'],
-            'team' => ['tx_maiteam_team_member'],
             'locations' => ['tx_mailocations_location'],
         ];
     }
@@ -167,7 +193,7 @@ final class ExtensionRecordSaveHookTest extends TestCase
 
         $this->makeHook()->processDatamap_afterDatabaseOperations(
             'new',
-            'tx_maijobs_job',
+            'tx_mailocations_location',
             'NEW99',
             [],
             $this->dataHandler,
@@ -190,7 +216,7 @@ final class ExtensionRecordSaveHookTest extends TestCase
 
         $this->makeHook()->processDatamap_afterDatabaseOperations(
             'update',
-            'tx_maijobs_job',
+            'tx_mailocations_location',
             42,
             ['pid' => 15, 'title' => 'New title'],
             $this->dataHandler,
@@ -214,9 +240,9 @@ final class ExtensionRecordSaveHookTest extends TestCase
         $hook = new ExtensionRecordSaveHook($this->dispatcher, $this->makePoolWithPid(33));
         $hook->processDatamap_afterDatabaseOperations(
             'update',
-            'tx_maiteam_team_member',
+            'tx_mailocations_location',
             99,
-            ['first_name' => 'Updated'],
+            ['title' => 'Updated'],
             $this->dataHandler,
         );
     }
@@ -243,7 +269,7 @@ final class ExtensionRecordSaveHookTest extends TestCase
 
         $this->makeHook()->processDatamap_afterDatabaseOperations(
             'update',
-            'tx_maijobs_job',
+            'tx_mailocations_location',
             0,
             [],
             $this->dataHandler,
