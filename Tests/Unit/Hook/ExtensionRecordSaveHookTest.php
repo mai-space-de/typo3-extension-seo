@@ -111,6 +111,20 @@ final class ExtensionRecordSaveHookTest extends TestCase
         );
     }
 
+    #[Test]
+    public function legacyNewsTableDispatchesNoEventTest(): void
+    {
+        $this->dispatcher->expects(self::never())->method('dispatch');
+
+        $this->makeHook()->processDatamap_afterDatabaseOperations(
+            'update',
+            'tx_mainews_news',
+            42,
+            ['pid' => 7, 'title' => 'Legacy'],
+            $this->dataHandler,
+        );
+    }
+
     // ---------------------------------------------------------------------------
     // New records — pid from fieldArray
     // ---------------------------------------------------------------------------
@@ -119,7 +133,6 @@ final class ExtensionRecordSaveHookTest extends TestCase
     public static function watchedTablesProvider(): array
     {
         return [
-            'news' => ['tx_mainews_news'],
             'jobs' => ['tx_maijobs_job'],
             'team' => ['tx_maiteam_team_member'],
             'locations' => ['tx_mailocations_location'],
@@ -154,7 +167,7 @@ final class ExtensionRecordSaveHookTest extends TestCase
 
         $this->makeHook()->processDatamap_afterDatabaseOperations(
             'new',
-            'tx_mainews_news',
+            'tx_maijobs_job',
             'NEW99',
             [],
             $this->dataHandler,
@@ -230,7 +243,7 @@ final class ExtensionRecordSaveHookTest extends TestCase
 
         $this->makeHook()->processDatamap_afterDatabaseOperations(
             'update',
-            'tx_mainews_news',
+            'tx_maijobs_job',
             0,
             [],
             $this->dataHandler,

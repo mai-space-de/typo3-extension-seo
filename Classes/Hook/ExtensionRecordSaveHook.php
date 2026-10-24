@@ -15,10 +15,12 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
  * an extension record that contributes to structured-data output is saved.
  *
  * Watched tables map directly to the collectors registered in CollectorRegistry:
- *   tx_mainews_news        → NewsArticleCollector
- *   tx_maijobs_job         → JobPostingCollector
- *   tx_maiteam_team_member → PersonCollector
+ *   tx_maijobs_job          → JobPostingCollector
+ *   tx_maiteam_team_member  → PersonCollector
  *   tx_mailocations_location → PlaceCollector
+ *
+ * News/Event structured data comes from pages doktypes and is invalidated by
+ * PageRecordSaveHook instead of legacy extension tables.
  */
 final class ExtensionRecordSaveHook
 {
@@ -27,7 +29,6 @@ final class ExtensionRecordSaveHook
      * structured-data cache of the page that owns the record.
      */
     private const WATCHED_TABLES = [
-        'tx_mainews_news',
         'tx_maijobs_job',
         'tx_maiteam_team_member',
         'tx_mailocations_location',
