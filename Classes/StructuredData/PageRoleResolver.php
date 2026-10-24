@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maispace\MaiSeo\StructuredData;
 
+use Maispace\MaiBase\Backend\CustomPageModule\DoktypeIds;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -73,6 +74,14 @@ final class PageRoleResolver
 
         if ($this->isHomepage($pageUid)) {
             $types = array_merge($types, ['Organization', 'WebSite']);
+        }
+
+        $doktype = (int) ($pageRecord['doktype'] ?? 0);
+        if ($doktype === DoktypeIds::NEWS) {
+            $types = array_merge($types, ['NewsArticle', 'Article']);
+        }
+        if ($doktype === DoktypeIds::EVENT) {
+            $types = array_merge($types, ['Event']);
         }
 
         foreach ($this->fetchContentElementTypes($pageUid) as $contentType) {

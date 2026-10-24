@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Maispace\MaiSeo\Tests\Unit\StructuredData\Collector;
 
 use Doctrine\DBAL\Result;
+use Maispace\MaiBase\Backend\CustomPageModule\DoktypeIds;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
 use Maispace\MaiSeo\StructuredData\Collector\NewsArticleCollector;
 use PHPUnit\Framework\Attributes\Test;
@@ -78,6 +79,29 @@ final class NewsArticleCollectorTest extends CollectorTestCase
         $collector->collect($event);
 
         self::assertSame('Test News', $event->getGraph()['headline']);
+    }
+
+    #[Test]
+    public function collectAddsFieldsFromNewsDoktypePageTest(): void
+    {
+        $collector = new NewsArticleCollector($this->makeConnectionPool([]), $this->makeStorageResolver([]));
+        $event = new StructuredDataCollectionEvent(
+            pageUid: 42,
+            pageRecord: [
+                'doktype' => DoktypeIds::NEWS,
+                'title' => 'Page News',
+                'tx_mainews_teaser' => 'Teaser text',
+                'tx_mainews_date' => 1700000000,
+            ],
+        );
+        $event->addToGraph('@type', 'NewsArticle');
+
+        $collector->collect($event);
+
+        $graph = $event->getGraph();
+        self::assertSame('Page News', $graph['headline']);
+        self::assertSame('Teaser text', $graph['description']);
+        self::assertSame(date('c', 1700000000), $graph['datePublished']);
     }
 
     #[Test]

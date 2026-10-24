@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Maispace\MaiSeo\Tests\Unit\StructuredData\Collector;
 
 use Doctrine\DBAL\Result;
+use Maispace\MaiBase\Backend\CustomPageModule\DoktypeIds;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
 use Maispace\MaiSeo\StructuredData\Collector\EventCollector;
 use PHPUnit\Framework\Attributes\Test;
@@ -138,5 +139,34 @@ final class EventCollectorTest extends CollectorTestCase
 
         self::assertArrayNotHasKey('name', $event->getGraph());
         self::assertArrayNotHasKey('startDate', $event->getGraph());
+    }
+
+    #[Test]
+    public function collectAddsFieldsFromEventDoktypePageTest(): void
+    {
+        $timestamp = 1700000000;
+        $collector = new EventCollector($this->makeConnectionPool([]), $this->makeStorageResolver([]));
+        $event = new StructuredDataCollectionEvent(
+            pageUid: 55,
+            pageRecord: [
+                'doktype' => DoktypeIds::EVENT,
+                'title' => 'Page Event',
+                'abstract' => 'From page abstract',
+                'tx_maievents_location' => 'Hall A',
+                'tx_maievents_start_date' => $timestamp,
+                'tx_maievents_end_date' => $timestamp + 3600,
+            ],
+        );
+        $event->addToGraph('@type', 'Event');
+
+        $collector->collect($event);
+
+        $graph = $event->getGraph();
+        self::assertSame('Page Event', $graph['name']);
+        self::assertSame('From page abstract', $graph['description']);
+        self::assertSame(date('c', $timestamp), $graph['startDate']);
+        self::assertSame(date('c', $timestamp + 3600), $graph['endDate']);
+        self::assertSame('Hall A', $graph['location']['name']);
+        self::assertSame('https://schema.org/EventScheduled', $graph['eventStatus']);
     }
 }

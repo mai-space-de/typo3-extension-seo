@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maispace\MaiSeo\StructuredData\Collector;
 
+use Maispace\MaiBase\Backend\CustomPageModule\DoktypeIds;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
 use Maispace\MaiSeo\StructuredData\RecordStorageResolverInterface;
 use TYPO3\CMS\Core\Database\Connection;
@@ -22,6 +23,70 @@ final class EventCollector implements CollectorInterface
             return;
         }
 
+        if ($this->collectFromPageRecord($event)) {
+            return;
+        }
+
+        $this->collectFromLegacyStorage($event);
+    }
+
+    public function supportedTypes(): array
+    {
+        return ['Event'];
+    }
+
+    public function priority(): int
+    {
+        return 70;
+    }
+
+    private function collectFromPageRecord(StructuredDataCollectionEvent $event): bool
+    {
+        $record = $event->pageRecord;
+        $doktype = (int) ($record['doktype'] ?? 0);
+        $hasEventFields = isset($record['tx_maievents_start_date']) || isset($record['tx_maievents_location']);
+
+        if ($doktype !== DoktypeIds::EVENT && !$hasEventFields) {
+            return false;
+        }
+
+        $name = trim((string) ($record['title'] ?? ''));
+        if ($name === '') {
+            return false;
+        }
+
+        $event->addToGraph('name', $name);
+
+        $description = trim((string) ($record['abstract'] ?? $record['description'] ?? ''));
+        if ($description !== '') {
+            $event->addToGraph('description', $description);
+        }
+
+        $startDate = (int) ($record['tx_maievents_start_date'] ?? 0);
+        if ($startDate > 0) {
+            $event->addToGraph('startDate', date('c', $startDate));
+        }
+
+        $endDate = (int) ($record['tx_maievents_end_date'] ?? 0);
+        if ($endDate > 0) {
+            $event->addToGraph('endDate', date('c', $endDate));
+        }
+
+        $location = trim((string) ($record['tx_maievents_location'] ?? ''));
+        if ($location !== '') {
+            $event->addToGraph('location', [
+                '@type' => 'Place',
+                'name' => $location,
+            ]);
+        }
+
+        $event->addToGraph('eventStatus', 'https://schema.org/EventScheduled');
+
+        return true;
+    }
+
+    private function collectFromLegacyStorage(StructuredDataCollectionEvent $event): void
+    {
         $storagePids = $this->recordStorageResolver->resolveStoragePids($event->pageUid);
         if ($storagePids === []) {
             return;
@@ -71,15 +136,5 @@ final class EventCollector implements CollectorInterface
         }
 
         $event->addToGraph('eventStatus', 'https://schema.org/EventScheduled');
-    }
-
-    public function supportedTypes(): array
-    {
-        return ['Event'];
-    }
-
-    public function priority(): int
-    {
-        return 70;
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Maispace\MaiSeo\Middleware;
 
 use Maispace\MaiSeo\Service\AcceptLanguageNegotiator;
+use Maispace\MaiSeo\Service\PageLanguageAvailability;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
@@ -22,6 +23,9 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * Cookie presence means the visitor already chose or was negotiated — the language switcher
  * is never overridden. The cookie is only written when absent so page cache stays intact.
  * Runs after site resolution and before page resolution.
+ *
+ * Root redirects only target languages that have an explicit page overlay for the site root
+ * (avoids sending visitors to a 404 under true `fallbackType: strict` without fallbacks).
  */
 final class LanguageRedirectMiddleware implements MiddlewareInterface
 {
@@ -30,6 +34,7 @@ final class LanguageRedirectMiddleware implements MiddlewareInterface
 
     public function __construct(
         private readonly AcceptLanguageNegotiator $negotiator,
+        private readonly PageLanguageAvailability $pageLanguageAvailability,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -65,6 +70,10 @@ final class LanguageRedirectMiddleware implements MiddlewareInterface
         $acceptLanguage = $request->getHeaderLine('Accept-Language');
         $match = $this->negotiator->negotiate($acceptLanguage, $site->getLanguages());
         if (!$match instanceof SiteLanguage || $match->getLanguageId() === $language->getLanguageId()) {
+            return $this->withPreferenceCookie($handler->handle($request), $language, $settings);
+        }
+
+        if (!$this->canRedirectToLanguage($site, $routeResult, $match)) {
             return $this->withPreferenceCookie($handler->handle($request), $language, $settings);
         }
 
@@ -105,6 +114,26 @@ final class LanguageRedirectMiddleware implements MiddlewareInterface
         $tail = trim($routeResult->getTail(), '/');
 
         return $tail === '';
+    }
+
+    /**
+     * For language-root requests, require a page overlay on the site root so we
+     * never 302 into a strict-mode 404. Deep-path redirects keep prior behaviour
+     * (page id is not known before page resolution).
+     */
+    private function canRedirectToLanguage(
+        Site $site,
+        mixed $routeResult,
+        SiteLanguage $targetLanguage,
+    ): bool {
+        if (!$this->isLanguageRoot($routeResult)) {
+            return true;
+        }
+
+        return $this->pageLanguageAvailability->hasPageOverlay(
+            $site->getRootPageId(),
+            $targetLanguage->getLanguageId(),
+        );
     }
 
     private function buildTargetUri(

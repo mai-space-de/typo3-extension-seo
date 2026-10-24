@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maispace\MaiSeo\Tests\Unit\StructuredData;
 
+use Maispace\MaiBase\Backend\CustomPageModule\DoktypeIds;
 use Maispace\MaiSeo\StructuredData\PageRoleResolver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -71,6 +72,43 @@ final class PageRoleResolverTest extends TestCase
         self::assertContains('FAQPage', $types);
         self::assertContains('Place', $types);
         self::assertContains('LocalBusiness', $types);
+    }
+
+    #[Test]
+    public function resolveAddsNewsArticleForNewsDoktypeTest(): void
+    {
+        $subject = new PageRoleResolver(
+            $this->makeConnectionPool([]),
+            $this->makeSiteFinder(1),
+        );
+
+        $types = $subject->resolve(42, [
+            'uid' => 42,
+            'doktype' => DoktypeIds::NEWS,
+            'tx_maiseo_schema_type' => '',
+        ]);
+
+        self::assertContains('NewsArticle', $types);
+        self::assertContains('Article', $types);
+        self::assertContains('WebPage', $types);
+    }
+
+    #[Test]
+    public function resolveAddsEventForEventDoktypeTest(): void
+    {
+        $subject = new PageRoleResolver(
+            $this->makeConnectionPool([]),
+            $this->makeSiteFinder(1),
+        );
+
+        $types = $subject->resolve(55, [
+            'uid' => 55,
+            'doktype' => DoktypeIds::EVENT,
+            'tx_maiseo_schema_type' => '',
+        ]);
+
+        self::assertContains('Event', $types);
+        self::assertContains('WebPage', $types);
     }
 
     /**

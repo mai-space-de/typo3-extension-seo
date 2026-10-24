@@ -11,6 +11,9 @@ services:
             - '../Classes/Event/*'
             - '../Classes/MetaTag/StructuredDataInjector.php'
 
+    Maispace\MaiSeo\Service\PageLanguageAvailability:
+        alias: Maispace\MaiSeo\Service\DatabasePageLanguageAvailability
+
     Maispace\MaiSeo\Schema\VocabularyRegistry:
         public: true
 

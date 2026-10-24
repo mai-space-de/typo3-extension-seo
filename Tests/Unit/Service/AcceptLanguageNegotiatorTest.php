@@ -82,7 +82,7 @@ final class AcceptLanguageNegotiatorTest extends TestCase
     {
         $languages = [
             $this->language(0, 'de-DE', 'de_DE', true),
-            $this->language(1, 'en-GB', 'en_US', false),
+            $this->language(1, 'en-GB', 'en_GB', false),
         ];
 
         self::assertNull($this->subject->negotiate('en-GB', $languages));
@@ -152,7 +152,7 @@ final class AcceptLanguageNegotiatorTest extends TestCase
     {
         return [
             $this->language(0, 'de-DE', 'de_DE'),
-            $this->language(1, 'en-GB', 'en_US'),
+            $this->language(1, 'en-GB', 'en_GB'),
             $this->language(2, 'uk-UA', 'uk_UA'),
             $this->language(3, 'ar-SA', 'ar_SA'),
         ];

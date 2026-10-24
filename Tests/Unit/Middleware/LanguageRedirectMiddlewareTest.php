@@ -6,6 +6,7 @@ namespace Maispace\MaiSeo\Tests\Unit\Middleware;
 
 use Maispace\MaiSeo\Middleware\LanguageRedirectMiddleware;
 use Maispace\MaiSeo\Service\AcceptLanguageNegotiator;
+use Maispace\MaiSeo\Service\PageLanguageAvailability;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -35,6 +36,28 @@ final class LanguageRedirectMiddlewareTest extends TestCase
         self::assertSame(302, $response->getStatusCode());
         self::assertSame('https://www.example.org/en/', $response->getHeaderLine('Location'));
         self::assertStringContainsString('mai_seo_lang=1', $response->getHeaderLine('Set-Cookie'));
+    }
+
+    #[Test]
+    public function doesNotRedirectRootWhenTargetLanguageHasNoPageOverlay(): void
+    {
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->expects(self::once())
+            ->method('handle')
+            ->willReturn(new HtmlResponse('ok'));
+
+        $response = $this->process(
+            path: '/',
+            acceptLanguage: 'en-GB,en;q=0.9',
+            cookies: [],
+            tail: '',
+            handler: $handler,
+            availableLanguageIds: [0],
+        );
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('', $response->getHeaderLine('Location'));
+        self::assertStringContainsString('mai_seo_lang=0', $response->getHeaderLine('Set-Cookie'));
     }
 
     #[Test]
@@ -174,6 +197,9 @@ final class LanguageRedirectMiddlewareTest extends TestCase
         self::assertSame(200, $response->getStatusCode());
     }
 
+    /**
+     * @param list<int>|null $availableLanguageIds null = all languages available
+     */
     private function process(
         string $path,
         string $acceptLanguage,
@@ -184,6 +210,7 @@ final class LanguageRedirectMiddlewareTest extends TestCase
         int $languageId = 0,
         string $method = 'GET',
         ?RequestHandlerInterface $handler = null,
+        ?array $availableLanguageIds = null,
     ): ResponseInterface {
         $site = $this->createSite($enabled, $rootOnly);
         $language = $this->languageFromSite($site, $languageId);
@@ -204,14 +231,37 @@ final class LanguageRedirectMiddlewareTest extends TestCase
             }
         };
 
-        return (new LanguageRedirectMiddleware(new AcceptLanguageNegotiator()))->process($request, $handler);
+        $availability = $this->createPageLanguageAvailability($availableLanguageIds);
+
+        return (new LanguageRedirectMiddleware(new AcceptLanguageNegotiator(), $availability))
+            ->process($request, $handler);
+    }
+
+    /**
+     * @param list<int>|null $availableLanguageIds
+     */
+    private function createPageLanguageAvailability(?array $availableLanguageIds): PageLanguageAvailability
+    {
+        return new class ($availableLanguageIds) implements PageLanguageAvailability {
+            /** @param list<int>|null $availableLanguageIds */
+            public function __construct(private readonly ?array $availableLanguageIds) {}
+
+            public function hasPageOverlay(int $pageId, int $languageId): bool
+            {
+                if ($this->availableLanguageIds === null) {
+                    return true;
+                }
+
+                return in_array($languageId, $this->availableLanguageIds, true);
+            }
+        };
     }
 
     private function createSite(bool $enabled, bool $rootOnly): Site
     {
         $languages = [
             $this->createLanguage(0, 'de-DE', 'de_DE', '/'),
-            $this->createLanguage(1, 'en-GB', 'en_US', '/en/'),
+            $this->createLanguage(1, 'en-GB', 'en_GB', '/en/'),
             $this->createLanguage(2, 'uk-UA', 'uk_UA', '/ua/'),
             $this->createLanguage(3, 'ar-SA', 'ar_SA', '/ar/'),
         ];
