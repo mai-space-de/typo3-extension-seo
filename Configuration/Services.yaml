@@ -14,6 +14,12 @@ services:
     Maispace\MaiSeo\Service\PageLanguageAvailability:
         alias: Maispace\MaiSeo\Service\DatabasePageLanguageAvailability
 
+    Maispace\MaiSeo\Analytics\AnalyticsStore:
+        alias: Maispace\MaiSeo\Analytics\DoctrineAnalyticsStore
+
+    Maispace\MaiSeo\Analytics\BackendUserDetector:
+        alias: Maispace\MaiSeo\Analytics\ContextBackendUserDetector
+
     Maispace\MaiSeo\Schema\VocabularyRegistry:
         public: true
 
@@ -114,3 +120,115 @@ services:
         tags:
             - name: 'backend.form.element'
               identifier: 'maiseoStructuredDataTree'
+
+    dashboard.widget.maiSeoTrafficGraph:
+        class: Maispace\MaiSeo\Widget\AnalyticsWidget
+        arguments:
+            $options:
+                section: graph
+                days: 7
+        tags:
+            - name: dashboard.widget
+              identifier: maiSeoTrafficGraph
+              groupNames: maiseo
+              title: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.graph.title'
+              description: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.graph.description'
+              iconIdentifier: content-widget-chart-bar
+              height: medium
+              width: large
+
+    dashboard.widget.maiSeoSitePerformance:
+        class: Maispace\MaiSeo\Widget\AnalyticsWidget
+        arguments:
+            $options:
+                section: performance
+                days: 7
+        tags:
+            - name: dashboard.widget
+              identifier: maiSeoSitePerformance
+              groupNames: maiseo
+              title: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.performance.title'
+              description: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.performance.description'
+              iconIdentifier: content-widget-number
+              height: medium
+              width: medium
+
+    dashboard.widget.maiSeoTopPages:
+        class: Maispace\MaiSeo\Widget\AnalyticsWidget
+        arguments:
+            $options:
+                section: topPages
+                days: 7
+        tags:
+            - name: dashboard.widget
+              identifier: maiSeoTopPages
+              groupNames: maiseo
+              title: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.topPages.title'
+              description: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.topPages.description'
+              iconIdentifier: content-widget-list
+              height: medium
+              width: medium
+
+    dashboard.widget.maiSeoTrafficChannel:
+        class: Maispace\MaiSeo\Widget\AnalyticsWidget
+        arguments:
+            $options:
+                section: channels
+                days: 7
+        tags:
+            - name: dashboard.widget
+              identifier: maiSeoTrafficChannel
+              groupNames: maiseo
+              title: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.channels.title'
+              description: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.channels.description'
+              iconIdentifier: content-widget-list
+              height: medium
+              width: small
+
+    dashboard.widget.maiSeoTrafficDevices:
+        class: Maispace\MaiSeo\Widget\AnalyticsWidget
+        arguments:
+            $options:
+                section: devices
+                days: 7
+        tags:
+            - name: dashboard.widget
+              identifier: maiSeoTrafficDevices
+              groupNames: maiseo
+              title: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.devices.title'
+              description: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.devices.description'
+              iconIdentifier: content-widget-chart-pie
+              height: medium
+              width: small
+
+    dashboard.widget.maiSeoTrafficBrowsers:
+        class: Maispace\MaiSeo\Widget\AnalyticsWidget
+        arguments:
+            $options:
+                section: browsers
+                days: 7
+        tags:
+            - name: dashboard.widget
+              identifier: maiSeoTrafficBrowsers
+              groupNames: maiseo
+              title: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.browsers.title'
+              description: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.browsers.description'
+              iconIdentifier: content-widget-chart-pie
+              height: medium
+              width: small
+
+    dashboard.widget.maiSeoTrafficLanguages:
+        class: Maispace\MaiSeo\Widget\AnalyticsWidget
+        arguments:
+            $options:
+                section: languages
+                days: 7
+        tags:
+            - name: dashboard.widget
+              identifier: maiSeoTrafficLanguages
+              groupNames: maiseo
+              title: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.languages.title'
+              description: 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.languages.description'
+              iconIdentifier: content-widget-list
+              height: medium
+              width: small

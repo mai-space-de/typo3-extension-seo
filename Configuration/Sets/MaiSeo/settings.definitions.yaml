@@ -4,6 +4,8 @@ categories:
     parent: mai-seo
   mai-seo.languageRedirect:
     parent: mai-seo
+  mai-seo.analytics:
+    parent: mai-seo
 
 settings:
   seo.sitemap.records.storagePid:
@@ -46,3 +48,7 @@ settings:
     default: 31536000
     type: int
     category: mai-seo.languageRedirect
+  seo.analytics.enabled:
+    default: true
+    type: bool
+    category: mai-seo.analytics

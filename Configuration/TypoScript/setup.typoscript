@@ -7,4 +7,20 @@ page {
             }
         }
     }
+
+    includeJSFooter {
+        maiSeoAnalytics = EXT:mai_seo/Resources/Public/JavaScript/analytics-beacon.js
+        maiSeoAnalytics {
+            defer = 1
+            excludeFromConcatenation = 1
+        }
+    }
+
+    footerData {
+        137537 = TEXT
+        137537 {
+            insertData = 1
+            value = <meta name="mai-seo-analytics" data-page-id="{page:uid}" data-language-id="{siteLanguage:languageId}" data-locale="{siteLanguage:hreflang}" data-endpoint="{site:base}mai-seo/analytics" data-enabled="{$seo.analytics.enabled}">
+        }
+    }
 }

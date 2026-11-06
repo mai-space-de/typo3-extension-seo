@@ -1,0 +1,22 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="row mb-3">
+    <f:for each="{report.metrics}" as="metric">
+        <div class="col-md">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="text-body-secondary">
+                        <f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:metric.{metric.key}" />
+                    </div>
+                    <strong class="fs-4">{metric.display}</strong>
+                    <f:if condition="{metric.trendDisplay}">
+                        <div class="mai-seo-tone-{metric.tone}">{metric.trendDisplay}</div>
+                    </f:if>
+                    <f:if condition="{metric.sparkline}">
+                        <div class="mai-seo-metric-spark">{metric.sparkline -> f:format.raw()}</div>
+                    </f:if>
+                </div>
+            </div>
+        </div>
+    </f:for>
+</div>

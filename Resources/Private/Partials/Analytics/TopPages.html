@@ -1,0 +1,30 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="card mb-3">
+    <div class="card-body">
+        <h2 class="h5"><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:section.topPages" /></h2>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:column.page" /></th>
+                    <th><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:column.path" /></th>
+                    <th class="text-end"><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:column.visits" /></th>
+                </tr>
+            </thead>
+            <tbody>
+                <f:for each="{report.topPages}" as="page">
+                    <tr>
+                        <td>{page.title}</td>
+                        <td><code>{page.path}</code></td>
+                        <td class="text-end">
+                            <span class="mai-seo-top-count">
+                                <span class="mai-seo-top-bar" style="width: {page.share}%;"></span>
+                                <span>{page.visits}</span>
+                            </span>
+                        </td>
+                    </tr>
+                </f:for>
+            </tbody>
+        </table>
+    </div>
+</div>

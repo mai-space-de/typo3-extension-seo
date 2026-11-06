@@ -1,0 +1,16 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="mai-seo-chart-head">
+            <h2 class="h5 mb-0"><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:section.graph" /></h2>
+            <div class="mai-seo-legend">
+                <span><i class="mai-seo-swatch mai-seo-swatch-visits"></i><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:metric.visits" /></span>
+                <span><i class="mai-seo-swatch mai-seo-swatch-visitors"></i><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:metric.visitors" /></span>
+            </div>
+        </div>
+        <div class="mai-seo-traffic">
+            {report.charts.traffic -> f:format.raw()}
+        </div>
+    </div>
+</div>

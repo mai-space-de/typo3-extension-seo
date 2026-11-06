@@ -1,3 +1,5 @@
+seo.analytics.enabled = 1
+
 plugin.tx_maiseo {
     settings {
         structuredData {

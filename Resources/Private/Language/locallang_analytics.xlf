@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.2">
+    <file source-language="de" datatype="plaintext" original="messages" date="2026-11-06T08:00:00Z" product-name="mai_seo">
+        <header/>
+        <body>
+            <trans-unit id="module.title"><source>Analytics</source></trans-unit>
+            <trans-unit id="module.notice"><source>Aufrufe von angemeldeten Backend-Benutzern, Bots und Vorschau-Links werden nicht gezählt. Es werden keine IP-Adressen gespeichert.</source></trans-unit>
+            <trans-unit id="module.empty"><source>Im gewählten Zeitraum liegen noch keine Aufrufe vor.</source></trans-unit>
+            <trans-unit id="metric.visits"><source>Aufrufe</source></trans-unit>
+            <trans-unit id="metric.visitors"><source>Besucher</source></trans-unit>
+            <trans-unit id="metric.bounce"><source>Absprungrate</source></trans-unit>
+            <trans-unit id="metric.duration"><source>Verweildauer</source></trans-unit>
+            <trans-unit id="metric.continuation"><source>Weiterklickrate</source></trans-unit>
+            <trans-unit id="section.graph"><source>Verlauf</source></trans-unit>
+            <trans-unit id="section.topPages"><source>Meistbesuchte Seiten</source></trans-unit>
+            <trans-unit id="section.channels"><source>Herkunft</source></trans-unit>
+            <trans-unit id="section.devices"><source>Geräte</source></trans-unit>
+            <trans-unit id="section.browsers"><source>Browser</source></trans-unit>
+            <trans-unit id="section.languages"><source>Sprachen</source></trans-unit>
+            <trans-unit id="column.page"><source>Seite</source></trans-unit>
+            <trans-unit id="column.path"><source>Pfad</source></trans-unit>
+            <trans-unit id="column.visits"><source>Aufrufe</source></trans-unit>
+            <trans-unit id="widget.group"><source>Analytics</source></trans-unit>
+            <trans-unit id="dashboard.preset.title"><source>Analytics-Übersicht</source></trans-unit>
+            <trans-unit id="dashboard.preset.description"><source>Verlauf, Kennzahlen, Top-Seiten und Herkunft aus der eigenen Seitenzählung.</source></trans-unit>
+            <trans-unit id="widget.graph.title"><source>Analytics: Verlauf</source></trans-unit>
+            <trans-unit id="widget.graph.description"><source>Aufrufe und Besucher der letzten 7 Tage.</source></trans-unit>
+            <trans-unit id="widget.performance.title"><source>Analytics: Kennzahlen</source></trans-unit>
+            <trans-unit id="widget.performance.description"><source>Aufrufe, Besucher, Absprungrate und Verweildauer.</source></trans-unit>
+            <trans-unit id="widget.topPages.title"><source>Analytics: Top-Seiten</source></trans-unit>
+            <trans-unit id="widget.topPages.description"><source>Die meistbesuchten Seiten.</source></trans-unit>
+            <trans-unit id="widget.channels.title"><source>Analytics: Herkunft</source></trans-unit>
+            <trans-unit id="widget.channels.description"><source>Direkt, Suche, Social, Kampagne und Verweise.</source></trans-unit>
+            <trans-unit id="widget.devices.title"><source>Analytics: Geräte</source></trans-unit>
+            <trans-unit id="widget.devices.description"><source>Desktop, Mobil und Tablet.</source></trans-unit>
+            <trans-unit id="widget.browsers.title"><source>Analytics: Browser</source></trans-unit>
+            <trans-unit id="widget.browsers.description"><source>Browser der Besucher.</source></trans-unit>
+            <trans-unit id="widget.languages.title"><source>Analytics: Sprachen</source></trans-unit>
+            <trans-unit id="widget.languages.description"><source>Sprachversionen statt GeoIP-Länder.</source></trans-unit>
+        </body>
+    </file>
+</xliff>

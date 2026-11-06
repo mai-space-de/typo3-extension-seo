@@ -13,6 +13,15 @@
             <trans-unit id="categories.mai-seo.sitemap">
                 <source>XML Sitemap</source>
             </trans-unit>
+            <trans-unit id="categories.mai-seo.analytics">
+                <source>Analytics</source>
+            </trans-unit>
+            <trans-unit id="settings.seo.analytics.enabled">
+                <source>Analytics aktiv</source>
+            </trans-unit>
+            <trans-unit id="settings.description.seo.analytics.enabled">
+                <source>Zählt Frontend-Aufrufe. Angemeldete Backend-Benutzer werden nicht erfasst.</source>
+            </trans-unit>
 
             <trans-unit id="settings.seo.sitemap.records.storagePid">
                 <source>Record storage page</source>

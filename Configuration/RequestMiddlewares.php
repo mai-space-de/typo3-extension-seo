@@ -16,5 +16,15 @@ return [
                 'typo3/cms-frontend/page-resolver',
             ],
         ],
+        'maispace/mai-seo/analytics-collect' => [
+            'target' => \Maispace\MaiSeo\Middleware\AnalyticsCollectMiddleware::class,
+            'after' => [
+                'typo3/cms-frontend/site',
+                'typo3/cms-frontend/backend-user-authentication',
+            ],
+            'before' => [
+                'typo3/cms-frontend/page-resolver',
+            ],
+        ],
     ],
 ];

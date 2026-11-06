@@ -1,0 +1,36 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="card mb-3">
+    <div class="card-body">
+        <h2 class="h5">{title}</h2>
+        <f:if condition="{chart}">
+            <f:then>
+                <div class="mai-seo-donut-layout">
+                    <div class="mai-seo-donut">{chart -> f:format.raw()}</div>
+                    <ul class="mai-seo-legend-list">
+                        <f:for each="{rows}" as="row">
+                            <li>
+                                <span class="mai-seo-swatch" style="background: {row.color};"></span>
+                                <span class="mai-seo-legend-label">{row.label}</span>
+                                <span class="mai-seo-legend-value">{row.percent} % · {row.count}</span>
+                            </li>
+                        </f:for>
+                    </ul>
+                </div>
+            </f:then>
+            <f:else>
+                <f:for each="{rows}" as="row">
+                    <div class="mai-seo-bar-row">
+                        <div class="mai-seo-bar-meta">
+                            <span>{row.label}</span>
+                            <span>{row.percent} % · {row.count}</span>
+                        </div>
+                        <div class="mai-seo-bar-track">
+                            <span style="width: {row.percent}%; background: {row.color};"></span>
+                        </div>
+                    </div>
+                </f:for>
+            </f:else>
+        </f:if>
+    </div>
+</div>

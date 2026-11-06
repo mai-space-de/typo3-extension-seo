@@ -1,0 +1,38 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:switch expression="{section}">
+    <f:case value="graph">
+        <f:render partial="Analytics/Graph" arguments="{report: report}" />
+    </f:case>
+    <f:case value="topPages">
+        <f:render partial="Analytics/TopPages" arguments="{report: report}" />
+    </f:case>
+    <f:case value="channels">
+        <f:render partial="Analytics/Shares" arguments="{rows: report.channels, title: 'Herkunft'}" />
+    </f:case>
+    <f:case value="devices">
+        <f:render partial="Analytics/Shares" arguments="{rows: report.devices, title: 'Geräte', chart: report.charts.devices}" />
+    </f:case>
+    <f:case value="browsers">
+        <f:render partial="Analytics/Shares" arguments="{rows: report.browsers, title: 'Browser', chart: report.charts.browsers}" />
+    </f:case>
+    <f:case value="languages">
+        <f:render partial="Analytics/Shares" arguments="{rows: report.languages, title: 'Sprachen'}" />
+    </f:case>
+    <f:defaultCase>
+        <f:render partial="Analytics/Metrics" arguments="{report: report}" />
+    </f:defaultCase>
+</f:switch>
+
+<f:if condition="{report.hasVisits}">
+    <f:else>
+        <p class="text-body-secondary">
+            <f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:module.empty" />
+        </p>
+    </f:else>
+</f:if>
+
+</html>

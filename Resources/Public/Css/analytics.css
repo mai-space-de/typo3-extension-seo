@@ -1,0 +1,244 @@
+.mai-seo-analytics-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--typo3-border-color, #d8d8d8);
+    border-radius: 0.5rem;
+}
+
+.mai-seo-analytics-metrics,
+.mai-seo-analytics-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.mai-seo-analytics-metric {
+    min-width: 8rem;
+}
+
+.mai-seo-analytics-metric strong {
+    display: block;
+    font-size: 1.25rem;
+}
+
+.mai-seo-chart-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.mai-seo-legend,
+.mai-seo-legend-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.mai-seo-legend-list {
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+}
+
+.mai-seo-legend span,
+.mai-seo-legend-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8125rem;
+}
+
+.mai-seo-legend-label {
+    flex: 1;
+}
+
+.mai-seo-legend-value {
+    color: var(--typo3-text-color-muted, #6c757d);
+    font-variant-numeric: tabular-nums;
+}
+
+.mai-seo-swatch {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 999px;
+    display: inline-block;
+}
+
+.mai-seo-swatch-visits {
+    background: #1d4ed8;
+}
+
+.mai-seo-swatch-visitors {
+    background: #0f766e;
+}
+
+.mai-seo-traffic-svg,
+.mai-seo-donut-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.mai-seo-spark {
+    display: block;
+    height: auto;
+}
+
+.mai-seo-metric-spark .mai-seo-spark,
+.mai-seo-analytics-metric .mai-seo-spark {
+    width: 100%;
+    max-width: 9rem;
+}
+
+.mai-seo-donut {
+    width: 8.5rem;
+    flex: 0 0 8.5rem;
+}
+
+.mai-seo-donut-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+}
+
+.mai-seo-grid {
+    stroke: currentColor;
+    stroke-opacity: 0.16;
+}
+
+.mai-seo-axis,
+.mai-seo-donut-caption {
+    fill: currentColor;
+    fill-opacity: 0.62;
+    font-size: 11px;
+}
+
+.mai-seo-donut-total {
+    fill: currentColor;
+    font-size: 18px;
+    font-weight: 650;
+}
+
+.mai-seo-donut-caption {
+    font-size: 9px;
+}
+
+.mai-seo-donut-empty {
+    fill: none;
+    stroke: currentColor;
+    stroke-opacity: 0.16;
+    stroke-width: 14;
+}
+
+.mai-seo-area-visits {
+    fill: #1d4ed8;
+    fill-opacity: 0.16;
+}
+
+.mai-seo-line-visits,
+.mai-seo-spark-line {
+    fill: none;
+    stroke: #1d4ed8;
+    stroke-width: 2.25;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.mai-seo-line-visitors {
+    fill: none;
+    stroke: #0f766e;
+    stroke-width: 2.25;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.mai-seo-dot {
+    fill: var(--typo3-surface-container, #fff);
+    stroke-width: 2;
+}
+
+.mai-seo-dot-visits {
+    stroke: #1d4ed8;
+}
+
+.mai-seo-dot-visitors {
+    stroke: #0f766e;
+}
+
+.mai-seo-spark-area {
+    fill: #1d4ed8;
+    fill-opacity: 0.16;
+}
+
+.mai-seo-metric-spark {
+    margin-top: 0.35rem;
+    color: #1d4ed8;
+}
+
+.mai-seo-bar-row + .mai-seo-bar-row {
+    margin-top: 0.65rem;
+}
+
+.mai-seo-bar-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.mai-seo-bar-track {
+    height: 0.45rem;
+    border-radius: 999px;
+    background: rgba(128, 128, 128, 0.16);
+    overflow: hidden;
+}
+
+.mai-seo-bar-track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+}
+
+.mai-seo-top-count {
+    position: relative;
+    display: inline-flex;
+    min-width: 4.5rem;
+    justify-content: flex-end;
+    padding: 0.1rem 0.35rem;
+}
+
+.mai-seo-top-bar {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: 999px;
+    background: rgba(29, 78, 216, 0.16);
+}
+
+.mai-seo-top-count span:last-child {
+    position: relative;
+}
+
+.mai-seo-tone-up {
+    color: var(--typo3-state-success-color, #1a7f37);
+}
+
+.mai-seo-tone-down {
+    color: var(--typo3-state-danger-color, #b42318);
+}
+
+.mai-seo-tone-flat {
+    color: var(--typo3-text-color-muted, #6c757d);
+}
