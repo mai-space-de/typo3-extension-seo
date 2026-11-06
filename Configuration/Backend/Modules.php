@@ -13,7 +13,7 @@ return [
         'path' => '/module/site/maiseo-analytics',
         'labels' => 'LLL:EXT:mai_seo/Resources/Private/Language/locallang_mod_analytics.xlf',
         'extensionName' => 'MaiSeo',
-        'iconIdentifier' => 'ext-maispace-mai_seo',
+        'iconIdentifier' => 'mai-seo-module',
         'controllerActions' => [
             AnalyticsBackendController::class => ['index'],
         ],

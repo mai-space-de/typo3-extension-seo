@@ -13,4 +13,8 @@ return [
         'provider' => \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
         'source' => $allIcons . 'interface-content-chart--product-data-analysis-analytics-graph-line-business-board-chart--Streamline-Core.svg',
     ],
+    'mai-seo-module' => [
+        'provider' => \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        'source' => $allIcons . 'interface-content-chart--product-data-analysis-analytics-graph-line-business-board-chart--Streamline-Core.svg',
+    ],
 ];
