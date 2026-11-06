@@ -232,3 +232,21 @@ services:
               iconIdentifier: content-widget-list
               height: medium
               width: small
+
+    dashboard.widget.maiSeoManual:
+      class: 'ProudNerds\PnBackendManual\Widgets\ManualWidget'
+      arguments:
+        $options:
+          file: 'EXT:mai_seo/Resources/Private/Manual/Manual.md'
+          numbered: true
+          contentsDepth: 2
+          printButton: true
+      tags:
+        - name: dashboard.widget
+          identifier: 'maiSeoManual'
+          groupNames: 'documentation'
+          title: 'Handbuch: SEO'
+          description: 'Kurze Anleitung für Metadaten, Weiterleitungen und die eigene Statistik.'
+          iconIdentifier: 'content-book'
+          height: 'medium'
+          width: 'medium'
