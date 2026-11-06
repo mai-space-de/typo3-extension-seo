@@ -9,11 +9,12 @@ use Maispace\MaiSeo\Analytics\ReportBuilder;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Dashboard\Widgets\AdditionalCssInterface;
+use TYPO3\CMS\Dashboard\Widgets\AdditionalJavaScriptInterface;
 use TYPO3\CMS\Dashboard\Widgets\RequestAwareWidgetInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 
-final class AnalyticsWidget implements WidgetInterface, RequestAwareWidgetInterface, AdditionalCssInterface
+final class AnalyticsWidget implements WidgetInterface, RequestAwareWidgetInterface, AdditionalCssInterface, AdditionalJavaScriptInterface
 {
     private ServerRequestInterface $request;
 
@@ -53,5 +54,10 @@ final class AnalyticsWidget implements WidgetInterface, RequestAwareWidgetInterf
     public function getCssFiles(): array
     {
         return ['EXT:mai_seo/Resources/Public/Css/analytics.css'];
+    }
+
+    public function getJsFiles(): array
+    {
+        return ['EXT:mai_seo/Resources/Public/JavaScript/analytics-charts.js'];
     }
 }

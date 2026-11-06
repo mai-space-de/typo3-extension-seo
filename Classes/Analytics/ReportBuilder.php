@@ -62,22 +62,43 @@ final class ReportBuilder
             'devices' => $devices,
             'browsers' => $browsers,
             'languages' => $languages,
+            'channelTotal' => $this->total($channels),
+            'deviceTotal' => $this->total($devices),
+            'browserTotal' => $this->total($browsers),
+            'languageTotal' => $this->total($languages),
             'hasVisits' => $current->visits > 0,
         ];
     }
 
     /**
-     * @return array{key: string, display: string, trendDisplay: string, tone: string, sparkline: string}
+     * @return array{key: string, display: string, trendDisplay: string, tone: string, trendClass: string, direction: string, palette: string, icon: string, sparkline: string}
      */
     private function metric(string $key, string $display, float|int $current, float|int $previous, bool $lowerIsBetter): array
     {
         $trend = $this->trend($current, $previous);
+        $tone = $this->tone($trend, $lowerIsBetter);
 
         return [
             'key' => $key,
             'display' => $display,
             'trendDisplay' => $trend === null ? '' : (($trend > 0 ? '+' : '') . number_format($trend, 1, ',', '') . ' %'),
-            'tone' => $this->tone($trend, $lowerIsBetter),
+            'tone' => $tone,
+            'trendClass' => $tone === 'flat' ? 'neutral' : $tone,
+            'direction' => $trend === null || $trend === 0.0 ? 'neutral' : ($trend > 0 ? 'up' : 'down'),
+            'palette' => match ($key) {
+                'visitors' => 'visitors',
+                'bounce' => 'bounce-rate',
+                'duration' => 'avg-duration',
+                'continuation' => 'continuation-rate',
+                default => 'visits',
+            },
+            'icon' => match ($key) {
+                'visitors' => 'visitors',
+                'bounce' => 'bounce',
+                'duration' => 'duration',
+                'continuation' => 'continuation',
+                default => 'visits',
+            },
             'sparkline' => '',
         ];
     }
@@ -123,7 +144,7 @@ final class ReportBuilder
 
     /**
      * @param list<array{label: string, count: int}> $rows
-     * @return list<array{label: string, count: int, percent: float}>
+     * @return list<array{label: string, count: int, percent: float, tone: string}>
      */
     private function shares(array $rows): array
     {
@@ -133,12 +154,13 @@ final class ReportBuilder
         }
 
         $shares = [];
-        foreach ($rows as $row) {
+        foreach ($rows as $index => $row) {
             $label = $row['label'] !== '' ? $row['label'] : 'unbekannt';
             $shares[] = [
                 'label' => $this->label($label),
                 'count' => $row['count'],
                 'percent' => $total > 0 ? round($row['count'] / $total * 100, 1) : 0.0,
+                'tone' => $this->shareTone($label, $index),
             ];
         }
 
@@ -146,12 +168,44 @@ final class ReportBuilder
     }
 
     /**
-     * @param list<array{label: string, count: int, percent: float}> $rows
-     * @return list<array{label: string, count: int, percent: float, color: string}>
+     * @param list<array{count: int}> $rows
+     */
+    private function total(array $rows): int
+    {
+        $total = 0;
+        foreach ($rows as $row) {
+            $total += $row['count'];
+        }
+
+        return $total;
+    }
+
+    private function shareTone(string $value, int $index): string
+    {
+        return match ($value) {
+            'direct' => 'source-direct',
+            'search' => 'source-search',
+            'social' => 'source-social',
+            'campaign' => 'source-paid',
+            'referral' => 'source-other',
+            'desktop' => 'device-desktop',
+            'mobile' => 'device-phone',
+            'tablet' => 'device-tablet',
+            'unbekannt', 'Sonstige' => 'series-other',
+            default => 'series-' . (($index % 8) + 1),
+        };
+    }
+
+    /**
+     * @param list<array{label: string, count: int, percent: float, tone: string}> $rows
+     * @return list<array{label: string, count: int, percent: float, tone: string, color: string}>
      */
     private function paint(array $rows): array
     {
         foreach ($rows as $index => $row) {
+            if ($row['tone'] === '') {
+                $rows[$index]['tone'] = 'series-' . (($index % 8) + 1);
+            }
             $rows[$index]['color'] = self::COLORS[$index % count(self::COLORS)];
         }
 

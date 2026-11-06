@@ -6,45 +6,64 @@
 <f:layout name="Module" />
 
 <f:section name="Content">
-    <h1><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:module.title" /></h1>
-    <p class="text-body-secondary">
-        <f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:module.notice" />
-    </p>
+    <div class="mai-seo-analytics">
+        <h1><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:module.title" /></h1>
+        <p class="text-body-secondary">
+            <f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:module.notice" />
+        </p>
 
-    <div class="btn-group mb-3" role="group">
-        <f:for each="{periods}" as="period">
-            <a class="btn btn-sm {f:if(condition: period.active, then: 'btn-primary', else: 'btn-default')}" href="{period.url}">{period.days} Tage</a>
-        </f:for>
-    </div>
-
-    <f:if condition="{showSites}">
-        <div class="btn-group mb-3 ms-2" role="group">
-            <f:for each="{sites}" as="siteOption">
-                <a class="btn btn-sm {f:if(condition: siteOption.active, then: 'btn-primary', else: 'btn-default')}" href="{siteOption.url}">{siteOption.identifier}</a>
+        <div class="btn-group mb-3" role="group">
+            <f:for each="{periods}" as="period">
+                <a class="btn btn-sm {f:if(condition: period.active, then: 'btn-primary', else: 'btn-default')}" href="{period.url}">{period.days} Tage</a>
             </f:for>
         </div>
-    </f:if>
 
-    <f:if condition="{report.hasVisits}">
-        <f:then>
-            <f:render partial="Analytics/Metrics" arguments="{report: report}" />
-            <f:render partial="Analytics/Graph" arguments="{report: report}" />
-            <div class="row">
-                <div class="col-lg-6">
-                    <f:render partial="Analytics/TopPages" arguments="{report: report}" />
-                </div>
-                <div class="col-lg-6">
-                    <f:render partial="Analytics/Shares" arguments="{rows: report.channels, title: 'Herkunft'}" />
-                    <f:render partial="Analytics/Shares" arguments="{rows: report.devices, title: 'Geräte', chart: report.charts.devices}" />
-                    <f:render partial="Analytics/Shares" arguments="{rows: report.browsers, title: 'Browser', chart: report.charts.browsers}" />
-                    <f:render partial="Analytics/Shares" arguments="{rows: report.languages, title: 'Sprachen'}" />
-                </div>
+        <f:if condition="{showSites}">
+            <div class="btn-group mb-3 ms-2" role="group">
+                <f:for each="{sites}" as="siteOption">
+                    <a class="btn btn-sm {f:if(condition: siteOption.active, then: 'btn-primary', else: 'btn-default')}" href="{siteOption.url}">{siteOption.identifier}</a>
+                </f:for>
             </div>
-        </f:then>
-        <f:else>
-            <p><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:module.empty" /></p>
-        </f:else>
-    </f:if>
+        </f:if>
+
+        <f:if condition="{report.hasVisits}">
+            <f:then>
+                <section class="mai-seo-analytics-section">
+                    <h2><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:widget.performance.title" /></h2>
+                    <f:render partial="Analytics/Metrics" arguments="{report: report}" />
+                </section>
+                <section class="mai-seo-analytics-section">
+                    <h2><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:section.graph" /></h2>
+                    <f:render partial="Analytics/Graph" arguments="{report: report}" />
+                </section>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <section class="mai-seo-analytics-section">
+                            <h2><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:section.topPages" /></h2>
+                            <f:render partial="Analytics/TopPages" arguments="{report: report}" />
+                        </section>
+                    </div>
+                    <div class="col-xl-6">
+                        <section class="mai-seo-analytics-section">
+                            <f:render partial="Analytics/Shares" arguments="{rows: report.channels, total: report.channelTotal, title: 'Herkunft'}" />
+                        </section>
+                        <section class="mai-seo-analytics-section">
+                            <f:render partial="Analytics/Shares" arguments="{rows: report.devices, total: report.deviceTotal, title: 'Geräte', chart: report.charts.devices}" />
+                        </section>
+                        <section class="mai-seo-analytics-section">
+                            <f:render partial="Analytics/Shares" arguments="{rows: report.browsers, total: report.browserTotal, title: 'Browser', chart: report.charts.browsers}" />
+                        </section>
+                        <section class="mai-seo-analytics-section">
+                            <f:render partial="Analytics/Shares" arguments="{rows: report.languages, total: report.languageTotal, title: 'Sprachen'}" />
+                        </section>
+                    </div>
+                </div>
+            </f:then>
+            <f:else>
+                <p><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:module.empty" /></p>
+            </f:else>
+        </f:if>
+    </div>
 </f:section>
 
 </html>

@@ -26,70 +26,6 @@
     font-size: 1.25rem;
 }
 
-.mai-seo-chart-head {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem 1.5rem;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.75rem;
-}
-
-.mai-seo-legend,
-.mai-seo-legend-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem 1rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.mai-seo-legend-list {
-    flex-direction: column;
-    gap: 0.4rem;
-    flex: 1;
-}
-
-.mai-seo-legend span,
-.mai-seo-legend-list li {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.8125rem;
-}
-
-.mai-seo-legend-label {
-    flex: 1;
-}
-
-.mai-seo-legend-value {
-    color: var(--typo3-text-color-muted, #6c757d);
-    font-variant-numeric: tabular-nums;
-}
-
-.mai-seo-swatch {
-    width: 0.7rem;
-    height: 0.7rem;
-    border-radius: 999px;
-    display: inline-block;
-}
-
-.mai-seo-swatch-visits {
-    background: #1d4ed8;
-}
-
-.mai-seo-swatch-visitors {
-    background: #0f766e;
-}
-
-.mai-seo-traffic-svg,
-.mai-seo-donut-svg {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
 .mai-seo-spark {
     display: block;
     height: auto;
@@ -101,53 +37,11 @@
     max-width: 9rem;
 }
 
-.mai-seo-donut {
-    width: 8.5rem;
-    flex: 0 0 8.5rem;
-}
-
-.mai-seo-donut-layout {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-}
-
-.mai-seo-grid {
-    stroke: currentColor;
-    stroke-opacity: 0.16;
-}
-
-.mai-seo-axis,
-.mai-seo-donut-caption {
-    fill: currentColor;
-    fill-opacity: 0.62;
-    font-size: 11px;
-}
-
-.mai-seo-donut-total {
-    fill: currentColor;
-    font-size: 18px;
-    font-weight: 650;
-}
-
-.mai-seo-donut-caption {
-    font-size: 9px;
-}
-
-.mai-seo-donut-empty {
-    fill: none;
-    stroke: currentColor;
-    stroke-opacity: 0.16;
-    stroke-width: 14;
-}
-
-.mai-seo-area-visits {
+.mai-seo-spark-area {
     fill: #1d4ed8;
     fill-opacity: 0.16;
 }
 
-.mai-seo-line-visits,
 .mai-seo-spark-line {
     fill: none;
     stroke: #1d4ed8;
@@ -156,89 +50,613 @@
     stroke-linecap: round;
 }
 
-.mai-seo-line-visitors {
-    fill: none;
-    stroke: #0f766e;
-    stroke-width: 2.25;
-    stroke-linejoin: round;
-    stroke-linecap: round;
-}
-
-.mai-seo-dot {
-    fill: var(--typo3-surface-container, #fff);
-    stroke-width: 2;
-}
-
-.mai-seo-dot-visits {
-    stroke: #1d4ed8;
-}
-
-.mai-seo-dot-visitors {
-    stroke: #0f766e;
-}
-
-.mai-seo-spark-area {
-    fill: #1d4ed8;
-    fill-opacity: 0.16;
-}
-
-.mai-seo-metric-spark {
-    margin-top: 0.35rem;
-    color: #1d4ed8;
-}
-
-.mai-seo-bar-row + .mai-seo-bar-row {
-    margin-top: 0.65rem;
-}
-
-.mai-seo-bar-meta {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 0.25rem;
-    font-size: 0.875rem;
-}
-
-.mai-seo-bar-track {
-    height: 0.45rem;
-    border-radius: 999px;
-    background: rgba(128, 128, 128, 0.16);
-    overflow: hidden;
-}
-
-.mai-seo-bar-track span {
-    display: block;
-    height: 100%;
-    border-radius: inherit;
-}
-
-.mai-seo-top-count {
-    position: relative;
-    display: inline-flex;
-    min-width: 4.5rem;
-    justify-content: flex-end;
-    padding: 0.1rem 0.35rem;
-}
-
-.mai-seo-top-bar {
-    position: absolute;
-    inset: 0 auto 0 0;
-    border-radius: 999px;
-    background: rgba(29, 78, 216, 0.16);
-}
-
-.mai-seo-top-count span:last-child {
-    position: relative;
-}
-
 .mai-seo-tone-up {
-    color: var(--typo3-state-success-color, #1a7f37);
+    color: var(--typo3-text-color-success, #1a7f37);
 }
 
 .mai-seo-tone-down {
-    color: var(--typo3-state-danger-color, #b42318);
+    color: var(--typo3-text-color-danger, #b42318);
 }
 
 .mai-seo-tone-flat {
-    color: var(--typo3-text-color-muted, #6c757d);
+    color: var(--typo3-text-color-variant, #6c757d);
+}
+
+.mai-seo-analytics,
+.tx-analytics-site-performance-list,
+.tx-analytics-traffic-graph,
+.tx-analytics-traffic-sources,
+.tx-analytics-top-pages,
+.widget-content {
+    --tx-analytics-color-visits: light-dark(#2f6fed, #7aa7ff);
+    --tx-analytics-color-visitors: light-dark(#1f9d55, #5dca8a);
+    --tx-analytics-color-visitors-new: light-dark(#d63384, #f08cba);
+    --tx-analytics-color-visitors-returning: light-dark(#e67700, #f0a35e);
+    --tx-analytics-color-sessions: light-dark(#7048e8, #b197fc);
+    --tx-analytics-color-bounce-rate: var(--typo3-text-color-danger, #d63939);
+    --tx-analytics-color-avg-duration: var(--typo3-text-color-warning, #b58105);
+    --tx-analytics-color-continuation-rate: light-dark(#0f8f8a, #63d0cb);
+    --tx-analytics-color-source-direct: var(--tx-analytics-color-visitors);
+    --tx-analytics-color-source-search: var(--tx-analytics-color-visits);
+    --tx-analytics-color-source-social: light-dark(#f0b429, #f6c453);
+    --tx-analytics-color-source-email: var(--tx-analytics-color-visitors-new);
+    --tx-analytics-color-source-paid: var(--tx-analytics-color-sessions);
+    --tx-analytics-color-source-ai: var(--tx-analytics-color-continuation-rate);
+    --tx-analytics-color-source-unknown: var(--tx-analytics-color-visitors-returning);
+    --tx-analytics-color-source-other: light-dark(#e03131, #ff8787);
+    --tx-analytics-color-device-desktop: var(--tx-analytics-color-visits);
+    --tx-analytics-color-device-mobile: var(--tx-analytics-color-visitors);
+    --tx-analytics-color-device-tablet: var(--tx-analytics-color-source-social);
+    --tx-analytics-color-device-phone: var(--tx-analytics-color-visitors-new);
+    --tx-analytics-color-device-unknown: var(--tx-analytics-color-visitors-returning);
+    --tx-analytics-color-series-1: var(--tx-analytics-color-visits);
+    --tx-analytics-color-series-2: var(--tx-analytics-color-visitors-new);
+    --tx-analytics-color-series-3: var(--tx-analytics-color-source-social);
+    --tx-analytics-color-series-4: var(--tx-analytics-color-visitors);
+    --tx-analytics-color-series-5: var(--tx-analytics-color-sessions);
+    --tx-analytics-color-series-6: var(--tx-analytics-color-visitors-returning);
+    --tx-analytics-color-series-7: var(--tx-analytics-color-continuation-rate);
+    --tx-analytics-color-series-8: var(--tx-analytics-color-source-other);
+    --tx-analytics-color-series-other: var(--tx-analytics-color-source-other);
+    --tx-analytics-color-trend-positive: var(--typo3-text-color-success, #1a7f37);
+    --tx-analytics-color-trend-negative: var(--typo3-text-color-danger, #d63939);
+}
+
+.mai-seo-analytics-section {
+    margin-bottom: 1.5rem;
+}
+
+.mai-seo-analytics-section > h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+}
+
+.tx-analytics-site-performance-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tx-analytics-site-performance-metric {
+    display: grid;
+    grid-template-areas:
+        "icon value"
+        "icon label";
+    grid-template-columns: 3.75rem minmax(0, 1fr);
+    align-items: center;
+    column-gap: 1rem;
+    min-height: 6.75rem;
+    padding: 0.75rem 1.25rem;
+    border: var(--typo3-component-border-width, 1px) solid var(--typo3-component-border-color, rgba(0, 0, 0, 0.12));
+    border-radius: var(--typo3-component-border-radius, 0.5rem);
+    background: var(--typo3-surface-container-base, var(--typo3-component-bg, #fff));
+}
+
+.tx-analytics-site-performance-metric-visits { --tx-analytics-site-performance-value-color: var(--tx-analytics-color-visits); }
+.tx-analytics-site-performance-metric-visitors { --tx-analytics-site-performance-value-color: var(--tx-analytics-color-visitors); }
+.tx-analytics-site-performance-metric-bounce-rate { --tx-analytics-site-performance-value-color: var(--tx-analytics-color-bounce-rate); }
+.tx-analytics-site-performance-metric-avg-duration { --tx-analytics-site-performance-value-color: var(--tx-analytics-color-avg-duration); }
+.tx-analytics-site-performance-metric-continuation-rate { --tx-analytics-site-performance-value-color: var(--tx-analytics-color-continuation-rate); }
+
+.tx-analytics-site-performance-icon,
+.tx-analytics-site-performance-trend-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--tx-analytics-site-performance-value-color, currentColor);
+}
+
+.tx-analytics-site-performance-icon {
+    grid-area: icon;
+    width: 3.75rem;
+    height: 3.75rem;
+    border: 1px solid color-mix(in srgb, var(--tx-analytics-site-performance-value-color), transparent 75%);
+    border-radius: var(--typo3-component-border-radius, 0.5rem);
+    background: color-mix(in srgb, var(--tx-analytics-site-performance-value-color), transparent 94%);
+}
+
+.tx-analytics-site-performance-icon svg {
+    width: 1.75rem;
+    height: 1.75rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.tx-analytics-site-performance-trend-icon svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.tx-analytics-site-performance-value-row {
+    display: flex;
+    grid-area: value;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    align-items: baseline;
+}
+
+.tx-analytics-site-performance-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.tx-analytics-site-performance-label {
+    grid-area: label;
+    color: var(--typo3-text-color-variant, #6c757d);
+}
+
+.tx-analytics-site-performance-trend {
+    display: inline-flex;
+    gap: 0.25rem;
+    align-items: center;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
+
+.tx-analytics-site-performance-trend-up { color: var(--tx-analytics-color-trend-positive); }
+.tx-analytics-site-performance-trend-down { color: var(--tx-analytics-color-trend-negative); }
+.tx-analytics-site-performance-trend-neutral { color: var(--typo3-text-color-variant, #6c757d); }
+
+.tx-analytics-traffic-graph {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.tx-analytics-traffic-graph-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--typo3-text-color-variant, #6c757d);
+}
+
+.tx-analytics-traffic-graph-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.tx-analytics-traffic-graph-legend-item::before {
+    content: "";
+    width: 0.7em;
+    height: 0.7em;
+    border-radius: 50%;
+    background: var(--tx-analytics-color-visits);
+}
+
+.tx-analytics-traffic-graph-legend-item[data-tone="visits"]::before { background: var(--tx-analytics-color-visits); }
+.tx-analytics-traffic-graph-legend-item[data-tone="visitors"]::before { background: var(--tx-analytics-color-visitors); }
+
+.tx-analytics-traffic-graph-chart-wrap {
+    display: grid;
+    grid-template-columns: 2.25rem 1fr;
+    grid-template-rows: 16rem auto;
+    gap: 0 0.375rem;
+    min-width: 0;
+}
+
+.tx-analytics-traffic-graph-chart-wrap--dual-axis {
+    grid-template-columns: 3rem 1fr 3rem;
+}
+
+.tx-analytics-traffic-graph-y-axis {
+    position: relative;
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 0;
+}
+
+.tx-analytics-traffic-graph-y-axis--right {
+    grid-column: 3;
+}
+
+.tx-analytics-traffic-graph-axis-title {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%) rotate(180deg);
+    writing-mode: vertical-rl;
+    font-size: 0.7rem;
+    color: var(--typo3-text-color-variant, #6c757d);
+    white-space: nowrap;
+}
+
+.tx-analytics-traffic-graph-y-axis--right .tx-analytics-traffic-graph-axis-title {
+    right: 0;
+    left: auto;
+    writing-mode: vertical-lr;
+    transform: translateY(-50%);
+}
+
+.tx-analytics-traffic-graph-y-label {
+    position: absolute;
+    right: 0;
+    color: var(--typo3-text-color-variant, #6c757d);
+    font-size: 0.7rem;
+    line-height: 1;
+    transform: translateY(-50%);
+    font-variant-numeric: tabular-nums;
+}
+
+.tx-analytics-traffic-graph-y-axis--right .tx-analytics-traffic-graph-y-label {
+    right: auto;
+    left: 0;
+}
+
+.tx-analytics-traffic-graph-y-label:nth-child(1) { top: 6.25%; }
+.tx-analytics-traffic-graph-y-label:nth-child(2) { top: 35.42%; }
+.tx-analytics-traffic-graph-y-label:nth-child(3) { top: 64.58%; }
+.tx-analytics-traffic-graph-y-label:nth-child(4) { top: 93.75%; }
+
+.tx-analytics-traffic-graph-chart-area {
+    position: relative;
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    min-height: 0;
+}
+
+.tx-analytics-traffic-graph-sparkline,
+.tx-analytics-traffic-graph-sparkline .tx-analytics-sparkline-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.tx-analytics-sparkline-svg {
+    display: block;
+    overflow: visible;
+}
+
+.tx-analytics-sparkline-line,
+.tx-analytics-sparkline-fill,
+.tx-analytics-sparkline-grid-line {
+    vector-effect: non-scaling-stroke;
+}
+
+.tx-analytics-sparkline-line {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+}
+
+.tx-analytics-sparkline-line[data-tone="visits"] { stroke: var(--tx-analytics-color-visits); }
+.tx-analytics-sparkline-line[data-tone="visitors"] { stroke: var(--tx-analytics-color-visitors); }
+
+.tx-analytics-sparkline-grid-line {
+    stroke: var(--typo3-component-border-color, rgba(0, 0, 0, 0.12));
+    stroke-width: 1;
+}
+
+.tx-analytics-sparkline-hover-line {
+    stroke: var(--typo3-text-color-variant, #6c757d);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+    vector-effect: non-scaling-stroke;
+}
+
+.tx-analytics-traffic-graph-x-axis {
+    position: relative;
+    grid-column: 2;
+    grid-row: 2;
+    height: 1.4rem;
+    color: var(--typo3-text-color-variant, #6c757d);
+    font-size: 0.7rem;
+}
+
+.tx-analytics-traffic-graph-x-axis span {
+    position: absolute;
+    top: 0.35rem;
+    left: var(--x-pct);
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.tx-analytics-traffic-graph-x-axis span:first-child { transform: none; }
+.tx-analytics-traffic-graph-x-axis span:last-child { transform: translateX(-100%); }
+
+.tx-analytics-hover-dot-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.tx-analytics-sparkline-hover-dot {
+    position: absolute;
+    width: 0.7em;
+    height: 0.7em;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.tx-analytics-sparkline-hover-dot[data-tone="visits"] { background: var(--tx-analytics-color-visits); }
+.tx-analytics-sparkline-hover-dot[data-tone="visitors"] { background: var(--tx-analytics-color-visitors); }
+
+.tx-analytics-traffic-graph-tooltip {
+    position: fixed;
+    z-index: 9999;
+    min-width: 8rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--typo3-component-bg, #fff);
+    border: 1px solid var(--typo3-component-border-color, rgba(0, 0, 0, 0.12));
+    border-radius: var(--typo3-component-border-radius, 0.5rem);
+    box-shadow: var(--typo3-component-box-shadow, 0 8px 24px rgba(0, 0, 0, 0.12));
+    font-size: 0.75rem;
+    pointer-events: none;
+}
+
+.tx-analytics-traffic-graph-tooltip-date {
+    margin-bottom: 0.3rem;
+    font-weight: 650;
+}
+
+.tx-analytics-traffic-graph-tooltip-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.1rem 0;
+    color: var(--typo3-text-color-variant, #6c757d);
+}
+
+.tx-analytics-traffic-graph-tooltip-dot {
+    width: 0.65em;
+    height: 0.65em;
+    border-radius: 50%;
+}
+
+.tx-analytics-traffic-graph-tooltip-dot[data-tone="visits"] { background: var(--tx-analytics-color-visits); }
+.tx-analytics-traffic-graph-tooltip-dot[data-tone="visitors"] { background: var(--tx-analytics-color-visitors); }
+
+.tx-analytics-traffic-graph-tooltip-value {
+    margin-left: auto;
+    padding-left: 1rem;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+    color: var(--typo3-component-color, inherit);
+}
+
+.tx-analytics-traffic-sources {
+    --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-series-1);
+    display: grid;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.tx-analytics-traffic-sources-section-header {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+}
+
+.tx-analytics-traffic-sources-heading {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.tx-analytics-traffic-sources-total {
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    background: var(--typo3-component-bg-tertiary, rgba(0, 0, 0, 0.06));
+    color: var(--typo3-text-color-variant, #6c757d);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.tx-analytics-traffic-sources-list {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tx-analytics-traffic-sources-donut-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.tx-analytics-traffic-sources-donut-chart {
+    width: 130px;
+    height: 130px;
+}
+
+.tx-analytics-traffic-sources-donut-chart svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.tx-analytics-traffic-sources-donut-track,
+.mai-seo-donut-empty {
+    stroke: var(--typo3-component-border-color, rgba(0, 0, 0, 0.12));
+}
+
+.tx-analytics-traffic-sources-donut-segment {
+    stroke: var(--tx-analytics-traffic-sources-tone-color);
+}
+
+.tx-analytics-traffic-sources-donut-layout > .tx-analytics-traffic-sources-list {
+    width: 100%;
+}
+
+.tx-analytics-traffic-sources-row {
+    display: grid;
+    grid-template-columns: minmax(4rem, 1fr) minmax(3rem, 6rem) 5rem;
+    gap: 0.5rem;
+    align-items: center;
+    min-height: 2rem;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid var(--typo3-component-border-color, rgba(0, 0, 0, 0.1));
+}
+
+.tx-analytics-traffic-sources-row--compact {
+    grid-template-columns: minmax(4rem, 1fr) 5rem;
+}
+
+.tx-analytics-traffic-sources-row:last-child {
+    border-bottom: 0;
+}
+
+.tx-analytics-traffic-sources-label {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    min-width: 0;
+}
+
+.tx-analytics-traffic-sources-label > span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tx-analytics-traffic-sources-dot,
+.tx-analytics-traffic-sources-square {
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--tx-analytics-traffic-sources-tone-color);
+}
+
+.tx-analytics-traffic-sources-dot { border-radius: 50%; }
+.tx-analytics-traffic-sources-square { border-radius: 2px; }
+
+.tx-analytics-traffic-sources-bar,
+.tx-analytics-top-pages-bar {
+    display: block;
+    height: 0.25rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(128, 128, 128, 0.16);
+}
+
+.tx-analytics-traffic-sources-bar > span,
+.tx-analytics-top-pages-bar > span {
+    display: block;
+    width: var(--mai-seo-share);
+    max-width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--tx-analytics-traffic-sources-tone-color, var(--tx-analytics-color-visits));
+}
+
+.tx-analytics-traffic-sources-value,
+.tx-analytics-top-pages-count {
+    justify-self: end;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.tx-analytics-traffic-sources-value {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1.25;
+}
+
+.tx-analytics-traffic-sources-change {
+    color: var(--typo3-text-color-variant, #6c757d);
+    font-size: 0.75em;
+}
+
+.tx-analytics-traffic-sources-tone-source-direct { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-source-direct); }
+.tx-analytics-traffic-sources-tone-source-search { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-source-search); }
+.tx-analytics-traffic-sources-tone-source-social { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-source-social); }
+.tx-analytics-traffic-sources-tone-source-email { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-source-email); }
+.tx-analytics-traffic-sources-tone-source-paid { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-source-paid); }
+.tx-analytics-traffic-sources-tone-source-ai { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-source-ai); }
+.tx-analytics-traffic-sources-tone-source-unknown { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-source-unknown); }
+.tx-analytics-traffic-sources-tone-source-other { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-source-other); }
+.tx-analytics-traffic-sources-tone-device-desktop { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-device-desktop); }
+.tx-analytics-traffic-sources-tone-device-mobile { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-device-mobile); }
+.tx-analytics-traffic-sources-tone-device-tablet { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-device-tablet); }
+.tx-analytics-traffic-sources-tone-device-phone { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-device-phone); }
+.tx-analytics-traffic-sources-tone-device-unknown { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-device-unknown); }
+.tx-analytics-traffic-sources-tone-series-1 { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-series-1); }
+.tx-analytics-traffic-sources-tone-series-2 { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-series-2); }
+.tx-analytics-traffic-sources-tone-series-3 { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-series-3); }
+.tx-analytics-traffic-sources-tone-series-4 { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-series-4); }
+.tx-analytics-traffic-sources-tone-series-5 { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-series-5); }
+.tx-analytics-traffic-sources-tone-series-6 { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-series-6); }
+.tx-analytics-traffic-sources-tone-series-7 { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-series-7); }
+.tx-analytics-traffic-sources-tone-series-8 { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-series-8); }
+.tx-analytics-traffic-sources-tone-series-other { --tx-analytics-traffic-sources-tone-color: var(--tx-analytics-color-series-other); }
+
+.tx-analytics-top-pages-list {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tx-analytics-top-pages-row {
+    display: grid;
+    grid-template-columns: 1.25rem minmax(5rem, 1fr) minmax(3rem, 5rem) 3.5rem;
+    gap: 0.5rem;
+    align-items: center;
+    min-height: 2.4rem;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--typo3-component-border-color, rgba(0, 0, 0, 0.1));
+}
+
+.tx-analytics-top-pages-row:last-child { border-bottom: 0; }
+
+.tx-analytics-top-pages-position,
+.tx-analytics-top-pages-slug {
+    color: var(--typo3-text-color-variant, #6c757d);
+}
+
+.tx-analytics-top-pages-position,
+.tx-analytics-top-pages-count {
+    font-variant-numeric: tabular-nums;
+}
+
+.tx-analytics-top-pages-title-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.tx-analytics-top-pages-title,
+.tx-analytics-top-pages-slug {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tx-analytics-top-pages-slug { font-size: 0.75em; }
+
+@media (max-width: 700px) {
+    .tx-analytics-site-performance-list,
+    .tx-analytics-traffic-sources-row,
+    .tx-analytics-top-pages-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tx-analytics-site-performance-metric {
+        grid-template-columns: 3.25rem minmax(0, 1fr);
+    }
+
+    .tx-analytics-traffic-sources-bar,
+    .tx-analytics-top-pages-bar {
+        grid-column: 1 / -1;
+    }
 }

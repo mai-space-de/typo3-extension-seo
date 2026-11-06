@@ -1,35 +1,52 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
-<div class="card mb-3">
-    <div class="card-body">
-        <h2 class="h5">{title}</h2>
+<div class="tx-analytics-traffic-sources">
+    <div class="tx-analytics-traffic-sources-section">
+        <div class="tx-analytics-traffic-sources-section-header">
+            <h3 class="tx-analytics-traffic-sources-heading">{title}</h3>
+            <f:if condition="{total}">
+                <span class="tx-analytics-traffic-sources-total">
+                    <f:format.number decimals="0" decimalSeparator="," thousandsSeparator=".">{total}</f:format.number>
+                    <f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:column.visits" />
+                </span>
+            </f:if>
+        </div>
         <f:if condition="{chart}">
             <f:then>
-                <div class="mai-seo-donut-layout">
-                    <div class="mai-seo-donut">{chart -> f:format.raw()}</div>
-                    <ul class="mai-seo-legend-list">
+                <div class="tx-analytics-traffic-sources-donut-layout">
+                    <div class="tx-analytics-traffic-sources-donut-chart">{chart -> f:format.raw()}</div>
+                    <ul class="tx-analytics-traffic-sources-list">
                         <f:for each="{rows}" as="row">
-                            <li>
-                                <span class="mai-seo-swatch" style="background: {row.color};"></span>
-                                <span class="mai-seo-legend-label">{row.label}</span>
-                                <span class="mai-seo-legend-value">{row.percent} % · {row.count}</span>
+                            <li class="tx-analytics-traffic-sources-row tx-analytics-traffic-sources-row--compact tx-analytics-traffic-sources-tone-{row.tone}">
+                                <span class="tx-analytics-traffic-sources-label">
+                                    <span class="tx-analytics-traffic-sources-square" aria-hidden="true"></span>
+                                    <span>{row.label}</span>
+                                </span>
+                                <span class="tx-analytics-traffic-sources-value">
+                                    <span>{row.percent} %</span>
+                                    <span class="tx-analytics-traffic-sources-change">{row.count}</span>
+                                </span>
                             </li>
                         </f:for>
                     </ul>
                 </div>
             </f:then>
             <f:else>
-                <f:for each="{rows}" as="row">
-                    <div class="mai-seo-bar-row">
-                        <div class="mai-seo-bar-meta">
-                            <span>{row.label}</span>
-                            <span>{row.percent} % · {row.count}</span>
-                        </div>
-                        <div class="mai-seo-bar-track">
-                            <span style="width: {row.percent}%; background: {row.color};"></span>
-                        </div>
-                    </div>
-                </f:for>
+                <ul class="tx-analytics-traffic-sources-list">
+                    <f:for each="{rows}" as="row">
+                        <li class="tx-analytics-traffic-sources-row tx-analytics-traffic-sources-tone-{row.tone}">
+                            <span class="tx-analytics-traffic-sources-label">
+                                <span class="tx-analytics-traffic-sources-dot" aria-hidden="true"></span>
+                                <span>{row.label}</span>
+                            </span>
+                            <span class="tx-analytics-traffic-sources-bar" style="--mai-seo-share: {row.percent}%;"><span></span></span>
+                            <span class="tx-analytics-traffic-sources-value">
+                                <span>{row.percent} %</span>
+                                <span class="tx-analytics-traffic-sources-change">{row.count}</span>
+                            </span>
+                        </li>
+                    </f:for>
+                </ul>
             </f:else>
         </f:if>
     </div>

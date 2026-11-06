@@ -1,30 +1,19 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
-<div class="card mb-3">
-    <div class="card-body">
-        <h2 class="h5"><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:section.topPages" /></h2>
-        <table class="table table-sm">
-            <thead>
-                <tr>
-                    <th><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:column.page" /></th>
-                    <th><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:column.path" /></th>
-                    <th class="text-end"><f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:column.visits" /></th>
-                </tr>
-            </thead>
-            <tbody>
-                <f:for each="{report.topPages}" as="page">
-                    <tr>
-                        <td>{page.title}</td>
-                        <td><code>{page.path}</code></td>
-                        <td class="text-end">
-                            <span class="mai-seo-top-count">
-                                <span class="mai-seo-top-bar" style="width: {page.share}%;"></span>
-                                <span>{page.visits}</span>
-                            </span>
-                        </td>
-                    </tr>
-                </f:for>
-            </tbody>
-        </table>
-    </div>
+<div class="tx-analytics-top-pages">
+    <ol class="tx-analytics-top-pages-list">
+        <f:for each="{report.topPages}" as="page" iteration="iteration">
+            <li class="tx-analytics-top-pages-row">
+                <span class="tx-analytics-top-pages-position">{iteration.cycle}</span>
+                <span class="tx-analytics-top-pages-title-cell">
+                    <span class="tx-analytics-top-pages-title-group">
+                        <span class="tx-analytics-top-pages-title">{page.title}</span>
+                        <span class="tx-analytics-top-pages-slug">{page.path}</span>
+                    </span>
+                </span>
+                <span class="tx-analytics-top-pages-bar" style="--mai-seo-share: {page.share}%;"><span></span></span>
+                <span class="tx-analytics-top-pages-count">{page.visits}</span>
+            </li>
+        </f:for>
+    </ol>
 </div>

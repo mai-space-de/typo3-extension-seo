@@ -1,22 +1,32 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
-<div class="row mb-3">
+<ul class="tx-analytics-site-performance-list">
     <f:for each="{report.metrics}" as="metric">
-        <div class="col-md">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="text-body-secondary">
-                        <f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:metric.{metric.key}" />
-                    </div>
-                    <strong class="fs-4">{metric.display}</strong>
-                    <f:if condition="{metric.trendDisplay}">
-                        <div class="mai-seo-tone-{metric.tone}">{metric.trendDisplay}</div>
-                    </f:if>
-                    <f:if condition="{metric.sparkline}">
-                        <div class="mai-seo-metric-spark">{metric.sparkline -> f:format.raw()}</div>
-                    </f:if>
-                </div>
-            </div>
-        </div>
+        <li class="tx-analytics-site-performance-metric tx-analytics-site-performance-metric-{metric.palette}">
+            <span class="tx-analytics-site-performance-icon">
+                <f:render partial="Analytics/Icon" arguments="{name: metric.icon}" />
+            </span>
+            <span class="tx-analytics-site-performance-value-row">
+                <span class="tx-analytics-site-performance-value">{metric.display}</span>
+                <f:if condition="{metric.trendDisplay}">
+                    <span class="tx-analytics-site-performance-trend tx-analytics-site-performance-trend-{metric.trendClass}">
+                        <f:if condition="{metric.direction} == 'up'">
+                            <span class="tx-analytics-site-performance-trend-icon">
+                                <f:render partial="Analytics/Icon" arguments="{name: 'trend-up'}" />
+                            </span>
+                        </f:if>
+                        <f:if condition="{metric.direction} == 'down'">
+                            <span class="tx-analytics-site-performance-trend-icon">
+                                <f:render partial="Analytics/Icon" arguments="{name: 'trend-down'}" />
+                            </span>
+                        </f:if>
+                        {metric.trendDisplay}
+                    </span>
+                </f:if>
+            </span>
+            <span class="tx-analytics-site-performance-label">
+                <f:translate key="LLL:EXT:mai_seo/Resources/Private/Language/locallang_analytics.xlf:metric.{metric.key}" />
+            </span>
+        </li>
     </f:for>
-</div>
+</ul>

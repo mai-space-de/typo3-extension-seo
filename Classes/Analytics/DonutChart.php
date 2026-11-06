@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Maispace\MaiSeo\Analytics;
 
 /**
- * Donut für Geräte, Browser und ähnliche Anteile.
+ * Ringdiagramm im Stil der TYPO3-Analytics-Widgets.
  */
 final class DonutChart
 {
     /**
-     * @param list<array{label: string, count: int, percent: float, color: string}> $rows
+     * @param list<array{label: string, count: int, percent: float, tone?: string, color?: string}> $rows
      */
     public function render(array $rows): string
     {
@@ -19,43 +19,39 @@ final class DonutChart
             $total += $row['count'];
         }
 
-        $svg = '<svg class="mai-seo-donut-svg" viewBox="0 0 120 120" role="img">';
-        $svg .= '<title>Anteile</title>';
-        $svg .= '<g transform="rotate(-90 60 60)">';
+        $svg = '<svg viewBox="0 0 100 100" role="img" aria-hidden="true">';
         if ($total === 0) {
-            $svg .= '<circle class="mai-seo-donut-empty" cx="60" cy="60" r="42"></circle>';
-        } else {
-            $svg .= $this->segments($rows, $total);
+            $svg .= '<circle class="mai-seo-donut-empty tx-analytics-traffic-sources-donut-track" cx="50" cy="50" r="40" fill="none" stroke-width="18"></circle>';
+            $svg .= '</svg>';
+
+            return $svg;
         }
-        $svg .= '</g>';
-        $svg .= '<text class="mai-seo-donut-total" x="60" y="58" text-anchor="middle">' . $total . '</text>';
-        $svg .= '<text class="mai-seo-donut-caption" x="60" y="72" text-anchor="middle">gesamt</text>';
+
+        $svg .= '<circle class="tx-analytics-traffic-sources-donut-track" cx="50" cy="50" r="40" fill="none" stroke-width="18"></circle>';
+        $circumference = 2 * M_PI * 40;
+        $offset = 0.0;
+        foreach ($rows as $row) {
+            if ($row['count'] <= 0) {
+                continue;
+            }
+            $length = ($row['count'] / $total) * $circumference;
+            $rotation = -90 + ($offset / $circumference) * 360;
+            $tone = $this->tone((string) ($row['tone'] ?? 'series-1'));
+            $svg .= '<circle class="tx-analytics-traffic-sources-donut-segment tx-analytics-traffic-sources-tone-' . $tone . '" cx="50" cy="50" r="40" fill="none" stroke-width="18" stroke-dasharray="'
+                . round($length, 3) . ' ' . round($circumference, 3) . '" transform="rotate(' . round($rotation, 3) . ' 50 50)"><title>'
+                . htmlspecialchars($row['label'] . ': ' . $row['count'], ENT_QUOTES | ENT_SUBSTITUTE)
+                . '</title></circle>';
+            $offset += $length;
+        }
         $svg .= '</svg>';
 
         return $svg;
     }
 
-    /**
-     * @param list<array{label: string, count: int, percent: float, color: string}> $rows
-     */
-    private function segments(array $rows, int $total): string
+    private function tone(string $tone): string
     {
-        $radius = 42.0;
-        $circumference = 2 * M_PI * $radius;
-        $gap = count($rows) > 1 ? 2.0 : 0.0;
-        $offset = 0.0;
-        $svg = '';
-        foreach ($rows as $row) {
-            $length = max(0.0, ($row['count'] / $total) * $circumference - $gap);
-            $svg .= '<circle cx="60" cy="60" r="42" fill="none" stroke="'
-                . htmlspecialchars($row['color'], ENT_QUOTES | ENT_SUBSTITUTE)
-                . '" stroke-width="14" stroke-dasharray="' . round($length, 2) . ' ' . round($circumference, 2)
-                . '" stroke-dashoffset="' . round(-$offset, 2) . '"><title>'
-                . htmlspecialchars($row['label'] . ': ' . $row['count'], ENT_QUOTES | ENT_SUBSTITUTE)
-                . '</title></circle>';
-            $offset += $length + $gap;
-        }
-
-        return $svg;
+        return preg_match('/^(?:source-(?:direct|search|social|email|paid|ai|unknown|other)|device-(?:desktop|mobile|tablet|phone|unknown)|series-(?:[1-8]|other))$/', $tone) === 1
+            ? $tone
+            : 'series-1';
     }
 }

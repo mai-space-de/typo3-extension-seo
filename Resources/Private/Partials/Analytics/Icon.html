@@ -1,0 +1,25 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:switch expression="{name}">
+    <f:case value="visitors">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 8.5v7M8.5 12h7"></path></svg>
+    </f:case>
+    <f:case value="bounce">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 7H6.5A1.5 1.5 0 0 0 5 8.5v7A1.5 1.5 0 0 0 6.5 17H10"></path><path d="M13 8l4 4-4 4M17 12H9"></path></svg>
+    </f:case>
+    <f:case value="duration">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4.5l3 2"></path></svg>
+    </f:case>
+    <f:case value="continuation">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 7h3.5A1.5 1.5 0 0 1 19 8.5v7a1.5 1.5 0 0 1-1.5 1.5H14"></path><path d="M11 8 7 12l4 4M7 12h8"></path></svg>
+    </f:case>
+    <f:case value="trend-up">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16l5.5-5.5 3 3L19 8"></path><path d="M14 8h5v5"></path></svg>
+    </f:case>
+    <f:case value="trend-down">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8l5.5 5.5 3-3L19 16"></path><path d="M14 16h5v-5"></path></svg>
+    </f:case>
+    <f:defaultCase>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12z"></path><circle cx="12" cy="12" r="2.4"></circle></svg>
+    </f:defaultCase>
+</f:switch>

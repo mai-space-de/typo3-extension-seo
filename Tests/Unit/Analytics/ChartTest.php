@@ -25,11 +25,11 @@ final class ChartTest extends TestCase
 
         $svg = (new TrafficChart())->render($series);
 
-        self::assertStringContainsString('mai-seo-area-visits', $svg);
-        self::assertStringContainsString('mai-seo-line-visitors', $svg);
+        self::assertStringContainsString('data-tone="visits"', $svg);
+        self::assertStringContainsString('data-tone="visitors"', $svg);
         self::assertStringContainsString('1.11.', $svg);
         self::assertStringContainsString('14.11.', $svg);
-        self::assertStringNotContainsString('2.11.', $svg);
+        self::assertStringNotContainsString('>2.11.<', $svg);
         self::assertStringContainsString('Aufrufe: 14', $svg);
     }
 
@@ -37,13 +37,12 @@ final class ChartTest extends TestCase
     public function donutUsesSegmentColorsAndSurvivesAnEmptySet(): void
     {
         $svg = (new DonutChart())->render([
-            ['label' => 'Desktop', 'count' => 3, 'percent' => 75.0, 'color' => '#1d4ed8'],
-            ['label' => 'Mobil', 'count' => 1, 'percent' => 25.0, 'color' => '#0f766e'],
+            ['label' => 'Desktop', 'count' => 3, 'percent' => 75.0, 'color' => '#1d4ed8', 'tone' => 'device-desktop'],
+            ['label' => 'Mobil', 'count' => 1, 'percent' => 25.0, 'color' => '#0f766e', 'tone' => 'device-phone'],
         ]);
 
-        self::assertStringContainsString('#1d4ed8', $svg);
-        self::assertStringContainsString('#0f766e', $svg);
-        self::assertStringContainsString('>4<', $svg);
+        self::assertStringContainsString('device-desktop', $svg);
+        self::assertStringContainsString('device-phone', $svg);
         self::assertStringContainsString('mai-seo-donut-empty', (new DonutChart())->render([]));
     }
 }

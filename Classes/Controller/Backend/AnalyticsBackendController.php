@@ -11,6 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 #[AsController]
@@ -21,6 +22,7 @@ final class AnalyticsBackendController extends AbstractBackendController
         IconFactory $iconFactory,
         private readonly ReportBuilder $reports,
         private readonly SiteFinder $siteFinder,
+        private readonly PageRenderer $pageRenderer,
     ) {
         parent::__construct($moduleTemplateFactory, $iconFactory);
     }
@@ -34,6 +36,9 @@ final class AnalyticsBackendController extends AbstractBackendController
         if ($siteId === '' || !isset($sites[$siteId])) {
             $siteId = (string) (array_key_first($sites) ?? '');
         }
+
+        $this->pageRenderer->addCssFile('EXT:mai_seo/Resources/Public/Css/analytics.css');
+        $this->pageRenderer->addJsFooterFile('EXT:mai_seo/Resources/Public/JavaScript/analytics-charts.js');
 
         $moduleTemplate = $this->createModuleTemplate();
         $this->addShortcutButton($moduleTemplate, 'site_maiseo_analytics', 'Analytics');
