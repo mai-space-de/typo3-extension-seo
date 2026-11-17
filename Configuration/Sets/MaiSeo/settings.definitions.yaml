@@ -6,6 +6,8 @@ categories:
     parent: mai-seo
   mai-seo.analytics:
     parent: mai-seo
+  mai-seo.organization:
+    parent: mai-seo
 
 settings:
   seo.sitemap.records.storagePid:
@@ -52,3 +54,35 @@ settings:
     default: true
     type: bool
     category: mai-seo.analytics
+  seo.organization.legalName:
+    default: ''
+    type: string
+    category: mai-seo.organization
+  seo.organization.streetAddress:
+    default: ''
+    type: string
+    category: mai-seo.organization
+  seo.organization.postalCode:
+    default: ''
+    type: string
+    category: mai-seo.organization
+  seo.organization.locality:
+    default: ''
+    type: string
+    category: mai-seo.organization
+  seo.organization.country:
+    default: ''
+    type: string
+    category: mai-seo.organization
+  seo.organization.telephone:
+    default: ''
+    type: string
+    category: mai-seo.organization
+  seo.organization.email:
+    default: ''
+    type: string
+    category: mai-seo.organization
+  seo.organization.sameAs:
+    default: ''
+    type: string
+    category: mai-seo.organization

@@ -16,6 +16,36 @@
             <trans-unit id="categories.mai-seo.analytics">
                 <source>Analytics</source>
             </trans-unit>
+            <trans-unit id="categories.mai-seo.organization">
+                <source>Organisation (JSON-LD)</source>
+            </trans-unit>
+            <trans-unit id="settings.seo.organization.legalName">
+                <source>Offizieller Vereinsname</source>
+            </trans-unit>
+            <trans-unit id="settings.seo.organization.streetAddress">
+                <source>Straße und Hausnummer</source>
+            </trans-unit>
+            <trans-unit id="settings.seo.organization.postalCode">
+                <source>Postleitzahl</source>
+            </trans-unit>
+            <trans-unit id="settings.seo.organization.locality">
+                <source>Ort</source>
+            </trans-unit>
+            <trans-unit id="settings.seo.organization.country">
+                <source>Land (ISO-Code)</source>
+            </trans-unit>
+            <trans-unit id="settings.seo.organization.telephone">
+                <source>Telefon</source>
+            </trans-unit>
+            <trans-unit id="settings.seo.organization.email">
+                <source>E-Mail</source>
+            </trans-unit>
+            <trans-unit id="settings.seo.organization.sameAs">
+                <source>Weitere Profile (sameAs)</source>
+            </trans-unit>
+            <trans-unit id="settings.description.seo.organization.sameAs">
+                <source>Adressen von Wikidata, LinkedIn, YouTube und weiteren Profilen, kommagetrennt. Erscheint als sameAs im Organization-JSON-LD.</source>
+            </trans-unit>
             <trans-unit id="settings.seo.analytics.enabled">
                 <source>Analytics aktiv</source>
             </trans-unit>
