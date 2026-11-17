@@ -89,8 +89,21 @@ final class PageRoleResolverTest extends TestCase
         ]);
 
         self::assertContains('NewsArticle', $types);
-        self::assertContains('Article', $types);
+        self::assertNotContains('Article', $types);
         self::assertContains('WebPage', $types);
+    }
+
+    #[Test]
+    public function resolveEmitsOnlyCollectionPageForListPluginsTest(): void
+    {
+        $subject = new PageRoleResolver(
+            $this->makeConnectionPool(['mainews_list']),
+            $this->makeSiteFinder(1),
+        );
+
+        $types = $subject->resolve(12, ['uid' => 12, 'tx_maiseo_schema_type' => '']);
+
+        self::assertSame(['CollectionPage'], $types);
     }
 
     #[Test]

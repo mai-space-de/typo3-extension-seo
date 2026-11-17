@@ -6,6 +6,7 @@ namespace Maispace\MaiSeo\StructuredData\Collector;
 
 use Maispace\MaiBase\Backend\CustomPageModule\DoktypeIds;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
+use Maispace\MaiSeo\StructuredData\PlainText;
 
 final class JobPostingCollector implements CollectorInterface
 {
@@ -45,10 +46,11 @@ final class JobPostingCollector implements CollectorInterface
 
         $event->addToGraph('title', $title);
 
-        $description = trim((string) ($record['tx_maijobs_description'] ?? ''));
-        if ($description === '') {
-            $description = trim((string) ($record['description'] ?? $record['abstract'] ?? ''));
-        }
+        $description = PlainText::firstOf(
+            $record['tx_maijobs_description'] ?? '',
+            $record['description'] ?? '',
+            $record['abstract'] ?? '',
+        );
         if ($description !== '') {
             $event->addToGraph('description', $description);
         }

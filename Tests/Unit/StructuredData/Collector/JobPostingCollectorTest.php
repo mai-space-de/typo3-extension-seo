@@ -12,6 +12,24 @@ use PHPUnit\Framework\Attributes\Test;
 final class JobPostingCollectorTest extends CollectorTestCase
 {
     #[Test]
+    public function collectStripsHtmlFromDescriptionTest(): void
+    {
+        $collector = new JobPostingCollector();
+        $event = new StructuredDataCollectionEvent(
+            pageUid: 1,
+            pageRecord: [
+                'title' => 'Job',
+                'tx_maijobs_description' => '<p>Betreuung der <a href="t3://page?uid=7">Kinder</a>.</p>',
+            ],
+        );
+        $event->addToGraph('@type', 'JobPosting');
+
+        $collector->collect($event);
+
+        self::assertSame('Betreuung der Kinder.', $event->getGraph()['description']);
+    }
+
+    #[Test]
     public function priorityIsSeventyTest(): void
     {
         $collector = new JobPostingCollector();

@@ -6,6 +6,7 @@ namespace Maispace\MaiSeo\StructuredData\Collector;
 
 use Maispace\MaiBase\Backend\CustomPageModule\DoktypeIds;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
+use Maispace\MaiSeo\StructuredData\PlainText;
 
 final class NewsArticleCollector implements CollectorInterface
 {
@@ -45,10 +46,7 @@ final class NewsArticleCollector implements CollectorInterface
 
         $event->addToGraph('headline', $headline);
 
-        $teaser = trim((string) ($record['tx_mainews_teaser'] ?? ''));
-        if ($teaser === '') {
-            $teaser = trim((string) ($record['description'] ?? $record['abstract'] ?? ''));
-        }
+        $teaser = PlainText::firstOf($record['tx_mainews_teaser'] ?? '', $record['description'] ?? '', $record['abstract'] ?? '');
         if ($teaser !== '') {
             $event->addToGraph('description', $teaser);
         }

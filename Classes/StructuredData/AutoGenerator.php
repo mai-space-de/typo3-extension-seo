@@ -63,6 +63,8 @@ final class AutoGenerator implements SingletonInterface
             return [];
         }
 
+        $nodes = $this->keepBreadcrumbOnPrimaryNodeOnly($nodes);
+
         if (count($nodes) === 1) {
             $graph = $nodes[0];
         } else {
@@ -80,6 +82,24 @@ final class AutoGenerator implements SingletonInterface
         }
 
         return $graph;
+    }
+
+    /**
+     * The breadcrumb describes the page, so it stays on the first node instead of being repeated on every typed node.
+     *
+     * @param non-empty-list<array<string, mixed>> $nodes
+     *
+     * @return non-empty-list<array<string, mixed>>
+     */
+    private function keepBreadcrumbOnPrimaryNodeOnly(array $nodes): array
+    {
+        foreach (array_keys($nodes) as $index) {
+            if ($index > 0) {
+                unset($nodes[$index]['breadcrumb']);
+            }
+        }
+
+        return $nodes;
     }
 
     public function invalidateCache(int $pageUid): void

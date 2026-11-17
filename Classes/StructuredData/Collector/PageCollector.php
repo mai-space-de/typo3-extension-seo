@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Maispace\MaiSeo\StructuredData\Collector;
 
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
+use Maispace\MaiSeo\StructuredData\PlainText;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 
@@ -18,8 +19,9 @@ final class PageCollector implements CollectorInterface
             $event->addToGraph('name', $record['title']);
         }
 
-        if (!empty($record['description'])) {
-            $event->addToGraph('description', $record['description']);
+        $description = PlainText::from($record['description'] ?? '');
+        if ($description !== '') {
+            $event->addToGraph('description', $description);
         }
 
         if (!empty($record['canonical_link'])) {

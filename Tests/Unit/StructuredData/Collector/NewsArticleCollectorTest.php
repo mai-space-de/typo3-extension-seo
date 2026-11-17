@@ -46,6 +46,25 @@ final class NewsArticleCollectorTest extends CollectorTestCase
     }
 
     #[Test]
+    public function collectStripsHtmlFromTeaserTest(): void
+    {
+        $collector = new NewsArticleCollector();
+        $event = new StructuredDataCollectionEvent(
+            pageUid: 42,
+            pageRecord: [
+                'doktype' => DoktypeIds::NEWS,
+                'title' => 'Page News',
+                'tx_mainews_teaser' => '<p>Die Verleihung ist am <strong>18. November</strong>.</p>',
+            ],
+        );
+        $event->addToGraph('@type', 'NewsArticle');
+
+        $collector->collect($event);
+
+        self::assertSame('Die Verleihung ist am 18. November.', $event->getGraph()['description']);
+    }
+
+    #[Test]
     public function collectAddsFieldsFromNewsDoktypePageTest(): void
     {
         $collector = new NewsArticleCollector();

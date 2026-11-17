@@ -6,6 +6,7 @@ namespace Maispace\MaiSeo\StructuredData\Collector;
 
 use Maispace\MaiBase\Backend\CustomPageModule\DoktypeIds;
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
+use Maispace\MaiSeo\StructuredData\PlainText;
 
 final class EventCollector implements CollectorInterface
 {
@@ -45,7 +46,7 @@ final class EventCollector implements CollectorInterface
 
         $event->addToGraph('name', $name);
 
-        $description = trim((string) ($record['abstract'] ?? $record['description'] ?? ''));
+        $description = PlainText::firstOf($record['abstract'] ?? '', $record['description'] ?? '');
         if ($description !== '') {
             $event->addToGraph('description', $description);
         }

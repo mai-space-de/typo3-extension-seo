@@ -22,20 +22,20 @@ final class PageRoleResolver
     private const PLUGIN_TYPES = [
         'maifaq_list' => ['FAQPage'],
         'maijobs_detail' => ['JobPosting'],
-        'maijobs_list' => ['CollectionPage', 'WebPage'],
+        'maijobs_list' => ['CollectionPage'],
         'mailocations_detail' => ['Place', 'LocalBusiness'],
-        'mailocations_list' => ['CollectionPage', 'WebPage'],
+        'mailocations_list' => ['CollectionPage'],
         'maiteam_view' => ['Person'],
-        'mainews_list' => ['CollectionPage', 'WebPage'],
+        'mainews_list' => ['CollectionPage'],
         'mainews_rss' => ['WebPage'],
-        'maigallery_gallery' => ['CollectionPage', 'WebPage'],
-        'maimember_view' => ['CollectionPage', 'WebPage'],
-        'maimember_list' => ['CollectionPage', 'WebPage'],
+        'maigallery_gallery' => ['CollectionPage'],
+        'maimember_view' => ['CollectionPage'],
+        'maimember_list' => ['CollectionPage'],
         'maimember_detail' => ['Person'],
         'maimember_application' => ['WebPage'],
-        'maitestimonials_list' => ['CollectionPage', 'WebPage'],
+        'maitestimonials_list' => ['CollectionPage'],
         'maitestimonials_single' => ['Review'],
-        'maitestimonials_slider' => ['CollectionPage', 'WebPage'],
+        'maitestimonials_slider' => ['CollectionPage'],
         'maievents_registration' => ['WebPage'],
         'maicanteen_week' => ['WebPage'],
         'maicanteen_print' => ['WebPage'],
@@ -46,7 +46,7 @@ final class PageRoleResolver
         'mainewsletter_newsletter' => ['WebPage'],
         'maisearch_search' => ['WebPage'],
         'maisurvey_survey' => ['WebPage'],
-        'mai_timeline_list' => ['CollectionPage', 'WebPage'],
+        'mai_timeline_list' => ['CollectionPage'],
     ];
 
     /**
@@ -80,7 +80,7 @@ final class PageRoleResolver
 
         $doktype = (int) ($pageRecord['doktype'] ?? 0);
         if ($doktype === DoktypeIds::NEWS) {
-            $types = array_merge($types, ['NewsArticle', 'Article']);
+            $types = array_merge($types, ['NewsArticle']);
         }
         if ($doktype === DoktypeIds::EVENT) {
             $types = array_merge($types, ['Event']);
@@ -108,7 +108,7 @@ final class PageRoleResolver
             array_unshift($types, $manualType);
         }
 
-        return $this->uniqueTypes($types);
+        return $this->dropRedundantWebPage($this->uniqueTypes($types));
     }
 
     private function isHomepage(int $pageUid): bool
@@ -146,6 +146,22 @@ final class PageRoleResolver
         }
 
         return $types;
+    }
+
+    /**
+     * CollectionPage is a subtype of WebPage. Emitting both would render the same page as two graph nodes.
+     *
+     * @param list<string> $types
+     *
+     * @return list<string>
+     */
+    private function dropRedundantWebPage(array $types): array
+    {
+        if (!in_array('CollectionPage', $types, true)) {
+            return $types;
+        }
+
+        return array_values(array_filter($types, static fn(string $type): bool => $type !== 'WebPage'));
     }
 
     /**

@@ -56,6 +56,20 @@ final class PageCollectorTest extends CollectorTestCase
     }
 
     #[Test]
+    public function collectStripsHtmlFromDescriptionTest(): void
+    {
+        $collector = new PageCollector();
+        $event = new StructuredDataCollectionEvent(
+            pageUid: 1,
+            pageRecord: ['description' => '<p>Am <strong>18. November</strong> um&nbsp;18 Uhr</p>'],
+        );
+
+        $collector->collect($event);
+
+        self::assertSame('Am 18. November um 18 Uhr', $event->getGraph()['description']);
+    }
+
+    #[Test]
     public function collectUsesCanonicalLinkWhenSetTest(): void
     {
         $collector = new PageCollector();

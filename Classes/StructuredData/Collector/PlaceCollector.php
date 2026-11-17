@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Maispace\MaiSeo\StructuredData\Collector;
 
 use Maispace\MaiSeo\Event\StructuredDataCollectionEvent;
+use Maispace\MaiSeo\StructuredData\PlainText;
 use Maispace\MaiSeo\StructuredData\RecordStorageResolverInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\Connection;
@@ -63,8 +64,9 @@ final class PlaceCollector implements CollectorInterface
             $event->addToGraph('name', $row['name']);
         }
 
-        if (!empty($row['description'])) {
-            $event->addToGraph('description', $row['description']);
+        $description = PlainText::from($row['description'] ?? '');
+        if ($description !== '') {
+            $event->addToGraph('description', $description);
         }
 
         if (!empty($row['phone'])) {
