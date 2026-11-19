@@ -45,6 +45,8 @@ final class PayloadParser
             return $value;
         }
 
-        return substr($value, 0, $length);
+        // The limit is in bytes, but a multibyte character must not be cut in half: MySQL rejects
+        // invalid UTF-8 and the whole hit is lost (long Ukrainian and Arabic titles and paths).
+        return mb_strcut($value, 0, $length, 'UTF-8');
     }
 }
